@@ -43,7 +43,7 @@ SpinyObject.NAME = "Spiny"; // Used by editor
 SpinyObject.PARAMS = [{'name': "Variant", 'type': "int", 'tooltip': "Variant of the spiny. 0 is normal and 1 is the 'Metal Spiny' and acts like the one from Mario Forever"}]
 
 SpinyObject.ANIMATION_RATE = 10;
-SpinyObject.VARIANT_OFFSET = 0x10;   //1 row down in the sprite sheet
+SpinyObject.VARIANT_OFFSET = -16;   //1 row up in the sprite sheet
 
 SpinyObject.ENABLE_FADE_TIME = 15;
 SpinyObject.ENABLE_DIST = 26;          // Distance to player needed for proximity to trigger and the enemy to be enabled
