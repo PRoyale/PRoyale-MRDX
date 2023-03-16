@@ -27,7 +27,7 @@ LeafObject.FALL_SPEED_ACCEL = .025;
 
 LeafObject.SPRITE = {};
 LeafObject.SPRITE_LIST = [
-  {NAME: "IDLE", ID: 0x00, INDEX: 0x00DF}
+  {NAME: "IDLE", ID: 0x00, INDEX: 0xEB}
 ];
 
 /* Makes sprites easily referenceable by NAME. For sanity. */
