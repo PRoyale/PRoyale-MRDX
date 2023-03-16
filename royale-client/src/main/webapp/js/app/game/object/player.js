@@ -122,7 +122,7 @@ PlayerObject.SPRING_DECEL = 0.003;
 PlayerObject.BLOCK_BUMP_THRESHOLD = 0.12;
 
 PlayerObject.POWER_INDEX_SIZE = 0x20;
-PlayerObject.GENERIC_INDEX = 0x90;
+PlayerObject.GENERIC_INDEX = 0x140;
 
 PlayerObject.DAMAGE_TIME = 90;
 PlayerObject.TRANSFORM_TIME = 36;
@@ -179,8 +179,8 @@ PlayerObject.SPRITE_LIST = [
   {NAME: "S_CLIMB1", ID: 0x07, INDEX: [[24], [8]]},
   {NAME: "S_TAUNT", ID: 0x08, INDEX: [[19], [3]]},
   {NAME: "S_SWIM0", ID: 0x09, INDEX: [[23], [7]]},
-  {NAME: "S_SWIM1", ID: 0x0A, INDEX: [[22], [6]]},
-  {NAME: "S_SWIM2", ID: 0x0B, INDEX: [[21], [5]]},
+  {NAME: "S_SWIM1", ID: 0x10, INDEX: [[22], [6]]},
+  {NAME: "S_SWIM2", ID: 0x12, INDEX: [[21], [5]]},
   /* [B]ig Mario */
   {NAME: "B_STAND", ID: 0x20, INDEX: [[63, 62], [47, 46]]}, 
   {NAME: "B_DOWN", ID: 0x21, INDEX: [[55, 54], [39, 38]]},
@@ -234,9 +234,22 @@ PlayerObject.SPRITE_LIST = [
   {NAME: "L_GLIDE0", ID: 0x78, INDEX: [[273, 272], [257, 256]]},
   {NAME: "L_GLIDE1", ID: 0x79, INDEX: [[319, 318], [303, 302]]},
   {NAME: "L_GLIDE2", ID: 0x80, INDEX: [[317, 316], [301, 300]]},
+  /* [H]ammer Mario */
+  {NAME: "H_STAND", ID: 0x100, INDEX: [[415, 414], [399, 398]]},
+  {NAME: "H_DOWN", ID: 0x101, INDEX: [[407, 406], [391, 390]]},
+  {NAME: "H_RUN0", ID: 0x102, INDEX: [[413, 412], [397, 396]]},
+  {NAME: "H_RUN1", ID: 0x103, INDEX: [[411, 410], [395, 394]]},
+  {NAME: "H_RUN2", ID: 0x104, INDEX: [[409, 408], [393, 392]]},
+  {NAME: "H_SLIDE", ID: 0x105, INDEX: [[405, 404], [389, 388]]},
+  {NAME: "H_FALL", ID: 0x106, INDEX: [[403, 402], [387, 386]]},
+  {NAME: "H_CLIMB0", ID: 0x107, INDEX: [[401, 400], [385, 384]]},
+  {NAME: "H_CLIMB1", ID: 0x108, INDEX: [[447, 446], [431, 430]]},
+  {NAME: "H_ATTACK", ID: 0x109, INDEX: [[433, 432], [417, 416]]},
+  {NAME: "H_TRANSFORM", ID: 0x110, INDEX: [[0, 0], [0, 0]]},
+  {NAME: "H_TAUNT", ID: 0x111, INDEX: [[441, 440], [425, 424]]},
   /* [G]eneric */
-  {NAME: "G_DEAD", ID: 0x90, INDEX: [[18], [2]]},
-  {NAME: "G_HIDE", ID: 0x9A, INDEX: 0x0001}
+  {NAME: "G_DEAD", ID: 0x140, INDEX: [[18], [2]]},
+  {NAME: "G_HIDE", ID: 0x14A, INDEX: 0x0001}
 ];
 
 /* Makes sprites easily referenceable by NAME. For sanity. */
@@ -316,9 +329,20 @@ PlayerObject.STATE = [
   {NAME: PlayerObject.SNAME.TAUNT, ID: 0x69, DIM: DIM1, SPRITE: [PlayerObject.SPRITE.L_TAUNT]},
   {NAME: PlayerObject.SNAME.SWIM, ID: 0x70, DIM: DIM1, SPRITE: [PlayerObject.SPRITE.L_SWIM0, PlayerObject.SPRITE.L_SWIM1, PlayerObject.SPRITE.L_SWIM2]},
   {NAME: PlayerObject.SNAME.GLIDE, ID: 0x71, DIM: DIM1, SPRITE: [PlayerObject.SPRITE.L_GLIDE0, PlayerObject.SPRITE.L_GLIDE1, PlayerObject.SPRITE.L_GLIDE2]},
-  /* Generic -> 0x90 */
-  {NAME: PlayerObject.SNAME.DEAD, DIM: DIM0, ID: 0x90, SPRITE: [PlayerObject.SPRITE.G_DEAD]},
-  {NAME: PlayerObject.SNAME.HIDE, DIM: DIM0, ID: 0x9A, SPRITE: [PlayerObject.SPRITE.G_HIDE]},
+  /* Hammer Mario -> 0x80 */
+  {NAME: PlayerObject.SNAME.STAND, ID: 0x80, DIM: DIM1, SPRITE: [PlayerObject.SPRITE.H_STAND]},
+  {NAME: PlayerObject.SNAME.DOWN, ID: 0x81, DIM: DIM2, SPRITE: [PlayerObject.SPRITE.H_DOWN]},
+  {NAME: PlayerObject.SNAME.RUN, ID: 0x82, DIM: DIM1, SPRITE: [PlayerObject.SPRITE.H_RUN0,PlayerObject.SPRITE.H_RUN1,PlayerObject.SPRITE.H_RUN2]},
+  {NAME: PlayerObject.SNAME.SLIDE, ID: 0x83, DIM: DIM1, SPRITE: [PlayerObject.SPRITE.H_SLIDE]},
+  {NAME: PlayerObject.SNAME.FALL, ID: 0x84, DIM: DIM1, SPRITE: [PlayerObject.SPRITE.H_FALL]},
+  {NAME: PlayerObject.SNAME.ATTACK, ID: 0x85, DIM: DIM1, SPRITE: [PlayerObject.SPRITE.H_ATTACK]},
+  {NAME: PlayerObject.SNAME.TRANSFORM, ID: 0x86, DIM: DIM1, SPRITE: [PlayerObject.SPRITE.H_TRANSFORM]},
+  {NAME: PlayerObject.SNAME.POLE, ID: 0x87, DIM: DIM1, SPRITE: [PlayerObject.SPRITE.H_CLIMB0]},
+  {NAME: PlayerObject.SNAME.CLIMB, ID: 0x88, DIM: DIM1, SPRITE: [PlayerObject.SPRITE.H_CLIMB0,PlayerObject.SPRITE.H_CLIMB1]},
+  {NAME: PlayerObject.SNAME.TAUNT, ID: 0x89, DIM: DIM1, SPRITE: [PlayerObject.SPRITE.H_TAUNT]},
+  /* Generic -> 0x140 */
+  {NAME: PlayerObject.SNAME.DEAD, DIM: DIM0, ID: 0x140, SPRITE: [PlayerObject.SPRITE.G_DEAD]},
+  {NAME: PlayerObject.SNAME.HIDE, DIM: DIM0, ID: 0x14A, SPRITE: [PlayerObject.SPRITE.G_HIDE]},
   {NAME: PlayerObject.SNAME.GHOST, DIM: DIM0, ID: 0xFFF, SPRITE: []},
   {NAME: PlayerObject.SNAME.DEADGHOST, DIM: DIM0, ID: 0xFFE, SPRITE: [PlayerObject.SPRITE.G_DEAD]}
 ];
@@ -346,6 +370,8 @@ PlayerObject.prototype.trigger = function(type) {
     case 0x02 : { this.star(); break; }
     case 0x03 : { this.invuln(); break; }
     case 0x04 : { this.spin(); break; }
+    case 0x05 : { this.throw(); break; }
+    case 0x06 : { this.effect(); break; }
   }
 };
 
@@ -428,7 +454,7 @@ PlayerObject.prototype.step = function() {
   if(this.isState(PlayerObject.SNAME.TRANSFORM)) {
     if(--this.transformTimer > 0) {
       var target = this.transformTarget;
-      if (this.transformTimer === 14 && (target === 3 || this.power === 3)) { this.game.world.getZone(this.level, this.zone).effects.push(new TransformEffect(vec2.make(this.pos.x, this.pos.y+.5))); }
+      if (this.transformTimer === 14 && (target > 2 || this.power > 2)) { this.game.world.getZone(this.level, this.zone).effects.push(new TransformEffect(vec2.make(this.pos.x, this.pos.y+.5))); this.game.out.push(NET013.encode(0x06)); }
       var ind = parseInt(this.anim/PlayerObject.TRANSFORM_ANIMATION_RATE) % 3;
       var high = this.power>this.transformTarget?this.power:this.transformTarget;
       switch(ind) {
@@ -636,9 +662,13 @@ PlayerObject.prototype.control = function() {
     this.spin();
     this.game.out.push(NET013.encode(0x04));
   }
+  if(this.btnB && !this.btnBde && this.power === 4 && !this.isState(PlayerObject.SNAME.DOWN) && !this.isState(PlayerObject.SNAME.SLIDE) && !this.isState(PlayerObject.SNAME.TAUNT) && this.attackTimer < 1 && this.attackCharge >= PlayerObject.ATTACK_CHARGE) {
+    this.throw();
+    this.game.out.push(NET013.encode(0x05));
+  }
   this.btnBde = this.btnB;
   
-  if((this.attackTimer > 0 || this.spinTimer > 0) && (this.power === 2 || this.power === 3) && (this.isState(PlayerObject.SNAME.STAND) || this.isState(PlayerObject.SNAME.RUN)) && !this.isState(PlayerObject.SNAME.TAUNT)) {
+  if((this.attackTimer > 0 || this.spinTimer > 0) && (this.power > 1) && (this.isState(PlayerObject.SNAME.STAND) || this.isState(PlayerObject.SNAME.RUN)) && !this.isState(PlayerObject.SNAME.TAUNT)) {
     this.setState(PlayerObject.SNAME.ATTACK);
   }
 };
@@ -721,6 +751,9 @@ PlayerObject.prototype.physics = function() {
     }
   }
 
+  if((this.underWater && !underwater) && this.btnU) {
+    this.fallSpeed = 0.9;
+  }
   this.underWater = underwater;
   
   /* Platforms */
@@ -984,6 +1017,15 @@ PlayerObject.prototype.attack = function() {
   this.play("fireball.mp3", 1., .04);
 };
 
+PlayerObject.prototype.throw = function() {
+  this.attackTimer = PlayerObject.ATTACK_DELAY;
+  this.attackCharge -= PlayerObject.ATTACK_CHARGE;
+  var p = this.reverse?vec2.add(this.pos, PlayerObject.PROJ_OFFSET):vec2.add(vec2.add(this.pos, vec2.make(0.5, 0.)), vec2.multiply(PlayerObject.PROJ_OFFSET, vec2.make(-1., 1.)));
+  var obj = this.game.createObject(HammerProj.ID, this.level, this.zone, p, [this.pid]);
+  obj.dir = this.reverse;
+  obj.throwTimer = 0;
+};
+
 PlayerObject.prototype.bounce = function() {
   this.glideTimer = 0;
   this.jumping = 0;
@@ -1008,10 +1050,16 @@ PlayerObject.prototype.invuln = function() {
   this.damageTimer = PlayerObject.DAMAGE_TIME;
 };
 
+/* Workaround for getting the transform effect to show for other players */
+PlayerObject.prototype.effect = function() {
+  this.game.world.getZone(this.level, this.zone).effects.push(new TransformEffect(vec2.make(this.pos.x, this.pos.y+.5)));
+};
+
 PlayerObject.prototype.powerup = function(obj) {
   if(obj instanceof MushroomObject && this.power < 1) { this.transform(1); this.rate = 0x73; return; } /* this.rate is a disguised anti cheat value */
   if(obj instanceof FlowerObject && this.power <= 3 && !(this.power === 2)) { this.transform(2); this.rate = 0x71; return; }
   if(obj instanceof LeafObject && this.power <= 3 && (this.power !== 3)) { this.transform(3); this.rate = 0x72; return; }
+  if(obj instanceof HammerSuitObject && this.power <= 3 && !(this.power === 4)) { this.transform(4); this.rate = 0x73; return; }
   if(obj instanceof StarObject) { this.star(); this.game.out.push(NET013.encode(0x02)); this.rate = 0x43; return; }
   if(obj instanceof LifeObject) { this.game.lifeage(); this.game.world.getZone(this.level, this.zone).effects.push(new LifeEffect(vec2.add(this.pos, vec2.make(0, (this.power > 0) ? 2. : 1.)))); return; }
   if(obj instanceof CoinObject) { this.game.coinage(); return; }
@@ -1037,8 +1085,8 @@ PlayerObject.prototype.star = function() {
 
 PlayerObject.prototype.transform = function(to) {
   if (!this.isState(PlayerObject.STATE.TRANSFORM)) {
-    if(this.power<=to) { this.play(to === 3 ? "leaf.mp3" : "powerup.mp3", 1., .04); }
-    else { this.play(this.power === 3 ? "leaf.mp3" : "powerdown.mp3", 1., .04); }
+    if(this.power<=to) { this.play(to > 2 ? "leaf.mp3" : "powerup.mp3", 1., .04); }
+    else { this.play(this.power > 2 ? "leaf.mp3" : "powerdown.mp3", 1., .04); }
   }
   
   if (to !== this.power) {
@@ -1046,7 +1094,7 @@ PlayerObject.prototype.transform = function(to) {
   }
 
   this.transformTarget = to;
-  this.transformTimer = (to === 3 || this.power === 3) ? PlayerObject.LEAF_TRANSFORM_TIME : PlayerObject.TRANSFORM_TIME;
+  this.transformTimer = (to > 2 || this.power > 2) ? PlayerObject.LEAF_TRANSFORM_TIME : PlayerObject.TRANSFORM_TIME;
   this.setState(PlayerObject.SNAME.TRANSFORM);
 };
 
@@ -1075,6 +1123,12 @@ PlayerObject.prototype.warp = function(wid) {
       this.pos.x -= 2.50;
       break;
     }
+  }
+
+  /* Cancel momentum when going into pipes */
+  if(this.pipeExt !== -1) {
+    this.moveSpeed = 0;
+    this.fallSpeed = 0;
   }
 
   /* Fix for getting stuck in pipes and then being able to clip out of bounds */
@@ -1185,9 +1239,11 @@ PlayerObject.prototype.isState = function(SNAME) {
 };
 
 PlayerObject.prototype.draw = function(sprites) {
-  if(this.isState(PlayerObject.SNAME.HIDE) || this.pipeDelay > 0 || (this.transformTimer > 0 && (this.transformTarget === 3 || this.power === 3))) { return; } // Don't render when hidden, transforming into a tanooki or when in a pipe
+  if(this.isState(PlayerObject.SNAME.HIDE) || this.pipeDelay > 0 || (this.transformTimer > 0 && (this.transformTarget > 2 || this.power > 2))) { return; } // Don't render when hidden, transforming into a tanooki or when in a pipe
   if(this.damageTimer > 0 && this.damageTimer % 3 > 1) { return; } // Post damage timer blinking
-    
+  if(this.sprite.ID === 0x69 || this.sprite.ID === 0x110) { return; }
+  
+
   var mod; // Special draw mode
   if(this.starTimer > 0) { mod = 0x02; }
   else if(this.isState(PlayerObject.SNAME.GHOST) || this.isState(PlayerObject.SNAME.DEADGHOST)) { mod = 0x01; }

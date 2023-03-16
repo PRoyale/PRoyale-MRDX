@@ -20,6 +20,7 @@ function HammerProj(game, level, zone, pos, oid) {
   
   /* Physics */
   this.dim = vec2.make(.5, .5);
+  this.impulse = vec2.make(.48, 0.915);
 }
 
 
@@ -33,7 +34,6 @@ HammerProj.SOFFSET = vec2.make(-.25, -.25); // Difference between position of sp
 
 HammerProj.THROW_DELAY = 13;
 
-HammerProj.IMPULSE = vec2.make(.48, 0.915);
 HammerProj.DRAG = .965;
 HammerProj.FALL_SPEED_MAX = 0.65;
 HammerProj.FALL_SPEED_ACCEL = 0.095;
@@ -69,6 +69,8 @@ for(var i=0;i<HammerProj.STATE_LIST.length;i++) {
 
 HammerProj.prototype.update = function(event) { /* ASYNC */ };
 
+HammerProj.prototype.play = GameObject.prototype.play;
+
 HammerProj.prototype.step = function() {
   /* Anim */
   this.anim++;
@@ -92,19 +94,47 @@ HammerProj.prototype.physics = function() {
 
 HammerProj.prototype.interaction = function() {
   if(this.state !== HammerProj.STATE.THROW) { return; }
-  var ply = this.game.getPlayer();
-  if(ply && ply.isTangible() && ply.level === this.level && ply.zone === this.zone) {
-    if(squar.intersection(ply.pos, ply.dim, this.pos, this.dim)) {
-      ply.damage(this);
-      return;
+
+  /* Hammer bro thrown */
+  if(this.owner instanceof Object) {
+    var ply = this.game.getPlayer();
+    if(ply && ply.isTangible() && ply.level === this.level && ply.zone === this.zone) {
+      if(squar.intersection(ply.pos, ply.dim, this.pos, this.dim)) {
+        ply.damage(this);
+        return;
+      }
+    }
+  }
+  /* Player thrown */
+  else if(Number.isInteger(this.owner)) {
+    for(var i=0;i<this.game.objects.length;i++) {
+      var obj = this.game.objects[i];
+      if(obj === this || obj.pid === this.owner || !obj.isTangible() || !obj.damage) { continue; }  // Hammers skip objects that lack a damage function to call, and their owners
+      if(obj.level === this.level && obj.zone === this.zone) {
+        if(squar.intersection(obj.pos, obj.dim, this.pos, this.dim) && obj !== this.owner) {
+          if(obj instanceof PlayerObject && !(this.owner instanceof Object) && !(this.game.gameMode === 1)) { continue; }  // Hammers created by other players don't do damage. They are just ghosts.
+          
+          (this.game.gameMode !== 1 ? this.owner === this.game.pid : (obj instanceof PlayerObject ? obj.pid == this.game.pid : this.owner === this.game.pid)) && obj.damage(this);
+          if (this.game.gameMode === 1 && obj instanceof PlayerObject && obj.pid == this.game.pid && obj.dead) {
+            this.game.out.push(NET017.encode(this.owner));
+          }
+
+          if(this.owner instanceof FireHammerObject && obj instanceof PlayerObject && obj.pid == this.game.pid) {
+            obj.damage(this);
+          }
+
+          this.destroy(); return;
+        }
+      }
     }
   }
 };
 
 HammerProj.prototype.throw = function() {  
-  this.moveSpeed = this.dir?HammerProj.IMPULSE.x:-HammerProj.IMPULSE.x;
-  this.fallSpeed = HammerProj.IMPULSE.y;
+  this.moveSpeed = this.dir?this.impulse.x:-this.impulse.x;
+  this.fallSpeed = this.impulse.y;
   
+  this.play(Number.isInteger(this.owner) ? "fireball.mp3" : "hammer.mp3", 1., .04);
   this.setState(HammerProj.STATE.THROW);
 };
 

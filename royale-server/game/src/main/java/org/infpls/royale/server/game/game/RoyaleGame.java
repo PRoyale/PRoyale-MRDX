@@ -10,7 +10,7 @@ import org.infpls.royale.server.game.session.game.PacketGWN;
 
 public class RoyaleGame extends RoyaleCore {
   
-  private final static int START_DELAY = 210;
+  private final static int START_DELAY = 420;
   private final static int MAX_DM_AGE = 9000; // 5 minutes
   private final static int DM_EXTENDED_TIME = 1800; // 1 minute
 

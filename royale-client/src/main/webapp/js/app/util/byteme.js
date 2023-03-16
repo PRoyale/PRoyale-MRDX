@@ -453,7 +453,7 @@ td32.TILE_PROPERTIES = {
   /* Item Block Invisible Progressive */
   0x1B: {
     NAME: "ITEM BLOCK INVISIBLE PROGRESSIVE",
-    DATA: "Final Powerup (0=flower,1=leaf,2=random)",
+    DATA: "Final Powerup (0=flower,1=leaf,2=hammer)",
     COLLIDE: true,
     HIDDEN: true,
     ASYNC: false,
@@ -463,7 +463,7 @@ td32.TILE_PROPERTIES = {
         var ply = game.getPlayer();
         var rep = [27, 0, 1, 1, 0] // Replacement td32 data for tile.
         game.world.getZone(level, zone).replace(x,y,rep);
-        game.createObject((type === 0x10 ? 0x51 : (parseInt(td.data) === 2 ? parseInt(Math.random()*2) === 1 ? 0x52 : 0x57 : (parseInt(td.data) === 1 ? 0x57 : 0x52))), level, zone, vec2.make(x,y), [shor2.encode(x,y)]);
+        game.createObject((type === 0x10 ? 0x51 : (parseInt(td.data) === 2 ? 0x58 : (parseInt(td.data) === 1 ? 0x57 : 0x52))), level, zone, vec2.make(x,y), [shor2.encode(x,y)]);
         td32.GEN_FUNC.BUMP(game, pid, td, level, zone, x, y, type);
         game.world.getZone(level, zone).play(x,y,"item.mp3",1.,0.04);
       }
@@ -586,7 +586,7 @@ td32.TILE_PROPERTIES = {
   /* Progressive Item Block */
   0x14: {
     NAME: "ITEM BLOCK PROGRESSIVE",
-    DATA: "Final Powerup (0=flower,1=leaf,2=random)",
+    DATA: "Final Powerup (0=flower,1=leaf,2=hammer)",
     COLLIDE: true,
     HIDDEN: false,
     ASYNC: false,
@@ -596,7 +596,7 @@ td32.TILE_PROPERTIES = {
         var ply = game.getPlayer();
         var rep = [27, 0, 1, 1, 0] // Replacement td32 data for tile.
         game.world.getZone(level, zone).replace(x,y,rep);
-        game.createObject((type === 0x10 ? 0x51 : (parseInt(td.data) === 2 ? parseInt(Math.random()*2) === 1 ? 0x52 : 0x57 : (parseInt(td.data) === 1 ? 0x57 : 0x52))), level, zone, vec2.make(x,y), [shor2.encode(x,y)]);
+        game.createObject((type === 0x10 ? 0x51 : (parseInt(td.data) === 2 ? 0x58 : (parseInt(td.data) === 1 ? 0x57 : 0x52))), level, zone, vec2.make(x,y), [shor2.encode(x,y)]);
         td32.GEN_FUNC.BUMP(game, pid, td, level, zone, x, y, type);
         game.world.getZone(level, zone).play(x,y,"item.mp3",1.,0.04);
       }

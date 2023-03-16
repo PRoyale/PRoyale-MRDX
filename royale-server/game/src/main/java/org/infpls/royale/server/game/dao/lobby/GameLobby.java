@@ -22,7 +22,7 @@ public abstract class GameLobby {
   private final static float MIN_VOTE_FRAC = .50f;   // Needs 50% ready vote to start early
   private final static int MAX_AGE = 216000;        // Max number of frames before we just close the lobby. This is 1 hour.
   
-  private final static int START_DELAY = 150; // Delay before the game starts the world countdown timer. (5 seconds)
+  private final static int START_DELAY = 300; // Delay before the game starts the world countdown timer. (5 seconds)
   
   protected final String lid; //Lobby ID
   
@@ -264,7 +264,7 @@ public abstract class GameLobby {
      players to the game loop before their clients are ready to handle the stream of data.
   */
   private class GameLoop extends Thread {
-    private static final int TICK_RATE = 33;
+    private static final int TICK_RATE = 16;
     private final GameLobby lobby;
     
     private long lastStepTime;
