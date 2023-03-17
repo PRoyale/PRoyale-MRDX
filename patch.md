@@ -15,6 +15,7 @@
 >   Thanks Captain!
 * Removed stray white pixel from the Mario selection outline
 >   Really important stuff, I know
+* Fixed adjusted sound volume not saving
 * Removed Herobrine
 
 ## Version 3.0.1
