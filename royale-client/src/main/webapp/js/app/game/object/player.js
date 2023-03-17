@@ -247,6 +247,9 @@ PlayerObject.SPRITE_LIST = [
   {NAME: "H_ATTACK", ID: 0x109, INDEX: [[433, 432], [417, 416]]},
   {NAME: "H_TRANSFORM", ID: 0x110, INDEX: [[0, 0], [0, 0]]},
   {NAME: "H_TAUNT", ID: 0x111, INDEX: [[441, 440], [425, 424]]},
+  {NAME: "H_SWIM0", ID: 0x112, INDEX: [[439, 438], [423, 422]]},
+  {NAME: "H_SWIM1", ID: 0x113, INDEX: [[437, 436], [421, 420]]},
+  {NAME: "H_SWIM2", ID: 0x114, INDEX: [[435, 434], [419, 418]]},
   /* [G]eneric */
   {NAME: "G_DEAD", ID: 0x140, INDEX: [[18], [2]]},
   {NAME: "G_HIDE", ID: 0x14A, INDEX: 0x0001}
@@ -340,6 +343,7 @@ PlayerObject.STATE = [
   {NAME: PlayerObject.SNAME.POLE, ID: 0x87, DIM: DIM1, SPRITE: [PlayerObject.SPRITE.H_CLIMB0]},
   {NAME: PlayerObject.SNAME.CLIMB, ID: 0x88, DIM: DIM1, SPRITE: [PlayerObject.SPRITE.H_CLIMB0,PlayerObject.SPRITE.H_CLIMB1]},
   {NAME: PlayerObject.SNAME.TAUNT, ID: 0x89, DIM: DIM1, SPRITE: [PlayerObject.SPRITE.H_TAUNT]},
+  {NAME: PlayerObject.SNAME.SWIM, ID: 0x90, DIM: DIM1, SPRITE: [PlayerObject.SPRITE.H_SWIM0, PlayerObject.SPRITE.H_SWIM1, PlayerObject.SPRITE.H_SWIM2]},
   /* Generic -> 0x140 */
   {NAME: PlayerObject.SNAME.DEAD, DIM: DIM0, ID: 0x140, SPRITE: [PlayerObject.SPRITE.G_DEAD]},
   {NAME: PlayerObject.SNAME.HIDE, DIM: DIM0, ID: 0x14A, SPRITE: [PlayerObject.SPRITE.G_HIDE]},
