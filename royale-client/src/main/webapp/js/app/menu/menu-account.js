@@ -234,7 +234,7 @@ MenuAccount.prototype.savePassword = function() {
   var pass = this.passwordNew.value;
   var verify = this.passwordVerify.value;
 
-  if (pass.length < 4) { this.passwordReport("Password is too short"); return; }
+  if (pass.length < 4) { this.passwordReport(TEXTS["#PASSWORD_SHORT"][app.lang]); return; }
   if (pass != verify) { this.passwordReport("Passwords don't match"); return; }
 
   app.net.send({
@@ -305,6 +305,12 @@ MenuAccount.prototype.updateLeaderboards = function(type, values) {
   tab.style.width = "100%";
   tab.style.textAlign = "center";
   tab.style.color = "white";
+
+  switch(type) {
+    case "wins" : { type = TEXTS["#STATS_WINS"][app.lang]; break; }
+    case "coins" : { type = TEXTS["#STATS_COINS"][app.lang]; break; }
+    case "kills" : { type = TEXTS["#STATS_KILLS"][app.lang]; break; }
+  }
 
   var th = document.createElement("tr");
   th.innerHTML = "<th>#</th><th>name</th><th>"+type+"</th>";
@@ -427,7 +433,7 @@ MenuAccount.prototype.show = function(stats) {
   app.menu.navigation("main", "main");
   app.menu.background("a");
   this.winElement.style.display = "block";
-  if(stats) { this.winElement.innerHTML = "Wins×" + (stats.wins) + "</span> <span class='kill'>Deaths×" + (stats.deaths) + "</span> <span class='kill'>Kills×" + (stats.kills) + "</span> <span class='kill'>Coins×" + (stats.coins) + "</span>"; }
+  if(stats) { this.winElement.innerHTML = `<span id='stat-wins'>${TEXTS["#STATS_WINS"][app.lang]}</span>×${stats.wins}</span> <span class='kill' id='stat-deaths'>${TEXTS["#STATS_DEATHS"][app.lang]}×${stats.deaths}</span> <span class='kill' id='stat-kill'>${TEXTS["#STATS_KILLS"][app.lang]}×${stats.kills}</span> <span class='kill' id='stat-coins'>${TEXTS["#STATS_COINS"][app.lang]}×${stats.coins}</span>`; }
   this.linkMemberElement.style.display = "block";
   this.linkElement.style.display = "block";
   this.element.style.display = "block";

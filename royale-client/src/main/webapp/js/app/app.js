@@ -5,7 +5,7 @@
 function App() {
   this.menu = new Menu();                // Handles HTML menus
   this.net = new Network();              // Handles websockets
-
+  
   var music = Cookies.get("music");
   var sound = Cookies.get("sfx");
   this.settings = {
@@ -13,8 +13,11 @@ function App() {
     'soundVolume': isNaN(parseInt(sound)) ? Audio.EFFECT_VOLUME*100 : parseInt(sound),
     'hideNames': Cookies.get("text") === '1',
     'hideTimer': Cookies.get("timer") === '1',
-    'disableBg': Cookies.get("background") === '1'
+    'disableBg': Cookies.get("background") === '1',
+    'language': Cookies.get("lang") || "en"
   }
+
+  this.lang = this.settings.language;   // Localization
 
   this.statusUpdate = null;
   this.session = Cookies.get("session");
@@ -50,10 +53,10 @@ function App() {
   this.menu.main.menuMusic.volume = mus.value === 0 ? 0 : Audio.MUSIC_VOLUME;
 
   tmr.onclick = function() { that.toggleTimer(); };
-  tmr.innerText = (this.settings.hideTimer ? "[*]" : "[ ]") + " Hide In-Game Timer";
+  tmr.innerText = (this.settings.hideTimer ? "[*]" : "[ ]") + " " + TEXTS["#SETTINGS_TIMER"][this.lang];
 
   bg.onclick = function() { that.toggleBackground(); };
-  bg.innerText = (this.settings.disableBg ? "[*]": "[ ]") + " Disable Backgrounds";
+  bg.innerText = (this.settings.disableBg ? "[*]": "[ ]") + " " + TEXTS["#SETTINGS_BG"][this.lang];
 }
 
 App.prototype.updateVolume = function(type) {
@@ -83,13 +86,13 @@ App.prototype.updateVolume = function(type) {
 App.prototype.toggleTimer = function() {
   this.settings.hideTimer = !this.settings.hideTimer;
   Cookies.set("timer", this.settings.hideTimer?1:0, {'expires': 30});
-  document.getElementById("hideTimer").innerText = (this.settings.hideTimer ? "[*]" : "[ ]") + " Hide In-Game Timer";
+  document.getElementById("hideTimer").innerText = (this.settings.hideTimer ? "[*]" : "[ ]") + " " + TEXTS["#SETTINGS_TIMER"][this.lang];
 };
 
 App.prototype.toggleBackground = function() {
   this.settings.disableBg = !this.settings.disableBg;
   Cookies.set("background", this.settings.disableBg?1:0, {'expires': 30});
-  document.getElementById("disableBackground").innerText = (this.settings.disableBg ? "[*]" : "[ ]") + " Disable Backgrounds";
+  document.getElementById("disableBackground").innerText = (this.settings.disableBg ? "[*]" : "[ ]") + " " + TEXTS["#SETTINGS_BG"][this.lang];
 };
 
 App.prototype.init = function() {
@@ -123,7 +126,7 @@ App.prototype.init = function() {
 
     var serverError = function() {
       fadeIn();
-      that.menu.error.show("An unknown error occurred while connecting to the game server...");
+      that.menu.error.show(TEXTS["#UNKNOWN_ERROR"][app.lang]);
     };
 
     $.ajax({
@@ -138,6 +141,8 @@ App.prototype.init = function() {
   document.getElementById("next").onclick = function() {
     fadeOutCallback(next);
   }
+
+  localize(this.lang);
 };
 
 App.prototype.updateStatus = function() {

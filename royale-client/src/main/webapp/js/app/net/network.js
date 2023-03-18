@@ -46,7 +46,7 @@ Network.prototype.connectWS = function() {
   
   this.webSocket.onclose = function(event) {
     that.webSocket = undefined;
-    app.menu.error.show("Connection Interrupted");
+    app.menu.error.show(TEXTS["#CONNECTION_INTERRUPTED"][app.lang]);
   };
 }
 

@@ -368,7 +368,7 @@ Display.prototype.drawUI = function() {
       context.fillStyle = "white";
       context.font = "24px SmbWeb";
       context.textAlign = "center";
-      context.fillText("GAME STARTS IN: " + parseInt(this.game.startTimer/30), W*.5, (H*.5)+40);
+      context.fillText("GAME STARTS IN: " + parseInt(this.game.startTimer/60), W*.5, (H*.5)+40);
     }
 
     this.drawGame = false;
@@ -412,8 +412,8 @@ Display.prototype.drawUI = function() {
     context.strokeStyle = "blue";
     context.font = "24px SmbWeb";
     context.textAlign = "left";
-    context.fillText(ply?ply.name:"INFRINGIO", 56, 32);
-    context.strokeText(ply?ply.name:"INFRINGIO", 56, 32);
+    context.fillText(ply?ply.name:"MARIO", 56, 32);
+    context.strokeText(ply?ply.name:"MARIO", 56, 32);
 
     var st = util.sprite.getSprite(tex, c);
     var ctxt = "×"+(this.game.coins<=9?"0"+this.game.coins:this.game.coins);
@@ -449,13 +449,13 @@ Display.prototype.drawUI = function() {
         context.strokeText(time, (W/2)-(w/2), 32);
       }
 
-      var txt = this.game.touchMode ? this.game.remain : this.game.remain + " PLAYERS REMAIN";
+      var txt = this.game.touchMode ? this.game.remain : this.game.remain + " " + TEXTS["#GAME_PLAYERS_REMAIN"][app.lang];
       w = context.measureText(txt).width;
       context.fillText(txt, W-w-8, 32);
       context.strokeText(txt, W-w-8, 32);
     }
     else if(this.game instanceof Lobby) {
-      var txt = this.game.players.length + (this.game.touchMode?"":" / 75 PLAYERS");
+      var txt = this.game.players.length + (this.game.touchMode?"":" / 75 " + TEXTS["#GAME_LOBBY_PLAYERS"][app.lang]);
       w = context.measureText(txt).width;
       context.fillText(txt, W-w-8, 32);
       context.strokeText(txt, W-w-8, 32);
@@ -544,7 +544,7 @@ Display.prototype.drawLoad = function() {
   context.font = "32px SmbWeb";
   context.fillStyle = "white";
   context.textAlign = "center";
-  context.fillText("Loading Resources...", W*.5, H*.5);
+  context.fillText(TEXTS["#LOADING_RESOURCES"][app.lang], W*.5, H*.5);
 };
 
 Display.prototype.destroy = function() {

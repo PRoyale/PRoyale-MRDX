@@ -409,7 +409,7 @@ MenuDisplay.prototype.drawLoad = function() {
   context.font = "32px SmbWeb";
   context.fillStyle = "white";
   context.textAlign = "center";
-  context.fillText("Loading Resources...", W*.5, H*.5);
+  context.fillText(TEXTS["#LOADING_RESOURCES"][app.lang], W*.5, H*.5);
 };
   
 MenuDisplay.prototype.destroy = function() {

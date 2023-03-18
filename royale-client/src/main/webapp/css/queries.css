@@ -40,8 +40,8 @@
   position: absolute;
   z-index: 1;
   top: -50px;
-  width: 20em;
-  margin-left: -138%
+  width: 22em;
+  margin-left: -145%
 }
 
 .tooltip:hover .tooltip-text {
