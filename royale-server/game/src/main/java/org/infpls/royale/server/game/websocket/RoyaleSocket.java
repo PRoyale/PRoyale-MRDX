@@ -18,6 +18,9 @@ public class RoyaleSocket extends TextWebSocketHandler {
     @Override
     public void afterConnectionEstablished(WebSocketSession webSocket) {
       try {
+        String remoteAddress = webSocket.getHandshakeHeaders().getFirst("X-Forwarded-For");
+        System.out.println("Remote address: " + remoteAddress);
+
         RoyaleSession session = dao.getUserDao().createSession(webSocket, dao);
         session.start();
         webSocket.getAttributes().put("session", session);
