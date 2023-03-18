@@ -7,7 +7,7 @@ function App() {
   this.net = new Network();              // Handles websockets
 
   var music = Cookies.get("music");
-  var sound = Cookies.get("sound");
+  var sound = Cookies.get("sfx");
   this.settings = {
     'musicVolume': isNaN(parseInt(music)) ? Audio.MUSIC_VOLUME*100 : parseInt(music),
     'soundVolume': isNaN(parseInt(sound)) ? Audio.EFFECT_VOLUME*100 : parseInt(sound),
