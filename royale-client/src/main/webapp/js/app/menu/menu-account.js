@@ -27,6 +27,10 @@ function MenuAccount() {
   this.changelogMenu = document.getElementById("changelog");
   this.changelogCloseBtn = document.getElementById("changelog-close");
 
+  this.languageBtn = document.getElementById("link-language");
+  this.languageMenu = document.getElementById("language");
+  this.languageCloseBtn = document.getElementById("language-close");
+
   this.playMenu = document.getElementById("playMember");
   this.playCloseBtn = document.getElementById("playMember-close");
   this.playGo = document.getElementById("playMember-go");
@@ -77,6 +81,7 @@ function MenuAccount() {
   this.settingsCloseBtn.onclick = function() { that.hideSettingsMenu(); };
   this.controlsCloseBtn.onclick = function() { that.hideControlsMenu(); };
   this.changelogCloseBtn.onclick = function() { that.hideChangelogMenu(); };
+  this.languageCloseBtn.onclick = function() { that.hideLanguageMenu(); };
   this.playCloseBtn.onclick = function() { that.hidePlayMenu(); };
   this.profileCloseBtn.onclick = function() { that.hideProfileMenu(); };
   this.passwordCloseBtn.onclick = function() { that.hidePasswordMenu(); };
@@ -90,6 +95,7 @@ function MenuAccount() {
   this.playBtn.onclick = function() { that.showPlayMenu(); };
   this.controlsBtn.onclick = function() { that.showControlsMenu(); };
   this.changelogBtn.onclick = function() { that.showChangelogMenu(); };
+  this.languageBtn.onclick = function() { that.showLanguageMenu(); };
   this.settingsBtn.onclick = function() { that.showSettingsMenu(); };
   this.profileBtn.onclick = function() { that.showProfileMenu(); };
   this.leaderboardBtn.onclick = function() { that.showLeaderboards(); };
@@ -158,6 +164,17 @@ MenuAccount.prototype.showChangelogMenu = function() {
 MenuAccount.prototype.hideChangelogMenu = function() {
   this.darkBackground.style.display = "none";
   this.changelogMenu.style.display = "none";
+};
+
+/* Language Menu */
+MenuAccount.prototype.showLanguageMenu = function() {
+  this.darkBackground.style.display = "";
+  this.languageMenu.style.display = "";
+};
+
+MenuAccount.prototype.hideLanguageMenu = function() {
+  this.darkBackground.style.display = "none";
+  this.languageMenu.style.display = "none";
 };
 
 /* Settings Menu */
@@ -235,7 +252,7 @@ MenuAccount.prototype.savePassword = function() {
   var verify = this.passwordVerify.value;
 
   if (pass.length < 4) { this.passwordReport(TEXTS["#PASSWORD_SHORT"][app.lang]); return; }
-  if (pass != verify) { this.passwordReport("Passwords don't match"); return; }
+  if (pass != verify) { this.passwordReport(TEXTS["#PASSWORD_MISMATCH"][app.lang]); return; }
 
   app.net.send({
     'type': 'lcp',

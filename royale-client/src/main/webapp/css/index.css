@@ -4,7 +4,8 @@ body {
   user-select: none;
   touch-action: none;
   margin: 0;
-  padding: 0
+  padding: 0;
+  font-family: "Twemoji Country Flags";
 }
 
 .background-a {
@@ -420,6 +421,15 @@ img {
   image-rendering: pixelated;
 }
 
+.lang-button {
+  width: 100%;
+  display: inherit;
+  font-weight: normal;
+  height: 40px;
+  margin-top: 7px;
+  font-size: 15px;
+}
+
 .link-r {
   position: absolute;
   top: 5px;
@@ -693,6 +703,7 @@ h2 {
   font-size: 12px
 }
 #changelog-container {
+  width: 595px;
   height: 350px;
   overflow-y: scroll;
   margin-right: 5.4px;

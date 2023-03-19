@@ -942,7 +942,7 @@ PlayerObject.prototype.collisionTest = function(pos, dim) {
   var tiles = this.game.world.getZone(this.level, this.zone).getTiles(pos, dim);
   for(var i=0;i<tiles.length;i++) {
     var tile = tiles[i];
-    if(!tile.definition.COLLIDE || tile.definition.SEMISOLID) { continue; }
+    if(!tile.definition.COLLIDE || tile.definition.SEMISOLID || tile.definition.HIDDEN) { continue; }
     
     if(squar.intersection(tile.pos, tdim, pos, dim)) { return true; }
   }

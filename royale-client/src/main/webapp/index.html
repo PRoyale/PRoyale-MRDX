@@ -332,6 +332,18 @@
         </div>
       </div>
 
+      <!-- Langauge -->
+      <div id="language" class="container-password" style="display:none;height: 430px;">
+        <span style="position: absolute;right: 10px;top: 4px;" id="language-close">x</span>
+        <p style="margin-bottom: 0" id="languageTitle">Langauge</p>
+        <div id="changelog-container" style="text-align:center;">
+          <button class="lang-button" onclick="Cookies.set('lang', 'en', {'expires':365});location.reload();">English</button>
+          <button class="lang-button" onclick="Cookies.set('lang', 'es', {'expires':365});location.reload();">Español</button>
+          <button class="lang-button" onclick="Cookies.set('lang', 'pt-br', {'expires':365});location.reload();">Português (Brasil)</button>
+          <button class="lang-button" onclick="Cookies.set('lang', 'fr', {'expires':365});location.reload();">Français</button>
+        </div>
+      </div>
+
       <!-- Changelog -->
       <div id="changelog" class="container-password" style="display:none;height:430px;">
         <span style="position: absolute;right: 10px;top: 4px;" id="changelog-close">x</span>
@@ -385,8 +397,7 @@
       <!-- Stolen from Legacy. If it ain't broke, don't fix it. -->
       <div id='return' class='container-return' style='display: none'>
         <span id='return-main' class='launch' onclick='Cookies.set("skip_disclaimer", "1");location.reload();'>Return to Main</span><br>
-        <span id='return-lobby' class='launch' onclick='Cookies.set("go_to_lobby", "1");location.reload();'>Return to
-          Lobby</span>
+        <span id='return-lobby' class='launch' onclick='Cookies.set("go_to_lobby", "1");location.reload();'>Return to Lobby</span>
       </div>
 
       <!-- Dev Console -->
@@ -396,10 +407,10 @@
           <div class='devConsole-select' id="devConsole-kick">kick</div>
           <div class='devConsole-select' id="devConsole-ban">ban</div>
           <div class='devConsole-select' id="devConsole-rename">rename</div> | <div class='devConsole-select'
-            id="devConsole-forceStart">Force Start</div>
+          id="devConsole-forceStart">Force Start</div>
           <div class="name" id="devConsole-renameForm" style="display: none;">
             <input id="devConsole-renameField" type="text" class="devConsole-name-input" placeholder="new name"
-              autocomplete="off" data-lpignore="true" />
+            autocomplete="off" data-lpignore="true" />
             <div class='devConsole-select' id="devConsole-renameDone">ok</div><br>
           </div>
           <span id="devConsole-playerList"></span>
@@ -417,9 +428,14 @@
       <script src='js/lib/jquery/jquery-3.1.1.min.js'></script>
       <script src='js/lib/cookie/js.cookie.min.js'></script>
       <script src="js/lib/jsgif/jsgif.js"></script>
+      <script type="module" defer>
+        import { polyfillCountryFlagEmojis } from "https://cdn.skypack.dev/country-flag-emoji-polyfill";
+        polyfillCountryFlagEmojis();
+      </script>
 
       <!-- Localization -->
       <script src='js/app/util/localization.js'></script>
+
       
       <!-- Controls -->
       <script src='js/control/app.js'></script>

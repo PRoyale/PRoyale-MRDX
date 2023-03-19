@@ -50,6 +50,18 @@ StateLogin.prototype.handleLogin = function(p) {
     app.menu.mainMember.show(stats);
     if(!app.goToLobby) { app.menu.mainMember.scienceInterval = setInterval(function() { app.net.send({'type': 'lsc'}); }, 5000); }
   } else {
+    if(p.msg.toLowerCase().includes("session expired")) {
+      p.msg = TEXTS["#SESSION_EXPIRED"][app.lang];
+    }
+
+    if(p.msg.toLowerCase().includes("incorrect password")) {
+      p.msg = TEXTS["#PASSWORD_INCORRECT"][app.lang];
+    }
+
+    if(p.msg.toLowerCase().includes("account does not exist")) {
+      p.msg = TEXTS["#NO_ACCOUNT"][app.lang];
+    }
+
     Cookies.remove("session");
     app.menu.main.show();
     app.menu.main.showLoginMenu();

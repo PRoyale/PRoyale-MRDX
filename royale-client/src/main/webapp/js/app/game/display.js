@@ -249,6 +249,17 @@ Display.prototype.drawObject = function() {
     context.strokeStyle = txt.outline ? txt.outline : "blue";
     context.font = (txt.size*Display.TEXRES) + "px SmbWeb";
     context.textAlign = "center";
+    if(this.game instanceof Lobby) {
+      var hitblock = this.game.objects.filter(obj=>obj instanceof TextObject).filter(obj=> obj.text.startsWith("Hit this"));
+      var voteperc = this.game.objects.filter(obj=>obj instanceof TextObject).filter(obj=> obj.text.startsWith("If 70%"));
+      if(hitblock.length > 0) {
+        hitblock[0].text = TEXTS['#LOBBY_HIT_BLOCK'][app.lang];
+      }
+
+      if(voteperc.length > 0) {
+        voteperc[0].text = TEXTS['#LOBBY_VOTE_PERCENT'][app.lang];
+      }
+    }
     if(!txt.noOutline) { context.strokeText(txt.text, x, y); }
     context.fillText(txt.text, x, y);
   }
@@ -264,16 +275,6 @@ Display.prototype.drawObject = function() {
     context.textAlign = "center";
     if(!txt.noOutline) { context.strokeText(txt.text, x, y); }
     context.fillText(txt.text, x, y);
-  }
-
-  for(var i=0;i<regens.length;i++) {
-    var rgn = regens[i];
-
-    context.fillStyle = "white";
-    context.strokeStyle = "blue";
-    context.font = "10px SmbWeb";
-    //context.strokeText(parseInt(rgn.time/60)+1, rgn.x*16+3.5, (Display.TEXRES*(dim.y-rgn.y-2.5))+(Display.TEXRES*.5));
-    //context.fillText(parseInt(rgn.time/60)+1, rgn.x*16+3.5, (Display.TEXRES*(dim.y-rgn.y-2.5))+(Display.TEXRES*.5));
   }
 };
 
@@ -368,7 +369,7 @@ Display.prototype.drawUI = function() {
       context.fillStyle = "white";
       context.font = "24px SmbWeb";
       context.textAlign = "center";
-      context.fillText("GAME STARTS IN: " + parseInt(this.game.startTimer/60), W*.5, (H*.5)+40);
+      context.fillText(TEXTS["#GAME_STARTS_IN"][app.lang] + ": " + parseInt(this.game.startTimer/60), W*.5, (H*.5)+40);
     }
 
     this.drawGame = false;
@@ -388,24 +389,24 @@ Display.prototype.drawUI = function() {
 
     context.font = "32px SmbWeb";
     context.textAlign = "center";
-    context.fillText((this.game.victory<=3?"VICTORY ROYALE #":"TOO BAD #") + this.game.victory, W*.5, 40);
-    context.strokeText((this.game.victory<=3?"VICTORY ROYALE #":"TOO BAD #") + this.game.victory, W*.5, 40);
+    context.fillText((this.game.victory<=3?"VICTORY ROYALE #":TEXTS["#GAME_TOO_BAD"][app.lang]+" #") + this.game.victory, W*.5, 40);
+    context.strokeText((this.game.victory<=3?"VICTORY ROYALE #":TEXTS["#GAME_TOO_BAD"][app.lang]+" #") + this.game.victory, W*.5, 40);
 
     context.fillStyle = "white";
     context.font = "24px SmbWeb";
     context.textAlign = "center";
-    context.fillText("MATCH STATS:", 0.8 * W, 0.3 * H);
-    context.strokeText("MATCH STATS:", 0.8 * W, 0.3 * H);
+    context.fillText(TEXTS["#GAME_MATCH_STATS"][app.lang] + ":", 0.8 * W, 0.3 * H);
+    context.strokeText(TEXTS["#GAME_MATCH_STATS"][app.lang] + ":", 0.8 * W, 0.3 * H);
     context.font = "20px SmbWeb";
 
-    context.fillText(this.game.getGameTimer() + " ELAPSED TIME", 0.8 * W, 0.3 * H + 24);
-    context.strokeText(this.game.getGameTimer() + " ELAPSED TIME", 0.8 * W, 0.3 * H + 24);
+    context.fillText(this.game.getGameTimer() + " " + TEXTS["#GAME_TIME_ELAPSED"][app.lang], 0.8 * W, 0.3 * H + 24);
+    context.strokeText(this.game.getGameTimer() + " " + TEXTS["#GAME_TIME_ELAPSED"][app.lang], 0.8 * W, 0.3 * H + 24);
 
-    context.fillText(this.game.kills + " PLAYERS KILLED", 0.8 * W, 0.3 * H + 28 + 16);
-    context.strokeText(this.game.kills + " PLAYERS KILLED", 0.8 * W, 0.3 * H + 28 + 16);
+    context.fillText(this.game.kills + " " + TEXTS["#GAME_PLAYERS_KILLED"][app.lang], 0.8 * W, 0.3 * H + 28 + 16);
+    context.strokeText(this.game.kills + " " + TEXTS["#GAME_PLAYERS_KILLED"][app.lang], 0.8 * W, 0.3 * H + 28 + 16);
 
-    context.fillText(this.game.coinsCollected + " COINS COLLECTED", 0.8 * W, 0.3 * H + 32 + 16 + 16);
-    context.strokeText(this.game.coinsCollected + " COINS COLLECTED", 0.8 * W, 0.3 * H + 32 + 16 + 16);
+    context.fillText(this.game.coinsCollected + " " + TEXTS["#GAME_COINS_COLLECTED"][app.lang], 0.8 * W, 0.3 * H + 32 + 16 + 16);
+    context.strokeText(this.game.coinsCollected + " " + TEXTS["#GAME_COINS_COLLECTED"][app.lang], 0.8 * W, 0.3 * H + 32 + 16 + 16);
   }
   else {
     context.fillStyle = "white";
