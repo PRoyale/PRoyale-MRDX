@@ -183,7 +183,7 @@
       <!-- Login -->
       <div id="login" class="container-password" style="display:none">
         <span style="position: absolute;right: 10px" id="login-close">x</span>
-        <p>Login</p>
+        <p id="loginTitle">Login</p>
           
         <p style="margin-block-end: 0" id="loginUnTitle">Username</p>
         <input class="profile-nickname" id="login-name" maxlength="20">
@@ -299,7 +299,7 @@
             <div><span class="n">A</span><button class="i" onclick="controlApp.setK('a')">Set</button><span class="v" id="key-a">0x20</span></div>
             <div><span class="n">B</span><button class="i" onclick="controlApp.setK('b')">Set</button><span class="v" id="key-b">0x10</span></div>
           </div>
-          <button class="i" onclick="controlApp.reset('K')">Reset</button>
+          <button class="i" onclick="controlApp.reset('K')" id="control-resetk">Reset</button>
         </div>
 
         <div class="container">
@@ -312,14 +312,14 @@
             <div><span class="n">A</span><button class="i" onclick="controlApp.setG('a')">Set</button><span class="v" id="pad-a">0x4</span></div>
             <div><span class="n">B</span><button class="i" onclick="controlApp.setG('b')">Set</button><span class="v" id="pad-b">0x5</span></div>
           </div>
-          <button class="i" onclick="controlApp.reset('G')">Reset</button>
+          <button class="i" onclick="controlApp.reset('G')" id="control-resetg">Reset</button>
         </div>
 
         <div class="t" style="padding-top: 12px">Test</div>
         <div class="a">
           <div>
-            <div>Gamepad <span class="i" id="test-pad-id" style="display: inline-block;max-width:415px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Awaiting input...</span></div>
-            <div class="tooltip">Analog<span class="tooltip-text" style="font-size: 11px;margin-left: -105%;top:-75px;">Analog input is detected when the axis exceeds -0.25 or 0.25</span> <span class="i" id="test-analog">0, 0</span></div>
+            <div><span id="control-gamepad">Gamepad</span> <span class="i" id="test-pad-id" style="display: inline-block;max-width:415px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Awaiting input...</span></div>
+            <div class="tooltip">Analog<span class="tooltip-text" style="font-size: 11px;margin-left: -105%;top:-75px;" id="control-tooltip">Analog input is detected when the axis exceeds -0.25 or 0.25</span> <span class="i" id="test-analog">0, 0</span></div>
             <div class="s"></div>
             <span class="n" id="test-up">🢁</span>
             <span class="n" id="test-down">🢃</span>
@@ -422,6 +422,7 @@
       
       <!-- Controls -->
       <script src='js/control/app.js'></script>
+
       
       <!-- Util -->
       <script src='js/app/util/util.js'></script>

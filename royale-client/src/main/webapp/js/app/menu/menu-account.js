@@ -313,7 +313,8 @@ MenuAccount.prototype.updateLeaderboards = function(type, values) {
   }
 
   var th = document.createElement("tr");
-  th.innerHTML = "<th>#</th><th>name</th><th>"+type+"</th>";
+  th.innerHTML = "<th>#</th><th>" + TEXTS["#LEADERBOARD_NAME"][app.lang] + "</th><th>"+type+"</th>";
+
   tab.appendChild(th);
   for (var player of values) {
     /* Position */

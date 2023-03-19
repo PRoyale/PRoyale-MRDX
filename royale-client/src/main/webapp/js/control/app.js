@@ -430,8 +430,10 @@ ControlApp.prototype.updateAnalog = function() {
 };
 
 ControlApp.prototype.draw = function() {
-  this.testPadId.innerHTML = this.pad?this.pad.id:"Awaiting input...";
-  this.testAnalog.innerHTML = roundTo((this.analog.x),-2) + ", " + roundTo((this.analog.y),-2);
+  if(window["app"] !== undefined) {
+    this.testPadId.innerHTML = this.pad?this.pad.id:TEXTS["#CONTROLS_AWAIT_INPUT"][app.lang];
+    this.testAnalog.innerHTML = roundTo((this.analog.x),-2) + ", " + roundTo((this.analog.y),-2);
+  }
   
   this.kTitle.style.color = this.settingK?"#80FF80":"#FFD700";
   this.gTitle.style.color = this.settingG?"#80FF80":"#FFD700";

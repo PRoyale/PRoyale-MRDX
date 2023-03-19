@@ -245,7 +245,7 @@ MenuMain.prototype.show = function() {
   app.menu.navigation("main", "main");
   app.menu.background("a");
   this.winElement.style.display = "block";
-  this.winElement.innerHTML = "Login to track statistics and play as other characters!";
+  this.winElement.innerHTML = TEXTS["#NOT_LOGGEDIN"][app.lang];
   this.linkElement.style.display = "block";
   this.element.style.display = "block";
 
