@@ -120,7 +120,7 @@ const TEXTS = {
 
     "#SETTINGS_SOUND": {
         "en": "Sound",
-        "es": "Sonida",
+        "es": "Sonido",
         "pt-br": "Som",
         "fr": "Sons"
     },
