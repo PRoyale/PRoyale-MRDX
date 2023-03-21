@@ -170,7 +170,7 @@ const TEXTS = {
     "#NOT_LOGGEDIN": {
         "en": "Login to track statistics and play as other characters!",
         "es": "¡Registrate o inicia sesión para guardar tus estadisticas y jugar como otros personajes!",
-        "pt-br": "Entre para salvar dados e jogar como outros personagens!",
+        "pt-br": "Faça login para salvar dados e jogar como outros personagens!",
         "fr": "Connectez-vous pour conserver vos statistiques et choisir d'autres personnages!"
     },
 
