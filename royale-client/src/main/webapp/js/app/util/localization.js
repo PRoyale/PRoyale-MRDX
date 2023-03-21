@@ -220,14 +220,14 @@ const TEXTS = {
         "en": "An unknown error occurred while connecting to the game server...",
         "es": "Un error desconocido ocurrió cuando intentaste conectarte al servidor...",
         "pt-br": "Um erro desconhecido ocorreu ao conectar ao servidor...",
-        "fr": "Une erreur inconnue s'est produite lors de la connexion au serveur du jeu…"
+        "fr": "Une erreur inconnue s'est produite lors de la connexion au serveur du jeu..."
     },
 
     "#LOADING_RESOURCES": {
         "en": "Loading resources...",
         "es": "Cargando recursos...",
         "pt-br": "Carregando recursos...",
-        "fr": "Chargement des ressources…"
+        "fr": "Chargement des ressources..."
     },
 
     "#USERNAME": {
@@ -315,10 +315,10 @@ const TEXTS = {
     },
 
     "#CONTROLS_AWAIT_INPUT": {
-        "en": "Awaiting input…",
-        "es": "Esperando input…",
-        "pt-br": "Aguardando entrada…",
-        "fr": "En attente d’entrée…"
+        "en": "Awaiting input...",
+        "es": "Esperando input...",
+        "pt-br": "Aguardando entrada...",
+        "fr": "En attente d’entrée..."
     },
 
     "#CONTROLS_ANALOG_TOOLTIP": {
