@@ -286,7 +286,9 @@ BeetleObject.prototype.stomped = function(dir) {
   else if(this.state === BeetleObject.STATE.SHELL || this.state === BeetleObject.STATE.TRANSFORM) {
     this.setState(BeetleObject.STATE.SPIN);
     this.dir = dir;
-    this.game.world.getZone(this.level, this.zone).effects.push(new ExplodeEffect(this.pos));
+    this.game.world.getZone(this.level, this.zone).effects.push(new ExplodeEffect(vec2.make(this.pos.x, this.pos.y+.6)));
+    this.play("kick.mp3", 1., .04);
+    return;
   }
   this.play("stomp.mp3", 1., .04);
 };

@@ -246,7 +246,7 @@ Display.prototype.drawObject = function() {
     var y = (Display.TEXRES*(dim.y-txt.pos.y-1.))+(Display.TEXRES*.5);
     
     context.fillStyle = txt.color;
-    context.font = (txt.size*Display.TEXRES) + "px SmbWeb";
+    context.font = (txt.size*Display.TEXRES)+1 + "px SmbWeb";
     context.textAlign = "center";
     if(this.game instanceof Lobby) {
       var hitblock = this.game.objects.filter(obj=>obj instanceof TextObject).filter(obj=> obj.text.startsWith("Hit this"));
@@ -259,11 +259,11 @@ Display.prototype.drawObject = function() {
         voteperc[0].text = TEXTS['#LOBBY_VOTE_PERCENT'][app.lang];
       }
     }
-    context.fillText(txt.text, x, y);
+    context.fillText(txt.text, x, y+1);
     if(!txt.noOutline) {
-      context.font = (txt.size*Display.TEXRES) + "px SmbOutline";
+      context.font = (txt.size*Display.TEXRES)+1 + "px SmbOutline";
       context.fillStyle = txt.outline ? txt.outline : "#000073";
-      context.fillText(txt.text, x, y);
+      context.fillText(txt.text, x, y+1);
     }
   }
 
