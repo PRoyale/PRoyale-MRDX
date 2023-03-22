@@ -7,7 +7,7 @@
     <version>1.0</version>
     <packaging>war</packaging>
 
-    <name>InfringeRoyale::Client</name>
+    <name>MarioRoyaleDeluxe::Client</name>
 
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
@@ -24,6 +24,11 @@
         <dependency>
             <groupId>org.infpls.royale.server</groupId>
             <artifactId>game</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.infpls.royale.server</groupId>
+            <artifactId>util</artifactId>
             <version>1.0</version>
         </dependency>
         <dependency>

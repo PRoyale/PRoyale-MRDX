@@ -8,7 +8,7 @@
   <artifactId>server</artifactId>
   <version>1.0</version>
   <packaging>pom</packaging>
-  <name>InfringeRoyale::Server</name>
+  <name>MarioRoyaleDeluxe::Server</name>
   <modules>
     <module>util</module>
     <module>game</module>

@@ -214,11 +214,12 @@ public class Login extends SessionState {
   /* Validate username, login, return data, automatically choose and join a lobby */
   private void login(final PacketL00 p) throws IOException {
     /* Username */
-    String name = p.name==null?"Infringio":p.name.trim();
+    String defaultName = "MARIO";
+    String name = p.name==null?defaultName:p.name.trim();
     ArrayList<String> swearWords = Filter.badWordsFound(name);
     if(name.length() > 20) { name = name.substring(0, 20); }
-    else if(name.length() < 1 || !(name.matches("[a-zA-Z0-9 ]*"))) { name = "Infringio"; }
-    if(swearWords.size() > 0) { name = "Infringio"; }
+    else if(name.length() < 1 || !(name.matches("[a-zA-Z0-9 ]*"))) { name = defaultName; }
+    if(swearWords.size() > 0) { name = defaultName; }
     
     /* Team */
     String team = p.team==null?"":p.team.trim().toLowerCase();

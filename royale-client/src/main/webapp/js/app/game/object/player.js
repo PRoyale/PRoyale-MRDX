@@ -714,7 +714,7 @@ PlayerObject.prototype.physics = function() {
   var on = [];              // Tiles we are directly standing on
   var psh = [];             // Tiles we are directly pushing against
   var bmp = [];             // Tiles we bumped from below when jumping
-  var smsh = [];            // Tiles we.. smashed... by spinning  into them with the raccoon powerup
+  var smsh = [];            // Tiles we.. smashed... by spinning into them with the raccoon powerup
   var slopes = [];          // Tiles which are slopes
   var slopecollide = [];    // Slopes we collided with
   var semisolids = [];      // Tiles which are semisolids
@@ -1243,7 +1243,7 @@ PlayerObject.prototype.isState = function(SNAME) {
 };
 
 PlayerObject.prototype.draw = function(sprites) {
-  if(this.isState(PlayerObject.SNAME.HIDE) || this.pipeDelay > 0 || (this.transformTimer > 0 && (this.transformTarget > 2 || this.power > 2))) { return; } // Don't render when hidden, transforming into a tanooki or when in a pipe
+  if(this.isState(PlayerObject.SNAME.HIDE) || this.pipeDelay > 0 || (this.transformTimer > 0 && (this.transformTarget > 2 || this.power > 2))) { return; } // Don't render when hidden, transforming into a raccoon or when in a pipe
   if(this.damageTimer > 0 && this.damageTimer % 3 > 1) { return; } // Post damage timer blinking
   if(this.sprite.ID === 0x69 || this.sprite.ID === 0x110) { return; }
   

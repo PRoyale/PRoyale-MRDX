@@ -389,7 +389,7 @@ MenuDisplay.prototype.drawObject = function() {
       var y = (MenuDisplay.TEXRES*(dim.y-txt.pos.y-1.))+(MenuDisplay.TEXRES*.5);
       
       context.fillStyle = txt.color;
-      context.strokeStyle = "blue";
+      context.strokeStyle = "#000073";
       context.font = (txt.size*MenuDisplay.TEXRES) + "px SmbWeb";
       context.textAlign = "center";
       context.strokeText(txt.text, x, y);
@@ -403,7 +403,7 @@ MenuDisplay.prototype.drawLoad = function() {
   var H = this.canvas.height;
     
   context.fillStyle = "black";
-  context.strokeStyle = "blue";
+  context.strokeStyle = "#000073";
   context.fillRect(0,0,this.canvas.width,this.canvas.height)
     
   context.font = "32px SmbWeb";

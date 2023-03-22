@@ -8,7 +8,7 @@
   <artifactId>home</artifactId>
   <version>1.0</version>
   <packaging>jar</packaging>
-  <name>InfringeRoyale::Server::Home</name>
+  <name>MarioRoyaleDeluxe::Server::Home</name>
   
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

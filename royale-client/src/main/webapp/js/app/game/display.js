@@ -262,7 +262,7 @@ Display.prototype.drawObject = function() {
     context.fillText(txt.text, x, y);
     if(!txt.noOutline) {
       context.font = (txt.size*Display.TEXRES) + "px SmbOutline";
-      context.fillStyle = txt.outline ? txt.outline : "blue";
+      context.fillStyle = txt.outline ? txt.outline : "#000073";
       context.fillText(txt.text, x, y);
     }
   }
@@ -279,7 +279,7 @@ Display.prototype.drawObject = function() {
     context.fillText(txt.text, x, y);
     if(!txt.noOutline) {
       context.font = (txt.size*Display.TEXRES) + "px SmbOutline";
-      context.fillStyle = txt.outline ? txt.outline : "blue";
+      context.fillStyle = txt.outline ? txt.outline : "#000073";
       context.fillText(txt.text, x, y);
     }
   }
@@ -392,7 +392,7 @@ Display.prototype.drawUI = function() {
   
   if(this.game.victory > 0) {
     context.fillStyle = "white";
-    context.strokeStyle = "blue";
+    context.strokeStyle = "#000073";
 
     context.font = "32px SmbWeb";
     context.textAlign = "center";
@@ -417,7 +417,7 @@ Display.prototype.drawUI = function() {
   }
   else {
     context.fillStyle = "white";
-    context.strokeStyle = "blue";
+    context.strokeStyle = "#000073";
     context.font = "24px SmbWeb";
     context.textAlign = "left";
     context.fillText(ply?ply.name:"MARIO", 56, 32);
@@ -546,7 +546,7 @@ Display.prototype.drawLoad = function() {
   var H = this.canvas.height;
   
   context.fillStyle = "black";
-  context.strokeStyle = "blue";
+  context.strokeStyle = "#000073";
   context.fillRect(0,0,this.canvas.width,this.canvas.height)
   
   context.font = "32px SmbWeb";

@@ -15,7 +15,7 @@ function TextObject(game, level, zone, pos, oid, offset, size, color, text, outl
   this.offset = vec2.make(0., parseFloat(offset)); // Y value offset.
   this.size = parseFloat(size);
   this.color = color;
-  this.outline = outline ? outline : "blue";
+  this.outline = outline ? outline : "#000073";
   this.text = text.toUpperCase();
 }
 
