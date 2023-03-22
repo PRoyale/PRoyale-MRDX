@@ -3,6 +3,11 @@
     src: url('../font/smbfont.ttf') format("truetype")
 }
 
+@font-face {
+  font-family: SmbOutline;
+  src: url('../font/smbfontout.ttf') format("truetype")
+}
+
 @-webkit-keyframes scroll {
   0% {
     background-position: 0

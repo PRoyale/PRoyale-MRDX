@@ -16,7 +16,7 @@ function TextObject(game, level, zone, pos, oid, offset, size, color, text, outl
   this.size = parseFloat(size);
   this.color = color;
   this.outline = outline ? outline : "blue";
-  this.text = text;
+  this.text = text.toUpperCase();
 }
 
 

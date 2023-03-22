@@ -246,7 +246,6 @@ Display.prototype.drawObject = function() {
     var y = (Display.TEXRES*(dim.y-txt.pos.y-1.))+(Display.TEXRES*.5);
     
     context.fillStyle = txt.color;
-    context.strokeStyle = txt.outline ? txt.outline : "blue";
     context.font = (txt.size*Display.TEXRES) + "px SmbWeb";
     context.textAlign = "center";
     if(this.game instanceof Lobby) {
@@ -260,8 +259,12 @@ Display.prototype.drawObject = function() {
         voteperc[0].text = TEXTS['#LOBBY_VOTE_PERCENT'][app.lang];
       }
     }
-    if(!txt.noOutline) { context.strokeText(txt.text, x, y); }
     context.fillText(txt.text, x, y);
+    if(!txt.noOutline) {
+      context.font = (txt.size*Display.TEXRES) + "px SmbOutline";
+      context.fillStyle = txt.outline ? txt.outline : "blue";
+      context.fillText(txt.text, x, y);
+    }
   }
 
   for(var i=0;i<names.length;i++) {
@@ -270,11 +273,15 @@ Display.prototype.drawObject = function() {
     var y = (Display.TEXRES*(dim.y-txt.pos.y-1.))+(Display.TEXRES*.5);
     
     context.fillStyle = txt.color;
-    context.strokeStyle = "blue";
     context.font = (txt.size*Display.TEXRES) + "px SmbWeb";
     context.textAlign = "center";
     if(!txt.noOutline) { context.strokeText(txt.text, x, y); }
     context.fillText(txt.text, x, y);
+    if(!txt.noOutline) {
+      context.font = (txt.size*Display.TEXRES) + "px SmbOutline";
+      context.fillStyle = txt.outline ? txt.outline : "blue";
+      context.fillText(txt.text, x, y);
+    }
   }
 };
 
