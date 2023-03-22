@@ -517,7 +517,7 @@ PlayerObject.prototype.step = function() {
   if(this.attackCharge < PlayerObject.MAX_CHARGE) { this.attackCharge++; }
   if(this.attackTimer > 0) { this.attackTimer--; }
   if(this.spinCharge < PlayerObject.MAX_CHARGE) { this.spinCharge++; }
-  if(this.spinTimer > 0) { this.spinTimer--; }
+  if(this.spinTimer > 0) { this.spinTimer--; this.sprite = PlayerObject.SPRITE[this.spinTimer > 13 ? "L_ATTACK0" : this.spinTimer > 8 ? "L_ATTACK1" : this.spinTimer > 3 ? "L_ATTACK2" : "L_ATTACK3"]; }
   if(this.glideTimer > 0) { this.glideTimer--; }
   
   if(this.autoTarget) { this.autoMove(); }  
