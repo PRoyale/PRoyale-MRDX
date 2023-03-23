@@ -31,6 +31,7 @@ const levelSelectors = [
     {name: 'SMB :: World 7', worldId: 'world-7' },
     {name: 'SMB :: World 8', worldId: 'world-8' },
     {name: 'TLL :: World 1', worldId: 'world-lost'},
+    {name: 'VAN :: Tricorn Kingdom', worldId: 'world-tricorn'}
     {name: 'PVP :: Mario Kart', worldId: 'pvp-mariokart'},
     {name: 'PVP :: Super Mario Bros. 2', worldId: 'pvp-smb2'},
     {name: 'PVP :: Mario Maker Beta', worldId: 'pvp-maker'},
@@ -44,12 +45,13 @@ const levelSelectors = [
 const mapsheets = [
     {name: 'Super Mario Bros. 1', url: "img/game/smb_map.png"},
     {name: 'Super Mario Bros. 2', url: "img/game/smb2_map.png"},
+    {name: 'Tricorn Kingdom', url: "img/game/tricorn_map.png"},
     {name: 'Mario Kart (PVP)', url: "img/game/mariokart_map.png"},
     {name: 'Rainbow Road (PVP)', url: "img/game/rainbowroad_map.png"},
     {name: 'Maker 2014 (PVP)', url: "img/game/maker_map.png"},
     {name: 'Super Paper Mario (PVP)', url: "img/game/spm_map.png"},
     {name: 'New Super Mario Bros. (PVP)', url: "img/game/nsmb_map.png"},
-    {name: 'Blackout', url: "img/game/blackout_map.png"},
+    {name: 'Blackout (PVP)', url: "img/game/blackout_map.png"},
     {name: 'Lobby', url: "https://raw.githubusercontent.com/RayTheMaymay/hostingthings/main/lobby.png"},
     {name: 'Custom', url: "custom"}
 ];
@@ -57,6 +59,7 @@ const mapsheets = [
 const objsheets = [
     {name: 'Super Mario Bros. 1', url: "img/game/smb_obj.png"},
     {name: 'Super Mario Maker 2014', url: "img/game/maker_obj.png"},
+    {name: 'Tricorn Kingdom', url: "img/game/tricorn_obj.png"},
     {name: 'New Super Mario Bros. (PVP)', url: "img/game/nsmb_obj.png"},
     {name: 'Custom', url: "custom"},
 ];
@@ -64,6 +67,7 @@ const objsheets = [
 const assetsurl = [
     {name: "Super Mario Bros. 1", url: "assets.json"},
     {name: "Super Mario Bros. 2", url: "assets-smb2.json"},
+    {name: "Tricorn Kingdom", url: "assets-tricorn.json"},
     {name: "Maker 2014 (PVP)", url: "assets-maker.json"},
     {name: "Super Paper Mario (PVP)", url: "assets-spm.json"},
     {name: "New Super Mario Bros. (PVP)", url: "assets-nsmb.json"},
