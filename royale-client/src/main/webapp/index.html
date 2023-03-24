@@ -114,18 +114,18 @@
         <div class='title'>Mario Royale</div>
         <div class="container-launch">
           <div id="main-launch" class="launch">
-            <div class="launch-img"><span class="main-text">Play Now!</div>
+            <div class="launch-img"><span class="main-text" id="main-playNow">Play Now!</div>
           </div>
 
           <div class="main-buttons">
-            <div id="main-controls" class="launch-controls"><span class="main-text">Controls</span></div>
-            <div id="main-changelog" class="launch-changelog"><span class="main-text">Changelog</span></div>
-            <div id="main-settings" class="launch-settings"><span class="main-text">Settings</span></div>
+            <div id="main-controls" class="launch-controls"><span class="main-text" id="main-controlsText">Controls</span></div>
+            <div id="main-changelog" class="launch-changelog"><span class="main-text" id="main-changelogText">Changelog</span></div>
+            <div id="main-settings" class="launch-settings"><span class="main-text" id="main-settingsText">Settings</span></div>
           </div>
 
           <div class="main-buttons">
-            <div id="main-login" class="launch-login"><span class="main-text">Login</span></div>
-            <div id="main-register" class="launch-register"><span class="main-text">Register</span></div>
+            <div id="main-login" class="launch-login"><span class="main-text" id="loginText">Login</span></div>
+            <div id="main-register" class="launch-register"><span class="main-text" id="registerText">Register</span></div>
           </div>
         </div>
       </div>
@@ -135,13 +135,13 @@
         <div class='title'>Mario Royale</div>
         <div class="container-launch">
           <div id="mainMember-play" class="launch">
-            <div class="launch-img"><span class="main-text">Play Now!</div>
+            <div class="launch-img"><span class="main-text" id="mainMember-playNow">Play Now!</div>
           </div>
 
           <div class="main-buttons">
-            <div id="mainMember-controls" class="launch-controls"><span class="main-text">Controls</span></div>
-            <div id="mainMember-changelog" class="launch-changelog"><span class="main-text">Changelog</span></div>
-            <div id="mainMember-settings" class="launch-settings"><span class="main-text">Settings</span></div>
+            <div id="mainMember-controls" class="launch-controls"><span class="main-text" id="mainMember-controlsText">Controls</span></div>
+            <div id="mainMember-changelog" class="launch-changelog"><span class="main-text" id="mainMember-changelogText">Changelog</span></div>
+            <div id="mainMember-settings" class="launch-settings"><span class="main-text" id="mainMember-settingsText">Settings</span></div>
           </div>
         </div>
       </div>
@@ -161,7 +161,7 @@
         <div style="bottom: -5%;position: relative">
           <img src="./img/home/go.png" id="play-go" class="button-go">
           <span style="margin-left:20px"></span>
-          <div class="tooltip"><img src="./img/home/private.png" id="play-priv" class="button-private"><span class="tooltip-text" style="margin-left:-150%;" id="play-privtext">Solo game for testing</span></div>
+          <div class="tooltip"><img src="./img/home/private.png" id="play-priv" class="button-private"><span class="tooltip-text" style="margin-left:-170%;top:-75px;" id="play-privtext">Solo game for testing</span></div>
         </div>
       </div>
 
@@ -177,7 +177,7 @@
         <div style="bottom: -5%;position: relative">
           <img src="./img/home/go.png" id="playMember-go" class="button-go">
           <span style="margin-left:20px"></span>
-          <div class="tooltip"><img src="./img/home/private.png" id="playMember-priv" class="button-private"><span class="tooltip-text" style="margin-left:-150%;" id="playMember-privtext">Solo game for testing</span></div>
+          <div class="tooltip"><img src="./img/home/private.png" id="playMember-priv" class="button-private"><span class="tooltip-text" style="margin-left:-170%;top:-75px;" id="playMember-privtext">Solo game for testing</span></div>
         </div>
       </div>
       
@@ -320,7 +320,7 @@
         <div class="a">
           <div>
             <div><span id="control-gamepad">Gamepad</span> <span class="i" id="test-pad-id" style="display: inline-block;max-width:415px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Awaiting input...</span></div>
-            <div class="tooltip">Analog<span class="tooltip-text" style="font-size: 11px;margin-left: -105%;top:-75px;" id="control-tooltip">Analog input is detected when the axis exceeds -0.25 or 0.25</span> <span class="i" id="test-analog">0, 0</span></div>
+            <div class="tooltip">Analog<span class="tooltip-text" style="font-size: 11px;margin-left: -105%;top:-60px;" id="control-tooltip">Analog input is detected when the axis exceeds -0.25 or 0.25</span> <span class="i" id="test-analog">0, 0</span></div>
             <div class="s"></div>
             <span class="n" id="test-up">🢁</span>
             <span class="n" id="test-down">🢃</span>
@@ -336,7 +336,7 @@
       <div id="language" class="container-password" style="display:none;height: 430px;">
         <span style="position: absolute;right: 10px;top: 4px;" id="language-close">x</span>
         <p style="margin-bottom: 0" id="languageTitle">Langauge</p>
-        <div id="changelog-container" style="text-align:center;">
+        <div id="changelog-container" style="text-align:center;width:595px;">
           <button class="lang-button" onclick="Cookies.set('lang', 'en', {'expires':365});location.reload();">English</button>
           <button class="lang-button" onclick="Cookies.set('lang', 'es', {'expires':365});location.reload();">Español</button>
           <button class="lang-button" onclick="Cookies.set('lang', 'pt-br', {'expires':365});location.reload();">Português (Brasil)</button>
@@ -434,7 +434,7 @@
       </script>
 
       <!-- Localization -->
-      <script src='js/app/util/localization.js'></script>
+      <script src='js/app/localization/localization.js'></script>
 
       
       <!-- Controls -->

@@ -104,6 +104,48 @@ const TEXTS = {
         "fr": "Mode de jeu"
     },
 
+    "#MENU_PLAY": {
+        "en": "Play Now!",
+        "es": "¡A jugar!",
+        "pt-br": "Jogar Agora!",
+        "fr": "Jouer maintenant!"
+    },
+
+    "#MENU_CONTROLS": {
+        "en": "Controls",
+        "es": "Controles",
+        "pt-br": "Controles",
+        "fr": "Contrôles"
+    },
+
+    "#MENU_CHANGELOG": {
+        "en": "Changelog",
+        "es": "Actualizaciones",
+        "pt-br": "Mudanças",
+        "fr": "Changelog"
+    },
+
+    "#MENU_SETTINGS": {
+        "en": "Settings",
+        "es": "Configuraciones",
+        "pt-br": "Configurações",
+        "fr": "Paramètres"
+    },
+
+    "#MENU_LOGIN": {
+        "en": "Login",
+        "es": "Login",
+        "pt-br": "Login",
+        "fr": "Se connecter"
+    },
+
+    "#MENU_REGISTER": {
+        "en": "Register",
+        "es": "Registrar",
+        "pt-br": "Registrar",
+        "fr": "S’enregistre"
+    },
+
     "#SETTINGS_TITLE": {
         "en": "Settings",
         "es": "Configuraciones",
@@ -459,6 +501,22 @@ function localize(lang) {
     document.getElementById("dis-info2").innerText = TEXTS["#DISCLAIMER_INFO2"][lang];
     document.getElementById("dis-info3").innerText = TEXTS["#DISCLAIMER_INFO3"][lang];
     document.getElementById("next").innerText = TEXTS["#DISCLAIMER_CONTINUE"][lang];
+
+    /* Menu */
+    document.getElementById("main-playNow").innerText = TEXTS["#MENU_PLAY"][lang];
+    document.getElementById("mainMember-playNow").innerText = TEXTS["#MENU_PLAY"][lang];
+
+    document.getElementById("main-controlsText").innerText = TEXTS["#MENU_CONTROLS"][lang];
+    document.getElementById("mainMember-controlsText").innerText = TEXTS["#MENU_CONTROLS"][lang];
+
+    document.getElementById("main-changelogText").innerText = TEXTS["#MENU_CHANGELOG"][lang];
+    document.getElementById("mainMember-changelogText").innerText = TEXTS["#MENU_CHANGELOG"][lang];
+
+    document.getElementById("main-settingsText").innerText = TEXTS["#MENU_SETTINGS"][lang];
+    document.getElementById("mainMember-settingsText").innerText = TEXTS["#MENU_SETTINGS"][lang];
+
+    document.getElementById("loginText").innerText = TEXTS["#MENU_LOGIN"][lang];
+    document.getElementById("registerText").innerText = TEXTS["#MENU_REGISTER"][lang];
 
     /* Players Online */
     document.getElementById("play-online-royale").innerText = TEXTS["#MENU_ONLINE"][lang];
