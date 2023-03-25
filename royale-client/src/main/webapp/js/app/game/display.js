@@ -275,7 +275,6 @@ Display.prototype.drawObject = function() {
     context.fillStyle = txt.color;
     context.font = (txt.size*Display.TEXRES) + "px SmbWeb";
     context.textAlign = "center";
-    if(!txt.noOutline) { context.strokeText(txt.text, x, y); }
     context.fillText(txt.text, x, y);
     if(!txt.noOutline) {
       context.font = (txt.size*Display.TEXRES) + "px SmbOutline";
@@ -370,81 +369,133 @@ Display.prototype.drawUI = function() {
     context.fillStyle = "white";
     context.font = "32px SmbWeb";
     context.textAlign = "center";
-    context.fillText(level.name, W*.5, H*.5);
+    context.fillText(level.name.toUpperCase(), W*.5, H*.5);
     
     if(this.game.startTimer >= 0) {
       context.fillStyle = "white";
       context.font = "24px SmbWeb";
       context.textAlign = "center";
-      context.fillText(TEXTS["#GAME_STARTS_IN"][app.lang] + ": " + parseInt(this.game.startTimer/60), W*.5, (H*.5)+40);
+      context.fillText(TEXTS["#GAME_STARTS_IN"][app.lang].toUpperCase() + ": " + parseInt(this.game.startTimer/60), W*.5, (H*.5)+40);
     }
 
     this.drawGame = false;
   }
 
   if (this.game.getDebug("level") || this.game.getDebug("zone") || this.game.getDebug("god") || this.game.getDebug("lives")) {
+    context.textAlign = "left";
     context.fillStyle = "whitesmoke";
     context.globalAlpha = 1;
     context.font = "18px SmbWeb";
-    context.fillText("debug",55,this.canvas.height);
-    context.strokeText("debug",55,this.canvas.height); 
+    context.fillText("Debug",0,this.canvas.height);
+
+    context.font = "18px SmbOutline";
+    context.fillStyle = "#000073";
+    context.fillText("Debug",0,this.canvas.height);
   }
   
   if(this.game.victory > 0) {
     context.fillStyle = "white";
-    context.strokeStyle = "#000073";
 
     context.font = "32px SmbWeb";
     context.textAlign = "center";
     context.fillText((this.game.victory<=3?"VICTORY ROYALE #":TEXTS["#GAME_TOO_BAD"][app.lang]+" #") + this.game.victory, W*.5, 40);
-    context.strokeText((this.game.victory<=3?"VICTORY ROYALE #":TEXTS["#GAME_TOO_BAD"][app.lang]+" #") + this.game.victory, W*.5, 40);
+    
+    context.font = "32px SmbOutline";
+    context.fillStyle = "#000073";
+    context.fillText((this.game.victory<=3?"VICTORY ROYALE #":TEXTS["#GAME_TOO_BAD"][app.lang]+" #") + this.game.victory, W*.5, 40);
 
     context.fillStyle = "white";
     context.font = "24px SmbWeb";
     context.textAlign = "center";
     context.fillText(TEXTS["#GAME_MATCH_STATS"][app.lang] + ":", 0.8 * W, 0.3 * H);
-    context.strokeText(TEXTS["#GAME_MATCH_STATS"][app.lang] + ":", 0.8 * W, 0.3 * H);
-    context.font = "20px SmbWeb";
-
+    
+    context.fillStyle = "white";
+    context.font = "24px SmbWeb";
+    context.textAlign = "center";
+    context.fillText(TEXTS["#GAME_MATCH_STATS"][app.lang] + ":", 0.8 * W, 0.3 * H);
+    
+    context.font = "24px SmbOutline";
+    context.fillStyle = "#000073";
+    context.fillText(TEXTS["#GAME_MATCH_STATS"][app.lang] + ":", 0.8 * W, 0.3 * H);
+    
+    context.font = "24px SmbWeb";
+    context.fillStyle = "white";
     context.fillText(this.game.getGameTimer() + " " + TEXTS["#GAME_TIME_ELAPSED"][app.lang], 0.8 * W, 0.3 * H + 24);
-    context.strokeText(this.game.getGameTimer() + " " + TEXTS["#GAME_TIME_ELAPSED"][app.lang], 0.8 * W, 0.3 * H + 24);
+    
+    context.font = "24px SmbOutline";
+    context.fillStyle = "#000073";
+    context.fillText(this.game.getGameTimer() + " " + TEXTS["#GAME_TIME_ELAPSED"][app.lang], 0.8 * W, 0.3 * H + 24);
 
-    context.fillText(this.game.kills + " " + TEXTS["#GAME_PLAYERS_KILLED"][app.lang], 0.8 * W, 0.3 * H + 28 + 16);
-    context.strokeText(this.game.kills + " " + TEXTS["#GAME_PLAYERS_KILLED"][app.lang], 0.8 * W, 0.3 * H + 28 + 16);
+    context.fillStyle = "white";
+    context.font = "24px SmbWeb";
+    context.fillText(this.game.kills + " " + TEXTS["#GAME_PLAYERS_KILLED"][app.lang], 0.8 * W, 0.3 * H + 28 + 20);
 
-    context.fillText(this.game.coinsCollected + " " + TEXTS["#GAME_COINS_COLLECTED"][app.lang], 0.8 * W, 0.3 * H + 32 + 16 + 16);
-    context.strokeText(this.game.coinsCollected + " " + TEXTS["#GAME_COINS_COLLECTED"][app.lang], 0.8 * W, 0.3 * H + 32 + 16 + 16);
+    context.font = "24px SmbOutline";
+    context.fillStyle = "#000073";
+    context.fillText(this.game.kills + " " + TEXTS["#GAME_PLAYERS_KILLED"][app.lang], 0.8 * W, 0.3 * H + 28 + 20);
+
+    context.fillStyle = "white";
+    context.font = "24px SmbWeb";
+    context.fillText(this.game.coinsCollected + " " + TEXTS["#GAME_COINS_COLLECTED"][app.lang], 0.8 * W, 0.3 * H + 32 + 16 + 20);
+    
+    context.font = "24px SmbOutline";
+    context.fillStyle = "#000073";
+    context.fillText(this.game.coinsCollected + " " + TEXTS["#GAME_COINS_COLLECTED"][app.lang], 0.8 * W, 0.3 * H + 32 + 16 + 20);
   }
   else {
     context.fillStyle = "white";
-    context.strokeStyle = "#000073";
     context.font = "24px SmbWeb";
     context.textAlign = "left";
     context.fillText(ply?ply.name:"MARIO", 56, 32);
-    context.strokeText(ply?ply.name:"MARIO", 56, 32);
+    
+    context.font = "24px SmbOutline";
+    context.fillStyle = "#000073";
+    context.fillText(ply?ply.name:"MARIO", 56, 32);
 
     var st = util.sprite.getSprite(tex, c);
     var ctxt = "×"+(this.game.coins<=9?"0"+this.game.coins:this.game.coins);
     var l = context.measureText(ctxt).width + 30;
     context.drawImage(tex, st[0], st[1], Display.TEXRES, Display.TEXRES, 8, 64, 48, 48);
-    context.fillText(ctxt, l-48, 100);
-    context.strokeText(ctxt, l-48, 100);
+    context.font = "24px SmbWeb";
+    context.fillStyle = "white";
+    context.fillText(ctxt, l-42, 100);
+    
+    context.font = "24px SmbOutline";
+    context.fillStyle = "#000073";
+    context.fillText(ctxt, l-42, 100);
+    
     var st = util.sprite.getSprite(app.net.character ? (app.net.character === 3 ? wartex : app.net.character === 2 ? inftex : luitex) : martex, PLAY);
     context.drawImage(app.net.character ? (app.net.character === 3 ? wartex : app.net.character === 2 ? inftex : luitex) : martex, st[0], st[1], Display.TEXRES, Display.TEXRES, 8, 6, 48, 48);
 
     var st = util.sprite.getSprite(uitex, KILL);
     var ctxt = "×"+(this.game.kills<=9?"0"+this.game.kills:this.game.kills);
     var l = context.measureText(ctxt).width + 30;
+    
+    context.fillStyle = "white";
+    context.font = "24px SmbWeb";
     context.drawImage(uitex, st[0], st[1], Display.TEXRES, Display.TEXRES, 8, 116, 48, 48);
-    context.fillText(ctxt, l-48, 150);
-    context.strokeText(ctxt, l-48, 150);
+    context.fillText(ctxt, l-42, 150);
+
+    context.font = "24px SmbOutline";
+    context.fillStyle = "#000073";
+    context.fillText(ctxt, l-42, 150);
 
     if (this.game.getDebug("lives")) {
-      context.fillText("×INF", l-48, 60);
-      context.strokeText("×INF", l-48, 60);
+      context.font = "24px SmbWeb";
+      context.fillStyle = "white";
+      context.fillText("×INF", l-42, 60);
+      
+      context.font = "24px SmbOutline";
+      context.fillStyle = "#000073";
+      context.fillText("×INF", l-42, 60);
     } else {
-      context.fillText("×"+(this.game.lives<=9?"0"+this.game.lives:this.game.lives), l-48, 60);
-      context.strokeText("×"+(this.game.lives<=9?"0"+this.game.lives:this.game.lives), l-48, 60);
+      context.font = "24px SmbWeb";
+      context.fillStyle = "white";
+      context.fillText("×"+(this.game.lives<=9?"0"+this.game.lives:this.game.lives), l-42, 60);
+      
+      context.font = "24px SmbOutline";
+      context.fillStyle = "#000073";
+      context.fillText("×"+(this.game.lives<=9?"0"+this.game.lives:this.game.lives), l-42, 60);
     }
 
     var w;
@@ -453,30 +504,32 @@ Display.prototype.drawUI = function() {
       if (!app.settings.hideTimer) {
         var time = this.game.getGameTimer(this.game.touchMode);
         var w =  context.measureText(time).width;
+        context.fillStyle = "white";
         context.fillText(time, (W/2)-(w/2), 32);
-        context.strokeText(time, (W/2)-(w/2), 32);
+        
+        context.font = "24px SmbOutline";
+        context.fillStyle = "#000073";
+        context.fillText(time, (W/2)-(w/2), 32);
       }
 
-      var txt = this.game.touchMode ? this.game.remain : this.game.remain + " " + TEXTS["#GAME_PLAYERS_REMAIN"][app.lang];
+      var txt = this.game.touchMode ? this.game.remain : this.game.remain + " " + TEXTS["#GAME_PLAYERS_REMAIN"][app.lang].toUpperCase();
       w = context.measureText(txt).width;
+      context.fillStyle = "white";
+      context.font = "24px SmbWeb";
       context.fillText(txt, W-w-8, 32);
-      context.strokeText(txt, W-w-8, 32);
+      
+      context.font = "24px SmbOutline";
+      context.fillStyle = "#000073";
+      context.fillText(txt, W-w-8, 32);
     }
     else if(this.game instanceof Lobby) {
-      var txt = this.game.players.length + (this.game.touchMode?"":" / 75 " + TEXTS["#GAME_LOBBY_PLAYERS"][app.lang]);
+      var txt = this.game.players.length + (this.game.touchMode?"":" / 75 " + TEXTS["#GAME_LOBBY_PLAYERS"][app.lang]).toUpperCase();
       w = context.measureText(txt).width;
       context.fillText(txt, W-w-8, 32);
-      context.strokeText(txt, W-w-8, 32);
-    }
-
-    if (this.game.announceTimer >= 0) {
-      var txt = this.game.announceMessage;
-      context.font = "28px SmbWeb";
-      context.textAlign = "center";
-      context.fillText(txt, W*.5, 96);
-      context.strokeText(txt, W*.5, 96);
-
-      this.game.announceTimer--;
+      
+      context.font = "24px SmbOutline";
+      context.fillStyle = "#000073";
+      context.fillText(txt, W-w-8, 32);
     }
 
     var st = util.sprite.getSprite(uitex, MUSIC[app.settings.musicVolume===0?1:this.game.audio.muteMusic?1:0]);
@@ -546,13 +599,12 @@ Display.prototype.drawLoad = function() {
   var H = this.canvas.height;
   
   context.fillStyle = "black";
-  context.strokeStyle = "#000073";
   context.fillRect(0,0,this.canvas.width,this.canvas.height)
   
   context.font = "32px SmbWeb";
   context.fillStyle = "white";
   context.textAlign = "center";
-  context.fillText(TEXTS["#LOADING_RESOURCES"][app.lang], W*.5, H*.5);
+  context.fillText(TEXTS["#LOADING_RESOURCES"][app.lang].toUpperCase(), W*.5, H*.5);
 };
 
 Display.prototype.destroy = function() {

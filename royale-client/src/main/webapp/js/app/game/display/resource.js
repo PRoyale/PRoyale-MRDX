@@ -89,7 +89,6 @@ Resource.prototype.loadTexture = function(src) {
   if(tex.cache[src.id]) { return; }  // Skip if already loaded.
   else {
     var img = new Image();
-    img.crossOrigin = "Anonymous";
     img.onload = function() {
       tex.cache[src.id] = img;
       tex.load--;
