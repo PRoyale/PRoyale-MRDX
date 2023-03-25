@@ -108,7 +108,7 @@ const TEXTS = {
         "en": "Play Now!",
         "es": "¡A jugar!",
         "pt-br": "Jogar Agora!",
-        "fr": "Jouer maintenant!"
+        "fr": "Jouer Direct"
     },
 
     "#MENU_CONTROLS": {
@@ -472,7 +472,7 @@ const TEXTS = {
         "en": "Select",
         "es": "Selecciona",
         "pt-br": "Ordenar",
-        "fr": "Sélection"
+        "fr": "Choix"
     },
 
     "#LEADERBOARD_NAME": {
