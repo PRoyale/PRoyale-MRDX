@@ -143,7 +143,7 @@ const TEXTS = {
         "en": "Register",
         "es": "Registrar",
         "pt-br": "Registrar",
-        "fr": "S’enregistre"
+        "fr": "S’enregistrer"
     },
 
     "#SETTINGS_TITLE": {
