@@ -525,6 +525,8 @@ Display.prototype.drawUI = function() {
     else if(this.game instanceof Lobby) {
       var txt = this.game.players.length + (this.game.touchMode?"":" / 75 " + TEXTS["#GAME_LOBBY_PLAYERS"][app.lang]).toUpperCase();
       w = context.measureText(txt).width;
+      context.font = "24px SmbWeb";
+      context.fillStyle = "white";
       context.fillText(txt, W-w-8, 32);
       
       context.font = "24px SmbOutline";
