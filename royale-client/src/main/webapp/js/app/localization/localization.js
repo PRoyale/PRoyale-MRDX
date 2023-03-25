@@ -120,15 +120,15 @@ const TEXTS = {
 
     "#MENU_CHANGELOG": {
         "en": "Changelog",
-        "es": "Actualizaciones",
+        "es": "Actualiz.",
         "pt-br": "Mudanças",
         "fr": "Changelog"
     },
 
     "#MENU_SETTINGS": {
         "en": "Settings",
-        "es": "Configuraciones",
-        "pt-br": "Configurações",
+        "es": "Config.",
+        "pt-br": "Config.",
         "fr": "Paramètres"
     },
 
