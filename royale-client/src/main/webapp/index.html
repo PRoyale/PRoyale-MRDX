@@ -337,10 +337,10 @@
         <span style="position: absolute;right: 10px;top: 4px;" id="language-close">x</span>
         <p style="margin-bottom: 0" id="languageTitle">Langauge</p>
         <div id="changelog-container" style="text-align:center;width:595px;">
-          <button class="lang-button" onclick="Cookies.set('lang', 'en', {'expires':365});location.reload();">English</button>
-          <button class="lang-button" onclick="Cookies.set('lang', 'es', {'expires':365});location.reload();">Español</button>
-          <button class="lang-button" onclick="Cookies.set('lang', 'pt-br', {'expires':365});location.reload();">Português (Brasil)</button>
-          <button class="lang-button" onclick="Cookies.set('lang', 'fr', {'expires':365});location.reload();">Français</button>
+          <button class="lang-button" onclick="Cookies.set('lang', 'en', {'expires':365});Cookies.set('skip_disclaimer', '1');location.reload();">English</button>
+          <button class="lang-button" onclick="Cookies.set('lang', 'es', {'expires':365});Cookies.set('skip_disclaimer', '1');location.reload();">Español</button>
+          <button class="lang-button" onclick="Cookies.set('lang', 'pt-br', {'expires':365});Cookies.set('skip_disclaimer', '1');location.reload();">Português (Brasil)</button>
+          <button class="lang-button" onclick="Cookies.set('lang', 'fr', {'expires':365});Cookies.set('skip_disclaimer', '1');location.reload();">Français</button>
         </div>
       </div>
 
@@ -349,25 +349,20 @@
         <span style="position: absolute;right: 10px;top: 4px;" id="changelog-close">x</span>
         <p style="margin-bottom: 0" id="changelogTitle">Changelog</p>
         <div id="changelog-container">
-          <h1>Version 3.1.0</h1>
-          <h2>March 17, 2023 - Menu Update</h2>
-          <p>If you’re reading this at the time of release, congratulations! Welcome to the new changelog view!</p>
-          <p class="note">We’ll usually only show the most recent update here. The full patch notes have been moved to a Markdown document on GitHub which you can read by clicking Past Patches.</p>
-          <p>SMASified the Discord button</p>
-          <p>Added the editor button back, right next to the Discord button</p>
-          <p>Added a 20 character limit to name input fields</p>
-          <p class="note">This was already the case server-side, now we do it client-side as well</p>
-          <p>Removed the S in Changelogs</p>
-          <p class="note">Did you notice?</p>
-          <p>Redesigned settings menu</p>
-          <p class="note">Sliders are now shorter, white and have numbers next to them & a mushroom thumb. The symbol for active options has been changed from X to *.</p>
-          <p>Fixed leaderboard button shadow</p>
-          <p class="note">Thanks Captain!</p>
-          <p>Removed stray white pixel from the Mario selection outline</p>
-          <p class="note">Really important stuff, I know</p>
-          <p>Added a fallback to the old menu background for thin devices</p>
-          <p class="note">This triggers if your device’s width is 1033px or smaller to avoid an issue with the background renderer. This should only trigger on mobile devices as thin browser tabs don’t cause this.</p>
-          <p>Removed Herobrine</p>
+          <h1>Version 4.0.0</h1>
+          <h2>March 26, 2023 - Major Update</h2>
+          <p>Added translations</p>
+          <p class="note">Click the globe button in the top right to change the game language!</p>
+          <p class="note">Major thanks to dimension for the Spanish translation, RayTheMaymay for the Brazilian Portuguese translation, and Pyriel for the French translation!</p>
+          <p class="note">Also thanks to Captain for the globe button!</p>
+          <p>Added new royale world: Tricorn Kingdom</p>
+          <p class="note">This is an original world made by Pyriel!</p>
+          <p>Added new areas to the lobby</p>
+          <p>The raccoon leaf uses a smoother attacking animation now</p>
+          <p>The game now uses the font outline accurate to the original SMAS game</p>
+          <p>Fixed being able to jump over the flagpole in World 2-1</p>
+          <p>Fixed rare tile animation glitches in the menu background</p>
+          <p>Reverted world file indentation due to inflated file sizes</p>
         </div>
         <div class="past-patches" onclick="window.open('https://github.com/mroyale/MarioRoyaleDeluxe/blob/main/patch.md')">Past Patches</div>
         </div>

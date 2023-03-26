@@ -135,7 +135,7 @@ ToolTile.prototype.setBrush = function(brush) {
   }
   
   this.valRaw.innerHTML = this.brush;
-  this.valName.innerHTML = td32.decode(this.brush).definition.NAME;
+  this.valName.innerText = td32.decode(this.brush).definition.NAME;
   this.valDataName.innerText = type.DATA || "Unused Extra Data";
   this.valRaw.classList.remove("red");
 };

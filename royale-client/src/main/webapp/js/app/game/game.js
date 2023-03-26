@@ -674,7 +674,6 @@ Game.prototype.doInput = function(imp) {
   }
   
   obj.input(dir, a, b, u);
-  
 };
 
 /* Step game world */

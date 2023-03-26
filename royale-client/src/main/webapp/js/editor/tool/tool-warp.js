@@ -108,7 +108,7 @@ ToolWarp.prototype.select = function(warp) {
   var pos = shor2.decode(warp.pos);
 
   this.valId.value = warp.id;
-  this.valPos.innerHTML = pos.x+","+pos.y;
+  this.valPos.innerText = pos.x+","+pos.y;
   this.valData.value = warp.data;
 
   this.updParamTools();
@@ -121,7 +121,7 @@ ToolWarp.prototype.move = function(x,y) {
   pos = vec2.add(pos, vec2.make(x,y));
   if(pos.x < 0 || pos.x > this.editor.currentLayer.data[0].length-1 || pos.y < 0 || pos.y > this.editor.currentLayer.data.length-1) { return; }
   this.selected.pos = shor2.encode(pos.x, pos.y);
-  this.valPos.innerHTML = pos.x+","+pos.y;
+  this.valPos.innerText = pos.x+","+pos.y;
   this.moveTimer=16;
 };
 

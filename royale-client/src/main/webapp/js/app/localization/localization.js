@@ -108,7 +108,7 @@ const TEXTS = {
         "en": "Play Now!",
         "es": "¡A jugar!",
         "pt-br": "Jogar Agora!",
-        "fr": "Jouer Direct"
+        "fr": "Jouer Direct!"
     },
 
     "#MENU_CONTROLS": {

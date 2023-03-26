@@ -11,6 +11,10 @@ body {
   word-spacing: -5px
 }
 
+input {
+  text-transform: uppercase;
+}
+
 .background-a {
   image-rendering: pixelated;
   image-rendering: crisp-edges;

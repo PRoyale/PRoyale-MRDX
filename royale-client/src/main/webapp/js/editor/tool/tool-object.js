@@ -119,7 +119,7 @@ ToolObject.prototype.update = function() {
     this.updParamTools();
     
     var cls = GameObject.OBJECT(type);
-    if(cls && cls.NAME) { this.valName.innerHTML = cls.NAME; }
+    if(cls && cls.NAME) { this.valName.innerText = cls.NAME; }
   }
   catch(ex) { return; }
 };
@@ -130,9 +130,9 @@ ToolObject.prototype.select = function(object) {
   this.objct.param = object.param;
   
   this.valType.value = object.type;
-  this.valPos.innerHTML = object.pos;
+  this.valPos.innerText = object.pos;
   var pos = shor2.decode(object.pos);
-  this.valPosVec.innerHTML = pos.x + "," + pos.y;
+  this.valPosVec.innerText = pos.x + "," + pos.y;
   
   for (var i=0;i<this.editor.objParamLimit;++i) {
     var param = object.param[i];
@@ -143,14 +143,14 @@ ToolObject.prototype.select = function(object) {
   this.updParamTools();
   
   var cls = GameObject.OBJECT(object.type);
-  if(cls && cls.NAME) { this.valName.innerHTML = cls.NAME; }
+  if(cls && cls.NAME) { this.valName.innerText = cls.NAME; }
 };
 
 ToolObject.prototype.deselect = function() {
   this.selected = undefined;
-  this.valName.innerHTML = "No object selected";
-  this.valPos.innerHTML = "N/A";
-  this.valPosVec.innerHTML = "N/A";
+  this.valName.innerText = "No object selected";
+  this.valPos.innerText = "N/A";
+  this.valPosVec.innerText = "N/A";
 }
 
 ToolObject.prototype.move = function(x,y) {
@@ -163,8 +163,8 @@ ToolObject.prototype.move = function(x,y) {
   this.moveTimer=16;
 
   var pos = shor2.decode(this.selected.pos);
-  this.valPos.innerHTML = this.selected.pos;
-  this.valPosVec.innerHTML = pos.x + "," + pos.y;
+  this.valPos.innerText = this.selected.pos;
+  this.valPosVec.innerText = pos.x + "," + pos.y;
 };
 
 

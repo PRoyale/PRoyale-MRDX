@@ -6,12 +6,11 @@
 /* global Resource Camera */
 
 function MenuDisplay() {
-    this.canvas = document.getElementById("menu-canvas");
-    this.container = document.getElementById("background");
-    this.context = this.canvas.getContext("2d");
-    this.frame = 0;
+    this.canvas = document.getElementById("menu-canvas"); // What the background is drawn on
+    this.container = document.getElementById("background"); // Just the HTML element. For resizing the canvas
+    this.context = this.canvas.getContext("2d"); // For drawing the background
+    this.frame = 0; // How many "frames" passed. This is for animations
 
-    //const worldList = ["world-1", "world-2", "world-3", "world-4", "world-5", "world-6", "world-7", "world-8", "bkg-mariokart", "bkg-smb2", "bkg-spm", "bkg-nsmb"];
     const worldList = ["world-1", "bkg-mariokart", "bkg-smb2", "bkg-spm", "bkg-nsmb", "bkg-blackout"];
     this.worldName = worldList[Math.floor(Math.random() * worldList.length)]; 
     this.loadWorld(this.worldName).then(data => {
@@ -73,18 +72,18 @@ MenuDisplay.prototype.loadAnimations = function(url, resource) {
     var link = isLink(url);
     $.getJSON(link ? url : /royale/ + 'assets/' + url, function(dat) {
       if (dat.tileAnim) {
-        TILE_ANIMATION = []
-        TILE_ANIMATION_FILTERED = [];
+        TILE_ANIM_BG = []
+        TILE_ANIM_BG_FILTERED = [];
   
         for (var anim of dat.tileAnim) {
             var obj = {};
             obj.tiles = anim.tiles;
             obj.delay = anim.delay;
             obj.tilesets = anim.tilesets || [];
-            TILE_ANIMATION[anim.startTile] = obj;
+            TILE_ANIM_BG[anim.startTile] = obj;
         }
   
-        TILE_ANIMATION_FILTERED = filterByTileset(TILE_ANIMATION, resource.filter(x => x.id == "map")[0].src);
+        TILE_ANIM_BG_FILTERED = filterByTileset(TILE_ANIM_BG, resource.filter(x => x.id == "map")[0].src);
       }
     });
 };
@@ -297,8 +296,8 @@ MenuDisplay.prototype.drawMap = function(data, depth) {
 
       if (ind === 30) { continue; } // Do not render tile 30
 
-      if (ind in TILE_ANIMATION_FILTERED) {
-        var anim = TILE_ANIMATION_FILTERED[ind];
+      if (ind in TILE_ANIM_BG_FILTERED) {
+        var anim = TILE_ANIM_BG_FILTERED[ind];
         var delay = anim.delay;
         var frame = Math.floor(this.frame % (anim.tiles.length * delay) / delay);
         st = util.sprite.getSprite(tex, anim.tiles[frame], true);
