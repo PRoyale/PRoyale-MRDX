@@ -84,7 +84,8 @@ button:hover {
 }
 
 .i {
-  font-weight: normal
+  font-weight: normal;
+  height: 25px;
 }
 
 #test-pad-id {

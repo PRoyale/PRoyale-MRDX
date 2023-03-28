@@ -12,6 +12,7 @@ MenuList.prototype.generate = function() {
 
   /* Prevent XSS with world names */
   function sanitize(string) {
+    string = string.toString();
     const map = {
         '&': '&amp;',
         '<': '&lt;',
