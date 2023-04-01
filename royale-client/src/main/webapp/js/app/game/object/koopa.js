@@ -99,7 +99,7 @@ KoopaObject.STATE_LIST = [
   {NAME: "TRANSFORM", ID: 0x02, SPRITE: [KoopaObject.SPRITE.SHELL,KoopaObject.SPRITE.TRANSFORM]},
   {NAME: "SHELL", ID: 0x03, SPRITE: [KoopaObject.SPRITE.SHELL]},
   {NAME: "SPIN", ID: 0x04, SPRITE: [KoopaObject.SPRITE.SPIN0,KoopaObject.SPRITE.SPIN1,KoopaObject.SPRITE.SPIN2,KoopaObject.SPRITE.SPIN3]},
-  {NAME: "BONK", ID: 0x51, SPRITE: []}
+  {NAME: "BONK", ID: 0x51, SPRITE: [KoopaObject.SPRITE.SHELL]}
 ];
 
 /* Makes states easily referenceable by either ID or NAME. For sanity. */
@@ -126,6 +126,10 @@ KoopaObject.prototype.step = function() {
   if(this.disabled) { this.proximity(); return; }
   else if(this.disabledTimer > 0) { this.disabledTimer--; }
   
+  /* Anim */
+  this.anim++;
+  this.sprite = this.state.SPRITE[parseInt(this.anim/KoopaObject.ANIMATION_RATE) % this.state.SPRITE.length];
+  
   /* Bonked */
   if(this.state === KoopaObject.STATE.BONK) {
     if(this.bonkTimer++ > KoopaObject.BONK_TIME || this.pos.y+this.dim.y < 0) { this.destroy(); return; }
@@ -136,9 +140,6 @@ KoopaObject.prototype.step = function() {
     return;
   }
   
-  /* Anim */
-  this.anim++;
-  this.sprite = this.state.SPRITE[parseInt(this.anim/KoopaObject.ANIMATION_RATE) % this.state.SPRITE.length];
   
   if(this.state === KoopaObject.STATE.SHELL || this.state === KoopaObject.STATE.TRANSFORM) {
     if(--this.transformTimer < KoopaObject.TRANSFORM_THRESHOLD) { this.setState(KoopaObject.STATE.TRANSFORM); }

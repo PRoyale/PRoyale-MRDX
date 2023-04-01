@@ -321,7 +321,8 @@ img {
   font-family: "Calibri", monospace;
   color: #FFF;
   background: #000000e0;
-  font-size: 16px
+  font-size: 16px;
+  text-transform: none;
 }
 
 .warn-ico {

@@ -21,7 +21,7 @@ function FireballProj(game, level, zone, pos, dir, owner) {
   /* Physics */
   this.dim = vec2.make(.5, .5);
   this.fallSpeed = -FireballProj.FALL_SPEED_MAX;
-  this.dir = dir;
+  this.dir = !dir;
 }
 
 
@@ -98,7 +98,7 @@ FireballProj.prototype.step = function() {
 FireballProj.prototype.control = function() { };
 
 FireballProj.prototype.physics = function() {
-  var speed = this.dir?FireballProj.SPEED:-FireballProj.SPEED;
+  var speed = this.dir?-FireballProj.SPEED:FireballProj.SPEED;
   this.fallSpeed = Math.max(this.fallSpeed - FireballProj.FALL_SPEED_ACCEL, -FireballProj.FALL_SPEED_MAX);
   
   var mov = vec2.add(this.pos, vec2.make(speed, this.fallSpeed));
