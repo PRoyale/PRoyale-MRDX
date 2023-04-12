@@ -222,7 +222,7 @@ GoombaObject.prototype.disable = function() {
   this.disabled = true;
 };
 
-GoombaObject.prototype.damage = function(p) { if(!this.dead) { this.bonk(p.dir); this.game.out.push(NET020.encode(this.level, this.zone, this.oid, 0x01)); } };
+GoombaObject.prototype.damage = function(p) { if(!this.dead) { this.bonk(p instanceof PlayerObject ? !p.reverse : p.dir); this.game.out.push(NET020.encode(this.level, this.zone, this.oid, 0x01)); } };
 
 /* 'Bonked' is the type of death where an enemy flips upside down and falls off screen */
 /* Generally triggred by shells, fireballs, etc */

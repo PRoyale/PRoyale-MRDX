@@ -961,14 +961,15 @@ PlayerObject.prototype.interaction = function() {
       var fhit = squar.intersection(obj.pos, obj.dim, fpos, fdim);
       if(this.spinTimer) {
         if (fhit && obj.bonk) {
-          obj.bonk();
+          /* Whack an enemy with the tail */
+          obj.bonk(!this.reverse);
           this.game.out.push(NET020.encode(obj.level, obj.zone, obj.oid, 0x01));
         }
       }
       if(hit) {
-        if((this.starTimer > 0 || this.spinTimer > 0) && obj.bonk) {
+        if((this.starTimer > 0) && obj.bonk) {
           /* Touch something with Star */
-          obj.bonk();
+          obj.bonk(!this.reverse);
           this.game.out.push(NET020.encode(obj.level, obj.zone, obj.oid, 0x01));
         }
         if(obj instanceof PlayerObject && (obj.starTimer > 0 || (obj.spinTimer > 0 && this.game.gameMode === 1)) && !this.autoTarget) {
