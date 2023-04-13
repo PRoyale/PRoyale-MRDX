@@ -21,7 +21,7 @@ function MenuDisplay() {
         var levels = data.world;
         var level = Math.floor(Math.random() * levels.length);
 
-        this.zone = data.world[level].zone[0];
+        this.zone = data.world[this.worldName === "world-tricorn" ? 0 : level].zone[0];
         this.objects = this.zone.obj;
         if (this.zone.background.length) { this.downloadBackgrounds(this.zone.background) }
         this.loadAnimations(data.assets || "assets.json", data.resource);
