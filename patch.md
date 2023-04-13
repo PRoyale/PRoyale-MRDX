@@ -1,4 +1,14 @@
 # Mario Royale Deluxe Patch Notes
+## Version 3.3.0
+### 2023-04-13 - New World
+* Added a new Royale world: Tricorn Kingdom
+>   This is a touched up Royale world of the Legacy version made by Pyriel
+
+## Version 3.2.0
+### 2023-04-13 - New World
+* Added a new PVP world: Unfair Hockey
+>   This is a new PVP world made by Pyriel
+
 ## Version 3.1.0
 ### 2023-03-17 - Menu Update
 * If you’re reading this at the time of release, congratulations! Welcome to the new changelog view!
