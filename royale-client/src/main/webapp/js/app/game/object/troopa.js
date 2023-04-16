@@ -226,7 +226,7 @@ TroopaObject.prototype.interaction = function() {
     if(obj === this || obj instanceof PlayerObject || !obj.isTangible() || !obj.damage) { continue; }  // Skip players and objects that lack a damage function to call
     if(obj.level === this.level && obj.zone === this.zone) {
       var hit = squar.intersection(obj.pos, obj.dim, this.pos, this.dim);
-      if(hit) { obj.damage(); }  // We don't sync this event since it's not a direct player interaction. It *should* synchronize naturally though.
+      if(hit) { obj.damage(this); }  // We don't sync this event since it's not a direct player interaction. It *should* synchronize naturally though.
     }
   }
 };

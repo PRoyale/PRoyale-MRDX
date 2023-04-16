@@ -134,6 +134,12 @@ MenuDisplay.prototype.setMusic = function() {
       break;
     }
 
+    case "pvp-hockey": {
+      app.menu.main.menuMusic.src = pref + "title-hockey.mp3";
+      app.menu.main.menuMusic.load();
+      break;
+    }
+
     default : {
       var music = ["title.mp3", "titlelost.mp3"];
       app.menu.main.menuMusic.src = pref + music[parseInt(Math.random() * music.length)];
