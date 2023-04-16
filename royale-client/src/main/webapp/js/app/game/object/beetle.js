@@ -105,7 +105,8 @@ for(var i=0;i<BeetleObject.STATE_LIST.length;i++) {
 BeetleObject.prototype.update = function(event) {
   /* Event trigger */
   switch(event) {
-    case 0x01 : { this.bonk(); break; }
+    case 0x01 : { this.bonk(false); break; }
+    case 0x01 : { this.bonk(true); break; }
     case 0x10 : { this.stomped(true); break; }
     case 0x11 : { this.stomped(false); break; }
     case 0xA0 : { this.enable(); break; }
@@ -119,11 +120,10 @@ BeetleObject.prototype.step = function() {
   
   /* Bonked */
   if(this.state === BeetleObject.STATE.BONK) {
-    if(this.bonkTimer++ > BeetleObject.BONK_TIME || this.pos.y+this.dim.y < 0) { this.destroy(); return; }
+    if(this.bonkTimer++ > BowserObject.BONK_TIME || this.pos.y+this.dim.y < 0) { this.destroy(); return; }
     
-    this.pos = vec2.add(this.pos, vec2.make(this.moveSpeed, this.fallSpeed));
-    this.moveSpeed *= BeetleObject.BONK_DECEL;
-    this.fallSpeed = Math.max(this.fallSpeed - BeetleObject.FALL_SPEED_ACCEL, -BeetleObject.BONK_FALL_SPEED);
+    this.pos = vec2.add(this.pos, vec2.make(!this.bonkDir ? 0.04 : -0.04, this.fallSpeed));
+    this.fallSpeed = BowserObject.FALL_SPEED_MAX - (this.bonkTimer*0.009);
     return;
   }
   
@@ -266,16 +266,18 @@ BeetleObject.prototype.disable = function() {
   this.disabled = true;
 };
 
-BeetleObject.prototype.damage = function(p) { if(!this.dead && !(p instanceof FireballProj)) { this.bonk(); this.game.out.push(NET020.encode(this.level, this.zone, this.oid, 0x01)); } };
+BeetleObject.prototype.damage = function(p) { if(!this.dead && !(p instanceof FireballProj)) { var dir = Number(p instanceof PlayerObject ? !p.reverse : p.dir); this.bonk(dir); this.game.out.push(NET020.encode(this.level, this.zone, this.oid, dir+1)); } };
 
 /* 'Bonked' is the type of death where an enemy flips upside down and falls off screen */
 /* Generally triggred by shells, fireballs, etc */
-BeetleObject.prototype.bonk = function() {
+BeetleObject.prototype.bonk = function(dir) {
   if(this.dead) { return; }
   this.setState(BeetleObject.STATE.BONK);
   this.moveSpeed = BeetleObject.BONK_IMP.x;
   this.fallSpeed = BeetleObject.BONK_IMP.y;
   this.dead = true;
+  this.bonkDir = dir != undefined ? dir : false;
+  this.game.world.getZone(this.level, this.zone).effects.push(new ExplodeEffect(vec2.make(this.pos.x-.4, this.pos.y+.5)));
   this.play("kick.mp3", 1., .04);
 };
 

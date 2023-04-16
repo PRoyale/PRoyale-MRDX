@@ -233,15 +233,15 @@ public class Login extends SessionState {
     String[] GAMEMODES = new String[] { "vanilla", "pvp" };
     int mode = p.mode;
     if(mode < 0 || mode >= GAMEMODES.length) { mode = 0; }
-    
+
     /* Login */
     session.login(name, team, priv, mode);
     
     /* Return data */
-    sendPacket(new PacketL01(session.getSessionId(), session.getUser(), session.getTeam(), session.getPrivate(), session.getMode()));
+    sendPacket(new PacketL01(session.getSessionId(), session.getUser(), session.getTeam(), session.getPrivate(), mode));
     
     /* Choose Lobby */
-    final GameLobby lobby = lobbyDao.findLobby(session.getPrivate(), session.getMode());
+    final GameLobby lobby = lobbyDao.findLobby(session.getPrivate(), mode);
     
     /* Join Lobby */
     session.join(lobby);

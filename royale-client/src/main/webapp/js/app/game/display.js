@@ -381,7 +381,7 @@ Display.prototype.drawUI = function() {
     this.drawGame = false;
   }
 
-  if (this.game.getDebug("level") || this.game.getDebug("zone") || this.game.getDebug("god") || this.game.getDebug("lives")) {
+  if (this.game.getDebug("level") || this.game.getDebug("zone") || this.game.getDebug("god") || this.game.getDebug("lives") || this.game.getDebug("powerup") || this.game.getDebug("star")) {
     context.textAlign = "left";
     context.fillStyle = "whitesmoke";
     context.globalAlpha = 1;

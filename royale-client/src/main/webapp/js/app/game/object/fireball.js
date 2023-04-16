@@ -201,7 +201,7 @@ FireballProj.prototype.playerBump = function(p) { };
 
 FireballProj.prototype.kill = function() {
   this.setState(FireballProj.STATE.DEAD);
-  this.play("firework.mp3", 0.7, .04);
+  this.play("bump.mp3", 0.7, .04);
   this.dead = true;
 };
 

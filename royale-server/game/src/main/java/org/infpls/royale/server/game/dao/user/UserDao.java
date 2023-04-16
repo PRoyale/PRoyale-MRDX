@@ -59,7 +59,7 @@ public class UserDao {
     return users;
   }
   
-  public int getOnlineUserCount(int mode) {
+  public int getOnlineUserCount(String mode) {
     int sum = 0;
     for(int i=0;i<sessions.size();i++) {
       final RoyaleSession session = sessions.get(i);

@@ -23,7 +23,7 @@ public final class RoyaleSession {
   private final SessionThread sessionThread;
   private SessionState sessionState;
   public final boolean banned;
-  public int gameMode; // We ask for this in getOnlineUserCount
+  public String gameMode; // We ask for this in getOnlineUserCount
   
   public boolean readyVote;   // Kinda messy. Should really be a linked list in GameLobby instead.
   public RoyaleAccount account;
@@ -106,7 +106,11 @@ public final class RoyaleSession {
     this.name = name;
     this.team = team;
     this.priv = priv;
-    this.gameMode = gameMode;
+
+    String[] GAMEMODES = new String[] { "vanilla", "pvp" };
+    int mode = gameMode;
+    if(mode < 0 || mode >= GAMEMODES.length) { mode = 0; }
+    this.gameMode = GAMEMODES[mode];
   }
 
   public void setAccount(RoyaleAccount account) {
@@ -133,7 +137,7 @@ public final class RoyaleSession {
     return priv;
   }
 
-  public int getMode() {
+  public String getMode() {
     return gameMode;
   }
 

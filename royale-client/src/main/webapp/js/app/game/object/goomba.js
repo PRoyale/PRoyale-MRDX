@@ -96,7 +96,8 @@ GoombaObject.prototype.update = function(event) {
   /* Event trigger */
   switch(event) {
     case 0x00 : { this.kill(); break; }
-    case 0x01 : { this.bonk(); break; }
+    case 0x01 : { this.bonk(false); break; }
+    case 0x02 : { this.bonk(true); break; }
     case 0xA0 : { this.enable(); break; }
   }
 };
@@ -222,7 +223,7 @@ GoombaObject.prototype.disable = function() {
   this.disabled = true;
 };
 
-GoombaObject.prototype.damage = function(p) { if(!this.dead) { this.bonk(p instanceof PlayerObject ? !p.reverse : p.dir); this.game.out.push(NET020.encode(this.level, this.zone, this.oid, 0x01)); } };
+GoombaObject.prototype.damage = function(p) { if(!this.dead) { var dir = Number(p instanceof PlayerObject ? !p.reverse : p.dir); this.bonk(dir); this.game.out.push(NET020.encode(this.level, this.zone, this.oid, dir+1)); } };
 
 /* 'Bonked' is the type of death where an enemy flips upside down and falls off screen */
 /* Generally triggred by shells, fireballs, etc */
@@ -233,7 +234,7 @@ GoombaObject.prototype.bonk = function(dir) {
   this.fallSpeed = GoombaObject.BONK_IMP.y;
   this.dead = true;
   this.bonkDir = dir != undefined ? dir : false;
-  this.game.world.getZone(this.level, this.zone).effects.push(new ExplodeEffect(vec2.make(this.pos.x-.4, this.pos.y+.5)))
+  this.game.world.getZone(this.level, this.zone).effects.push(new ExplodeEffect(vec2.make(this.pos.x-.4, this.pos.y+.5)));
   this.play("kick.mp3", 1., .04);
 };
 

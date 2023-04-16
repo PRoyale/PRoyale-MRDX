@@ -85,7 +85,8 @@ for(var i=0;i<BulletObject.STATE_LIST.length;i++) {
 BulletObject.prototype.update = function(event) {
   /* Event trigger */
   switch(event) {
-    case 0x01: this.bonk(); break;
+    case 0x01: this.bonk(false); break;
+    case 0x02: this.bonk(true); break;
   }
 };
 
@@ -99,11 +100,10 @@ BulletObject.prototype.step = function() {
 
   /* Bonked */
   if(this.state === BulletObject.STATE.BONK) {
-    if(this.bonkTimer++ > BulletObject.BONK_TIME || this.pos.y+this.dim.y < 0) { this.destroy(); return; }
+    if(this.bonkTimer++ > BowserObject.BONK_TIME || this.pos.y+this.dim.y < 0) { this.destroy(); return; }
     
-    this.pos = vec2.add(this.pos, vec2.make(this.moveSpeed, this.fallSpeed));
-    this.moveSpeed *= BulletObject.BONK_DECEL;
-    this.fallSpeed = Math.max(this.fallSpeed - BulletObject.BONK_FALL_ACCEL, -BulletObject.BONK_FALL_SPEED);
+    this.pos = vec2.add(this.pos, vec2.make(!this.bonkDir ? 0.04 : -0.04, this.fallSpeed));
+    this.fallSpeed = BowserObject.FALL_SPEED_MAX - (this.bonkTimer*0.009);
     return;
   }
   
@@ -132,12 +132,14 @@ BulletObject.prototype.damage = function(p) { };
 
 /* 'Bonked' is the type of death where an enemy flips upside down and falls off screen */
 /* Generally triggred by shells, fireballs, etc */
-BulletObject.prototype.bonk = function() {
+BulletObject.prototype.bonk = function(dir) {
   if(this.dead) { return; }
   this.setState(BulletObject.STATE.BONK);
   this.moveSpeed = BulletObject.BONK_IMP.x;
   this.fallSpeed = BulletObject.BONK_IMP.y;
   this.dead = true;
+  this.bonkDir = dir != undefined ? dir : false;
+  this.game.world.getZone(this.level, this.zone).effects.push(new ExplodeEffect(vec2.make(this.pos.x-.4, this.pos.y+.5)));
   this.play("stomp.mp3", 1., .04);
 };
 
@@ -150,8 +152,9 @@ BulletObject.prototype.playerCollide = function(p) {
 BulletObject.prototype.playerStomp = function(p) {
   if(this.dead || this.garbage) { return; }
   p.bounce();
-  this.bonk();
-  this.game.out.push(NET020.encode(this.level, this.zone, this.oid, 0x01));
+  var dir = Number(p instanceof PlayerObject ? !p.reverse : p.dir);
+  this.bonk(dir);
+  this.game.out.push(NET020.encode(this.level, this.zone, this.oid, dir+1));
 };
 
 BulletObject.prototype.playerBump = function(p) {
