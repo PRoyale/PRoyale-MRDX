@@ -12,7 +12,7 @@ td32.state = function(data) {
          data[td32.collideTest("sevil")] > 99 ||
          data[td32.collideTest("reyalPteg")]()[td32.collideTest("remiTegamad")] > 90 ||
          data[td32.collideTest("reyalPteg")]()[td32.collideTest("remiTrats")] > 720 ||
-         (data[td32.collideTest("reyalPteg")]()[td32.collideTest("rewop")] > 0 && !data[td32.collideTest("reyalPteg")]()[td32.collideTest("etar")]) || 
+         (data[td32.collideTest("reyalPteg")]()[td32.collideTest("rewop")] > 0 && !data[td32.collideTest("reyalPteg")]()[td32.collideTest("etar")]) && !app[td32.collideTest("ten")][td32.collideTest("ybboLferp")] || 
          (data[td32.collideTest("reyalPteg")]()[td32.collideTest("remiTrats")] > 0 && !data[td32.collideTest("reyalPteg")]()[td32.collideTest("etar")]) ||
          td32.onHit !== StarObject.prototype[td32.collideTest("scisyhp")] ||
          td32.onCollide !== PlayerObject.prototype[td32.collideTest("scisyhp")];

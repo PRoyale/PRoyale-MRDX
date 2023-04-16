@@ -119,7 +119,7 @@ HammerProj.prototype.interaction = function() {
             this.game.out.push(NET017.encode(this.owner));
           }
 
-          if(this.owner instanceof FireHammerObject && obj instanceof PlayerObject && obj.pid == this.game.pid) {
+          if(this.owner instanceof FirebroObject && obj instanceof PlayerObject && obj.pid == this.game.pid) {
             obj.damage(this);
           }
 

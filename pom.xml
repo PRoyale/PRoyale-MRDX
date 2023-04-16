@@ -5,8 +5,8 @@
   <version>1.0</version>
   <artifactId>royale</artifactId>
   <packaging>pom</packaging>
-  <name>InfringeRoyale</name>
-  <description>Infringe Royale Project</description>
+  <name>MarioRoyaleDeluxe</name>
+  <description>Mario Royale Deluxe Project</description>
 
   <modules>
     <module>royale-server</module>

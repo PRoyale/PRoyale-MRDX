@@ -1,4 +1,18 @@
 # Mario Royale Deluxe Patch Notes
+## Version 4.0.0
+### April 16, 2023 - Major Update
+* Added translations
+>   Click the globe button in the top right to change the game language!
+>   Major thanks to dimension for the Spanish translation, RayTheMaymay for the Brazilian Portuguese translation, and Pyriel for the French translation!
+>   Also thanks to Captain for the globe button!
+* Added new areas to the lobby
+* The raccoon leaf uses a smoother attacking animation now
+* Enemies have a better dying animation when you kill them with the leaf or a fireball
+* The game now uses the font outline accurate to the original SMAS game
+* Fixed being able to jump over the flagpole in World 2-1
+* Fixed rare tile animation glitches in the menu background
+* Reverted world file indentation due to inflated file sizes
+
 ## Version 3.3.0
 ### 2023-04-13 - New World
 * Added a new Royale world: Tricorn Kingdom

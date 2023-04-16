@@ -99,7 +99,7 @@ KoopaObject.STATE_LIST = [
   {NAME: "TRANSFORM", ID: 0x02, SPRITE: [KoopaObject.SPRITE.SHELL,KoopaObject.SPRITE.TRANSFORM]},
   {NAME: "SHELL", ID: 0x03, SPRITE: [KoopaObject.SPRITE.SHELL]},
   {NAME: "SPIN", ID: 0x04, SPRITE: [KoopaObject.SPRITE.SPIN0,KoopaObject.SPRITE.SPIN1,KoopaObject.SPRITE.SPIN2,KoopaObject.SPRITE.SPIN3]},
-  {NAME: "BONK", ID: 0x51, SPRITE: []}
+  {NAME: "BONK", ID: 0x51, SPRITE: [KoopaObject.SPRITE.SHELL]}
 ];
 
 /* Makes states easily referenceable by either ID or NAME. For sanity. */
@@ -114,7 +114,8 @@ for(var i=0;i<KoopaObject.STATE_LIST.length;i++) {
 KoopaObject.prototype.update = function(event) {
   /* Event trigger */
   switch(event) {
-    case 0x01 : { this.bonk(); break; }
+    case 0x01 : { this.bonk(false); break; }
+    case 0x02 : { this.bonk(true); break; }
     case 0x10 : { this.stomped(true); break; }
     case 0x11 : { this.stomped(false); break; }
     case 0xA0 : { this.enable(); break; }
@@ -126,19 +127,19 @@ KoopaObject.prototype.step = function() {
   if(this.disabled) { this.proximity(); return; }
   else if(this.disabledTimer > 0) { this.disabledTimer--; }
   
-  /* Bonked */
-  if(this.state === KoopaObject.STATE.BONK) {
-    if(this.bonkTimer++ > KoopaObject.BONK_TIME || this.pos.y+this.dim.y < 0) { this.destroy(); return; }
-    
-    this.pos = vec2.add(this.pos, vec2.make(this.moveSpeed, this.fallSpeed));
-    this.moveSpeed *= KoopaObject.BONK_DECEL;
-    this.fallSpeed = Math.max(this.fallSpeed - KoopaObject.FALL_SPEED_ACCEL, -KoopaObject.BONK_FALL_SPEED);
-    return;
-  }
-  
   /* Anim */
   this.anim++;
   this.sprite = this.state.SPRITE[parseInt(this.anim/KoopaObject.ANIMATION_RATE) % this.state.SPRITE.length];
+  
+  /* Bonked */
+  if(this.state === KoopaObject.STATE.BONK) {
+    if(this.bonkTimer++ > BowserObject.BONK_TIME || this.pos.y+this.dim.y < 0) { this.destroy(); return; }
+    
+    this.pos = vec2.add(this.pos, vec2.make(!this.bonkDir ? 0.04 : -0.04, this.fallSpeed));
+    this.fallSpeed = BowserObject.FALL_SPEED_MAX - (this.bonkTimer*0.009);
+    return;
+  }
+  
   
   if(this.state === KoopaObject.STATE.SHELL || this.state === KoopaObject.STATE.TRANSFORM) {
     if(--this.transformTimer < KoopaObject.TRANSFORM_THRESHOLD) { this.setState(KoopaObject.STATE.TRANSFORM); }
@@ -279,16 +280,18 @@ KoopaObject.prototype.disable = function() {
   this.disabled = true;
 };
 
-KoopaObject.prototype.damage = function(p) { if(!this.dead) { this.bonk(); this.game.out.push(NET020.encode(this.level, this.zone, this.oid, 0x01)); } };
+KoopaObject.prototype.damage = function(p) { if(!this.dead) { var dir = Number(p instanceof PlayerObject ? !p.reverse : p.dir); this.bonk(dir); this.game.out.push(NET020.encode(this.level, this.zone, this.oid, dir+1)); } };
 
 /* 'Bonked' is the type of death where an enemy flips upside down and falls off screen */
 /* Generally triggred by shells, fireballs, etc */
-KoopaObject.prototype.bonk = function() {
+KoopaObject.prototype.bonk = function(dir) {
   if(this.dead) { return; }
   this.setState(KoopaObject.STATE.BONK);
   this.moveSpeed = KoopaObject.BONK_IMP.x;
   this.fallSpeed = KoopaObject.BONK_IMP.y;
   this.dead = true;
+  this.bonkDir = dir != undefined ? dir : false;
+  this.game.world.getZone(this.level, this.zone).effects.push(new ExplodeEffect(vec2.make(this.pos.x-.4, this.pos.y+.5)));
   this.play("kick.mp3", 1., .04);
 };
 
@@ -300,7 +303,7 @@ KoopaObject.prototype.stomped = function(dir) {
   else if(this.state === KoopaObject.STATE.SHELL || this.state === KoopaObject.STATE.TRANSFORM) {
     this.setState(KoopaObject.STATE.SPIN);
     this.dir = dir;
-    this.game.world.getZone(this.level, this.zone).effects.push(new DustEffect(this.pos));
+    this.game.world.getZone(this.level, this.zone).effects.push(new ExplodeEffect(vec2.make(this.pos.x, this.pos.y+.6)));
     this.play("kick.mp3", 1., .04);
     return;
   }

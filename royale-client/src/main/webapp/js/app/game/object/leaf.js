@@ -19,7 +19,7 @@ function LeafObject(game, level, zone, pos, oid) {
 /* === STATIC =============================================================== */
 LeafObject.ASYNC = false;
 LeafObject.ID = 0x57;
-LeafObject.NAME = "Tanooki Leaf"; // Used by editor
+LeafObject.NAME = "Raccoon Leaf"; // Used by editor
 
 LeafObject.IMPULSE = 0.5;
 LeafObject.DRAG = .95;

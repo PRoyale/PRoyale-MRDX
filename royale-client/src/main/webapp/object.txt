@@ -150,7 +150,7 @@ ONEUP::83
 []
  - No params. It's better to use item block tiles for items.
 
-TANOOKI LEAF::86
+RACCOON LEAF::86
 []
  - No params. Jumps and then swerves around. It's better to use item block tiles for items.
 

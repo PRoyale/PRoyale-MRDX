@@ -3,6 +3,9 @@
 let TILE_ANIMATION = [];
 let TILE_ANIMATION_FILTERED = [];
 
+let TILE_ANIM_BG = [];
+let TILE_ANIM_BG_FILTERED = [];
+
 /* This function gets the assets file for animations. */
 
 (function() {

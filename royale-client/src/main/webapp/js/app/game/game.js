@@ -24,9 +24,9 @@ function Game(data) {
 
   this.objects = [];
   this.pid = undefined; /* Unique player id for this client. Assigned during init packet. */
-  this.team = undefined; /* Team this player is set to */
   this.players = []; /* List of player names and associated pids */
   this.sounds = []; /* Array of currently playing global sounds */
+  this.panel = new Panel(this); /* Game panels. Basically windows. */
   
   this.load(data);
   
@@ -674,7 +674,6 @@ Game.prototype.doInput = function(imp) {
   }
   
   obj.input(dir, a, b, u);
-  
 };
 
 /* Step game world */
@@ -707,7 +706,7 @@ Game.prototype.doStep = function() {
   /* Step & delete garbage */
   for(var i=0;i<this.objects.length;i++) {
     var obj = this.objects[i];
-    if (obj instanceof HammerObject || obj instanceof HammerProj || obj instanceof FireHammerObject) {
+    if (obj instanceof HammerObject || obj instanceof HammerProj || obj instanceof FirebroObject) {
       if (this.frame % 2 === 0) { obj.step(); }
     } else { obj.step(); }
     if(obj.garbage) { this.objects.splice(i--, 1); }

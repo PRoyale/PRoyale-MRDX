@@ -80,7 +80,7 @@ TroopaObject.STATE_LIST = [
   {NAME: "TRANSFORM", ID: 0x02, SPRITE: [TroopaObject.SPRITE.SHELL,TroopaObject.SPRITE.TRANSFORM]},
   {NAME: "SHELL", ID: 0x03, SPRITE: [TroopaObject.SPRITE.SHELL]},
   {NAME: "SPIN", ID: 0x04, SPRITE: [TroopaObject.SPRITE.SPIN0,TroopaObject.SPRITE.SPIN1,TroopaObject.SPRITE.SPIN2,TroopaObject.SPRITE.SPIN3]},
-  {NAME: "BONK", ID: 0x51, SPRITE: []}
+  {NAME: "BONK", ID: 0x51, SPRITE: [TroopaObject.SPRITE.SHELL]}
 ];
 
 /* Makes states easily referenceable by either ID or NAME. For sanity. */
@@ -99,19 +99,18 @@ TroopaObject.prototype.step = function() {
   if(this.disabled) { this.proximity(); return; }
   else if(this.disabledTimer > 0) { this.disabledTimer--; }
   
-  /* Bonked */
-  if(this.state === TroopaObject.STATE.BONK) {
-    if(this.bonkTimer++ > KoopaObject.BONK_TIME || this.pos.y+this.dim.y < 0) { this.destroy(); return; }
-    
-    this.pos = vec2.add(this.pos, vec2.make(this.moveSpeed, this.fallSpeed));
-    this.moveSpeed *= KoopaObject.BONK_DECEL;
-    this.fallSpeed = Math.max(this.fallSpeed - KoopaObject.FALL_SPEED_ACCEL, -KoopaObject.BONK_FALL_SPEED);
-    return;
-  }
-  
   /* Anim */
   this.anim++;
   this.sprite = this.state.SPRITE[parseInt(this.anim/KoopaObject.ANIMATION_RATE) % this.state.SPRITE.length];
+
+  /* Bonked */
+  if(this.state === TroopaObject.STATE.BONK) {
+    if(this.bonkTimer++ > BowserObject.BONK_TIME || this.pos.y+this.dim.y < 0) { this.destroy(); return; }
+    
+    this.pos = vec2.add(this.pos, vec2.make(!this.bonkDir ? 0.04 : -0.04, this.fallSpeed));
+    this.fallSpeed = BowserObject.FALL_SPEED_MAX - (this.bonkTimer*0.009);
+    return;
+  }
   
   if(this.state === TroopaObject.STATE.SHELL || this.state === TroopaObject.STATE.TRANSFORM) {
     if(--this.transformTimer < KoopaObject.TRANSFORM_THRESHOLD) { this.setState(TroopaObject.STATE.TRANSFORM); }
@@ -254,12 +253,14 @@ TroopaObject.prototype.damage = KoopaObject.prototype.damage;
 
 /* 'Bonked' is the type of death where an enemy flips upside down and falls off screen */
 /* Generally triggred by shells, fireballs, etc */
-TroopaObject.prototype.bonk = function() {
+TroopaObject.prototype.bonk = function(dir) {
   if(this.dead) { return; }
   this.setState(TroopaObject.STATE.BONK);
   this.moveSpeed = KoopaObject.BONK_IMP.x;
   this.fallSpeed = KoopaObject.BONK_IMP.y;
   this.dead = true;
+  this.bonkDir = dir != undefined ? dir : false;
+  this.game.world.getZone(this.level, this.zone).effects.push(new ExplodeEffect(vec2.make(this.pos.x-.4, this.pos.y+.5)))
   this.play("kick.mp3", 1., .04);
 };
 
@@ -271,7 +272,9 @@ TroopaObject.prototype.stomped = function(dir) {
   else if(this.state === TroopaObject.STATE.SHELL || this.state === TroopaObject.STATE.TRANSFORM) {
     this.setState(TroopaObject.STATE.SPIN);
     this.dir = dir;
-    this.game.world.getZone(this.level, this.zone).effects.push(new DustEffect(this.pos));
+    this.game.world.getZone(this.level, this.zone).effects.push(new ExplodeEffect(vec2.make(this.pos.x, this.pos.y+.6)));
+    this.play("kick.mp3", 1., .04);
+    return;
   }
   this.play("stomp.mp3", 1., .04);
 };

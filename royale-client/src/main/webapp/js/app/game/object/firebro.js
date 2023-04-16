@@ -3,12 +3,12 @@
 /* global GameObject, FireballProj, PlayerObject */
 /* global NET011, NET020 */
 
-function FireHammerObject(game, level, zone, pos, oid, reverse) {
+function FirebroObject(game, level, zone, pos, oid, reverse) {
   GameObject.call(this, game, level, zone, pos);
   
   this.oid = oid; // Unique Object ID, is the shor2 of the spawn location
   
-  this.setState(FireHammerObject.STATE.IDLE);
+  this.setState(FirebroObject.STATE.IDLE);
   
   /* Animation */
   this.anim = 0;
@@ -27,12 +27,12 @@ function FireHammerObject(game, level, zone, pos, oid, reverse) {
   this.disabledTimer = 0;
   this.proxHit = false;    // So we don't send an enable event every single frame while waiting for server response.
   
-  this.hammer = undefined;  // last hammer obj we threw
+  this.fireball = undefined;  // last fireball obj we threw
   
   /* Control */
   this.loc = parseInt(reverse)===1?
-    [this.pos.x + FireHammerObject.MOVE_AREA, this.pos.x]:
-    [this.pos.x, this.pos.x - FireHammerObject.MOVE_AREA];
+    [this.pos.x + FirebroObject.MOVE_AREA, this.pos.x]:
+    [this.pos.x, this.pos.x - FirebroObject.MOVE_AREA];
   this.attackTimer = 0;
   this.attackAnimTimer = 0;
   this.double = 0;
@@ -45,65 +45,65 @@ function FireHammerObject(game, level, zone, pos, oid, reverse) {
 }
 
 /* === STATIC =============================================================== */
-FireHammerObject.ASYNC = false;
-FireHammerObject.ID = 0x32;
-FireHammerObject.NAME = "Fire Bro"; // Used by editor
-FireHammerObject.PARAMS = [{'name': 'Reverse', 'type': 'int', 'tooltip': "The direction of the Fire Bro. 0 is left and 1 is right"}];
+FirebroObject.ASYNC = false;
+FirebroObject.ID = 0x32;
+FirebroObject.NAME = "Fire Bro"; // Used by editor
+FirebroObject.PARAMS = [{'name': 'Reverse', 'type': 'int', 'tooltip': "The direction of the Fire Bro. 0 is left and 1 is right"}];
 
-FireHammerObject.ANIMATION_RATE = 10;
+FirebroObject.ANIMATION_RATE = 10;
 
-FireHammerObject.ENABLE_FADE_TIME = 15;
-FireHammerObject.ENABLE_DIST = 33;          // Distance to player needed for proximity to trigger and the enemy to be enabled
+FirebroObject.ENABLE_FADE_TIME = 15;
+FirebroObject.ENABLE_DIST = 33;          // Distance to player needed for proximity to trigger and the enemy to be enabled
 
-FireHammerObject.BONK_TIME = 90;
-FireHammerObject.BONK_IMP = vec2.make(0.25, 0.4);
-FireHammerObject.BONK_DECEL = 0.925;
-FireHammerObject.BONK_FALL_SPEED = 0.25;
+FirebroObject.BONK_TIME = 90;
+FirebroObject.BONK_IMP = vec2.make(0.25, 0.4);
+FirebroObject.BONK_DECEL = 0.925;
+FirebroObject.BONK_FALL_SPEED = 0.25;
 
-FireHammerObject.MOVE_SPEED_MAX = 0.0475;
-FireHammerObject.JUMP_DELAY = 110;        // Time between jumps
-FireHammerObject.MOVE_AREA = 4;          // 4 Blocks horizontal area
-FireHammerObject.JUMP_LENGTH = 8;        // Length of jump
-FireHammerObject.JUMP_DECEL = 0.009;     // Jump deceleration
-FireHammerObject.ATTACK_DELAY = 150;      // Time between attacks
-FireHammerObject.DOUBLE_RATE = 5;        // How many attacks till a double attack
-FireHammerObject.DOUBLE_ANIM_LENGTH = 4;
-FireHammerObject.ATTACK_ANIM_LENGTH = 2;
-FireHammerObject.PROJ_OFFSET = vec2.make(0, 1.);
+FirebroObject.MOVE_SPEED_MAX = 0.0475;
+FirebroObject.JUMP_DELAY = 110;        // Time between jumps
+FirebroObject.MOVE_AREA = 4;          // 4 Blocks horizontal area
+FirebroObject.JUMP_LENGTH = 8;        // Length of jump
+FirebroObject.JUMP_DECEL = 0.009;     // Jump deceleration
+FirebroObject.ATTACK_DELAY = 150;      // Time between attacks
+FirebroObject.DOUBLE_RATE = 5;        // How many attacks till a double attack
+FirebroObject.DOUBLE_ANIM_LENGTH = 4;
+FirebroObject.ATTACK_ANIM_LENGTH = 2;
+FirebroObject.PROJ_OFFSET = vec2.make(0, 1.);
     
-FireHammerObject.FALL_SPEED_MAX = 0.3;
-FireHammerObject.FALL_SPEED_ACCEL = 0.085;
+FirebroObject.FALL_SPEED_MAX = 0.3;
+FirebroObject.FALL_SPEED_ACCEL = 0.085;
 
-FireHammerObject.SPRITE = {};
-FireHammerObject.SPRITE_LIST = [
+FirebroObject.SPRITE = {};
+FirebroObject.SPRITE_LIST = [
   {NAME: "IDLE0", ID: 0x00, INDEX: [[0x004D],[0x003D]]},
   {NAME: "IDLE1", ID: 0x01, INDEX: [[0x004C],[0x003C]]},
   {NAME: "ATTACK", ID: 0x02, INDEX: [[0x004B],[0x003B]]}
 ];
 
 /* Makes sprites easily referenceable by NAME. For sanity. */
-for(var i=0;i<FireHammerObject.SPRITE_LIST.length;i++) {
-  FireHammerObject.SPRITE[FireHammerObject.SPRITE_LIST[i].NAME] = FireHammerObject.SPRITE_LIST[i];
-  FireHammerObject.SPRITE[FireHammerObject.SPRITE_LIST[i].ID] = FireHammerObject.SPRITE_LIST[i];
+for(var i=0;i<FirebroObject.SPRITE_LIST.length;i++) {
+  FirebroObject.SPRITE[FirebroObject.SPRITE_LIST[i].NAME] = FirebroObject.SPRITE_LIST[i];
+  FirebroObject.SPRITE[FirebroObject.SPRITE_LIST[i].ID] = FirebroObject.SPRITE_LIST[i];
 }
 
-FireHammerObject.STATE = {};
-FireHammerObject.STATE_LIST = [
-  {NAME: "IDLE", ID: 0x00, SPRITE: [FireHammerObject.SPRITE.IDLE0,FireHammerObject.SPRITE.IDLE1]},
-  {NAME: "FALL", ID: 0x01, SPRITE: [FireHammerObject.SPRITE.IDLE1]},
-  {NAME: "ATTACK", ID: 0x02, SPRITE: [FireHammerObject.SPRITE.ATTACK]},
+FirebroObject.STATE = {};
+FirebroObject.STATE_LIST = [
+  {NAME: "IDLE", ID: 0x00, SPRITE: [FirebroObject.SPRITE.IDLE0,FirebroObject.SPRITE.IDLE1]},
+  {NAME: "FALL", ID: 0x01, SPRITE: [FirebroObject.SPRITE.IDLE1]},
+  {NAME: "ATTACK", ID: 0x02, SPRITE: [FirebroObject.SPRITE.ATTACK]},
   {NAME: "BONK", ID: 0x51, SPRITE: []}
 ];
 
 /* Makes states easily referenceable by either ID or NAME. For sanity. */
-for(var i=0;i<FireHammerObject.STATE_LIST.length;i++) {
-  FireHammerObject.STATE[FireHammerObject.STATE_LIST[i].NAME] = FireHammerObject.STATE_LIST[i];
-  FireHammerObject.STATE[FireHammerObject.STATE_LIST[i].ID] = FireHammerObject.STATE_LIST[i];
+for(var i=0;i<FirebroObject.STATE_LIST.length;i++) {
+  FirebroObject.STATE[FirebroObject.STATE_LIST[i].NAME] = FirebroObject.STATE_LIST[i];
+  FirebroObject.STATE[FirebroObject.STATE_LIST[i].ID] = FirebroObject.STATE_LIST[i];
 }
 
 /* === INSTANCE ============================================================= */
 
-FireHammerObject.prototype.update = function(event) {
+FirebroObject.prototype.update = function(event) {
   /* Event trigger */
   switch(event) {
     case 0x01 : { this.bonk(); break; }
@@ -111,24 +111,24 @@ FireHammerObject.prototype.update = function(event) {
   }
 };
 
-FireHammerObject.prototype.step = function() {
+FirebroObject.prototype.step = function() {
   /* Disabled */
   if(this.disabled) { this.proximity(); return; }
   else if(this.disabledTimer > 0) { this.disabledTimer--; }
   
   /* Bonked */
-  if(this.state === FireHammerObject.STATE.BONK) {
-    if(this.bonkTimer++ > FireHammerObject.BONK_TIME || this.pos.y+this.dim.y < 0) { this.destroy(); return; }
+  if(this.state === FirebroObject.STATE.BONK) {
+    if(this.bonkTimer++ > FirebroObject.BONK_TIME || this.pos.y+this.dim.y < 0) { this.destroy(); return; }
     
     this.pos = vec2.add(this.pos, vec2.make(this.moveSpeed, this.fallSpeed));
-    this.moveSpeed *= FireHammerObject.BONK_DECEL;
-    this.fallSpeed = Math.max(this.fallSpeed - FireHammerObject.FALL_SPEED_ACCEL, -FireHammerObject.BONK_FALL_SPEED);
+    this.moveSpeed *= FirebroObject.BONK_DECEL;
+    this.fallSpeed = Math.max(this.fallSpeed - FirebroObject.FALL_SPEED_ACCEL, -FirebroObject.BONK_FALL_SPEED);
     return;
   }
 
   /* Anim */
   this.anim++;
-  this.sprite = this.state.SPRITE[parseInt(this.anim/FireHammerObject.ANIMATION_RATE) % this.state.SPRITE.length];
+  this.sprite = this.state.SPRITE[parseInt(this.anim/FirebroObject.ANIMATION_RATE) % this.state.SPRITE.length];
   
   /* Normal Gameplay */
   this.face();
@@ -136,38 +136,38 @@ FireHammerObject.prototype.step = function() {
   this.physics();
   this.sound();
   
-  if(this.attackAnimTimer > 0) { this.setState(FireHammerObject.STATE.ATTACK); this.attach(); this.attackAnimTimer--; }
-  else if(this.attackTimer++ > FireHammerObject.ATTACK_DELAY) { this.attack(); this.play("fireball.mp3", 1., .04); }
-  else { this.hammer = undefined; }
+  if(this.attackAnimTimer > 0) { this.setState(FirebroObject.STATE.ATTACK); this.attach(); this.attackAnimTimer--; }
+  else if(this.attackTimer++ > FirebroObject.ATTACK_DELAY) { this.attack(); this.play("fireball.mp3", 1., .04); }
+  else { this.fireball = undefined; }
   
   if(this.pos.y < -2.) { this.destroy(); }
 };
 
-FireHammerObject.prototype.control = function() {
+FirebroObject.prototype.control = function() {
   if(this.grounded) {
-    if(FireHammerObject.JUMP_DELAY < this.groundTimer++) { this.jumpTimer = 0; this.groundTimer = 0; }
+    if(FirebroObject.JUMP_DELAY < this.groundTimer++) { this.jumpTimer = 0; this.groundTimer = 0; }
     if(this.pos.x > this.loc[0]) { this.reverse = true; }
     else if(this.pos.x < this.loc[1]) { this.reverse = false; }
   }
-  else if(this.jumpTimer > FireHammerObject.JUMP_LENGTH) {
+  else if(this.jumpTimer > FirebroObject.JUMP_LENGTH) {
     this.jumpTimer = -1;
   }
   
-  if(!this.grounded) { this.setState(FireHammerObject.STATE.FALL); }
-  else { this.setState(FireHammerObject.STATE.IDLE); }
+  if(!this.grounded) { this.setState(FirebroObject.STATE.FALL); }
+  else { this.setState(FirebroObject.STATE.IDLE); }
 
-  this.moveSpeed = (this.moveSpeed * .75) + ((this.reverse ? -FireHammerObject.MOVE_SPEED_MAX : FireHammerObject.MOVE_SPEED_MAX) * .25);  // Rirp
+  this.moveSpeed = (this.moveSpeed * .75) + ((this.reverse ? -FirebroObject.MOVE_SPEED_MAX : FirebroObject.MOVE_SPEED_MAX) * .25);  // Rirp
 };
 
-FireHammerObject.prototype.physics = function() {
+FirebroObject.prototype.physics = function() {
   if(this.jumpTimer !== -1) {
-    this.fallSpeed = FireHammerObject.FALL_SPEED_MAX - (this.jumpTimer*FireHammerObject.JUMP_DECEL);
+    this.fallSpeed = FirebroObject.FALL_SPEED_MAX - (this.jumpTimer*FirebroObject.JUMP_DECEL);
     this.jumpTimer++;
     this.grounded = false;
   }
   else {
     if(this.grounded) { this.fallSpeed = 0; }
-    this.fallSpeed = Math.max(this.fallSpeed - FireHammerObject.FALL_SPEED_ACCEL, -FireHammerObject.FALL_SPEED_MAX);
+    this.fallSpeed = Math.max(this.fallSpeed - FirebroObject.FALL_SPEED_ACCEL, -FirebroObject.FALL_SPEED_MAX);
   }
   
   var movx = vec2.add(this.pos, vec2.make(this.moveSpeed, 0.));
@@ -223,16 +223,16 @@ FireHammerObject.prototype.physics = function() {
 
 /* Tests against client player to see if they are near enough that we should enable this enemy. */
 /* On a successful test we send a object event 0xA0 to the server to trigger this enemy being enabled for all players */
-FireHammerObject.prototype.proximity = function() {
+FirebroObject.prototype.proximity = function() {
   var ply = this.game.getPlayer();
-  if(ply && !ply.dead && ply.level === this.level && ply.zone === this.zone && !this.proxHit && vec2.distance(ply.pos, this.pos) < FireHammerObject.ENABLE_DIST) {
+  if(ply && !ply.dead && ply.level === this.level && ply.zone === this.zone && !this.proxHit && vec2.distance(ply.pos, this.pos) < FirebroObject.ENABLE_DIST) {
     this.game.out.push(NET020.encode(this.level, this.zone, this.oid, 0xA0));
     this.proxHit = true;
   }
 };
 
 /* Face nearest player */
-FireHammerObject.prototype.face = function() {
+FirebroObject.prototype.face = function() {
   var nearest;
   for(var i=0;i<this.game.objects.length;i++) {
      var obj = this.game.objects[i];
@@ -244,76 +244,76 @@ FireHammerObject.prototype.face = function() {
   else { this.dir = nearest<0; }
 };
 
-FireHammerObject.prototype.sound = GameObject.prototype.sound;
+FirebroObject.prototype.sound = GameObject.prototype.sound;
 
-FireHammerObject.prototype.enable = function() {
+FirebroObject.prototype.enable = function() {
   if(!this.disabled) { return; }
   this.disabled = false;
-  this.disabledTimer = FireHammerObject.ENABLE_FADE_TIME;
+  this.disabledTimer = FirebroObject.ENABLE_FADE_TIME;
 };
 
-FireHammerObject.prototype.disable = function() {
+FirebroObject.prototype.disable = function() {
   this.disabled = true;
 };
 
-FireHammerObject.prototype.attack = function() {
-  this.attackAnimTimer = FireHammerObject.ATTACK_ANIM_LENGTH;
+FirebroObject.prototype.attack = function() {
+  this.attackAnimTimer = FirebroObject.ATTACK_ANIM_LENGTH;
   this.attackTimer = 0;
-  this.hammer = this.game.createObject(FireballProj.ID, this.level, this.zone, vec2.add(this.pos, FireHammerObject.PROJ_OFFSET), [this]);
-  this.hammer.owner = this;
-  if(++this.double > FireHammerObject.DOUBLE_RATE) { this.double = 0; this.attackTimer = FireHammerObject.ATTACK_DELAY; }
+  this.fireball = this.game.createObject(FireballProj.ID, this.level, this.zone, vec2.add(this.pos, FirebroObject.PROJ_OFFSET), [this]);
+  this.fireball.owner = this;
+  if(++this.double > FirebroObject.DOUBLE_RATE) { this.double = 0; this.attackTimer = FirebroObject.ATTACK_DELAY; }
 };
 
-/* Keeps the hammer we are throwing attached to us until it's time to actually throw it */
-FireHammerObject.prototype.attach = function() {
-  if(this.hammer) { this.hammer.pos = vec2.add(this.pos, FireHammerObject.PROJ_OFFSET); this.hammer.dir = !this.dir; }
+/* Keeps the fireball we are throwing attached to us until it's time to actually throw it */
+FirebroObject.prototype.attach = function() {
+  if(this.fireball) { this.fireball.pos = vec2.add(this.pos, FirebroObject.PROJ_OFFSET); this.fireball.dir = this.dir; }
 };
 
-FireHammerObject.prototype.playerCollide = function(p) {
+FirebroObject.prototype.playerCollide = function(p) {
   if(this.dead || this.garbage) { return; }
   p.damage(this);
 };
 
-FireHammerObject.prototype.playerStomp = function(p) {
+FirebroObject.prototype.playerStomp = function(p) {
   if(this.dead || this.garbage) { return; }
   this.bonk();
   p.bounce();
   this.game.out.push(NET020.encode(this.level, this.zone, this.oid, 0x01));
 };
 
-FireHammerObject.prototype.playerBump = FireHammerObject.prototype.playerCollide;
+FirebroObject.prototype.playerBump = FirebroObject.prototype.playerCollide;
 
-FireHammerObject.prototype.damage = function(p) { if(!this.dead) { this.bonk(); NET020.encode(this.level, this.zone, this.oid, 0x01); } };
+FirebroObject.prototype.damage = function(p) { if(!this.dead) { this.bonk(); NET020.encode(this.level, this.zone, this.oid, 0x01); } };
 
 /* 'Bonked' is the type of death where an enemy flips upside down and falls off screen */
 /* Generally triggred by shells, fireballs, etc */
-FireHammerObject.prototype.bonk = function() {
+FirebroObject.prototype.bonk = function() {
   if(this.dead) { return; }
-  this.setState(FireHammerObject.STATE.BONK);
-  this.moveSpeed = FireHammerObject.BONK_IMP.x;
-  this.fallSpeed = FireHammerObject.BONK_IMP.y;
+  this.setState(FirebroObject.STATE.BONK);
+  this.moveSpeed = FirebroObject.BONK_IMP.x;
+  this.fallSpeed = FirebroObject.BONK_IMP.y;
   this.dead = true;
   this.play("kick.mp3", 1., .04);
 };
 
-FireHammerObject.prototype.kill = function() { /* No standard killstate */ };
-FireHammerObject.prototype.isTangible = GameObject.prototype.isTangible;
-FireHammerObject.prototype.destroy = GameObject.prototype.destroy;
+FirebroObject.prototype.kill = function() { /* No standard killstate */ };
+FirebroObject.prototype.isTangible = GameObject.prototype.isTangible;
+FirebroObject.prototype.destroy = GameObject.prototype.destroy;
 
-FireHammerObject.prototype.setState = function(STATE) {
+FirebroObject.prototype.setState = function(STATE) {
   if(STATE === this.state) { return; }
   this.state = STATE;
   if(STATE.SPRITE.length > 0) { this.sprite = STATE.SPRITE[0]; }
   this.anim = 0;
 };
 
-FireHammerObject.prototype.draw = function(sprites) {
+FirebroObject.prototype.draw = function(sprites) {
   /* Disabled */
   if(this.disabled) { return; }
   
   var mod;
-  if(this.state === FireHammerObject.STATE.BONK) { mod = 0x03; }
-  else if(this.disabledTimer > 0) { mod = 0xA0 + parseInt((1.-(this.disabledTimer/FireHammerObject.ENABLE_FADE_TIME))*32.); }
+  if(this.state === FirebroObject.STATE.BONK) { mod = 0x03; }
+  else if(this.disabledTimer > 0) { mod = 0xA0 + parseInt((1.-(this.disabledTimer/FirebroObject.ENABLE_FADE_TIME))*32.); }
   else { mod = 0x00; }
   
   if(this.sprite.INDEX instanceof Array) {
@@ -327,7 +327,7 @@ FireHammerObject.prototype.draw = function(sprites) {
   else { sprites.push({pos: this.pos, reverse: !this.dir, index: this.sprite.INDEX, mode: mod}); }
 };
 
-FireHammerObject.prototype.play = GameObject.prototype.play;
+FirebroObject.prototype.play = GameObject.prototype.play;
 
 /* Register object class */
-GameObject.REGISTER_OBJECT(FireHammerObject);
+GameObject.REGISTER_OBJECT(FirebroObject);

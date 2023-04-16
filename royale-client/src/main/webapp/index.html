@@ -68,8 +68,9 @@
       <!-- Links -->
       <div id='link'>
         <div class="link-r">
-          <div class="link-editor" onclick="window.open('/royale/editor.html')"></div>
+          <div class="link-editor" onclick="window.open('editor.html')"></div>
           <div class="link-discord" onclick="window.open('https://discord.gg/pNQJhKSkCd')"></div>
+          <div class="link-language" id="link-language"></div>
         </div>
         <div class="link-w">
           <div id='win' class="win" style="display: none"></div>
@@ -113,18 +114,18 @@
         <div class='title'>Mario Royale</div>
         <div class="container-launch">
           <div id="main-launch" class="launch">
-            <img src="./img/home/play.png" class="launch-img">
+            <div class="launch-img"><span class="main-text" id="main-playNow">Play Now!</div>
           </div>
 
           <div class="main-buttons">
-            <img id="main-settings" src="./img/home/settings.png" class="launch-settings">
-            <img id="main-controls" src="./img/home/controls.png" class="launch-controls">
-            <img id="main-changelog" src="./img/home/changelog.png" class="launch-changelog">
+            <div id="main-controls" class="launch-controls"><span class="main-text" id="main-controlsText">Controls</span></div>
+            <div id="main-changelog" class="launch-changelog"><span class="main-text" id="main-changelogText">Changelog</span></div>
+            <div id="main-settings" class="launch-settings"><span class="main-text" id="main-settingsText">Settings</span></div>
           </div>
 
           <div class="main-buttons">
-            <img id="main-login" class="launch-login" src="./img/home/login.png">
-            <img id="main-register" class="launch-register" src="./img/home/register.png">
+            <div id="main-login" class="launch-login"><span class="main-text" id="loginText">Login</span></div>
+            <div id="main-register" class="launch-register"><span class="main-text" id="registerText">Register</span></div>
           </div>
         </div>
       </div>
@@ -134,13 +135,13 @@
         <div class='title'>Mario Royale</div>
         <div class="container-launch">
           <div id="mainMember-play" class="launch">
-            <img src="./img/home/play.png" class="launch-img">
+            <div class="launch-img"><span class="main-text" id="mainMember-playNow">Play Now!</div>
           </div>
 
           <div class="main-buttons">
-            <img id="mainMember-settings" src="./img/home/settings.png" class="launch-settings">
-            <img id="mainMember-controls" src="./img/home/controls.png" class="launch-controls">
-            <img id="mainMember-changelog" src="./img/home/changelog.png" class="launch-changelog">
+            <div id="mainMember-controls" class="launch-controls"><span class="main-text" id="mainMember-controlsText">Controls</span></div>
+            <div id="mainMember-changelog" class="launch-changelog"><span class="main-text" id="mainMember-changelogText">Changelog</span></div>
+            <div id="mainMember-settings" class="launch-settings"><span class="main-text" id="mainMember-settingsText">Settings</span></div>
           </div>
         </div>
       </div>
@@ -160,7 +161,7 @@
         <div style="bottom: -5%;position: relative">
           <img src="./img/home/go.png" id="play-go" class="button-go">
           <span style="margin-left:20px"></span>
-          <div class="tooltip"><img src="./img/home/private.png" id="play-priv" class="button-private"><span class="tooltip-text" style="margin-left:-150%;" id="play-privtext">Solo game for testing</span></div>
+          <div class="tooltip"><img src="./img/home/private.png" id="play-priv" class="button-private"><span class="tooltip-text" style="margin-left:-170%;top:-75px;" id="play-privtext">Solo game for testing</span></div>
         </div>
       </div>
 
@@ -176,7 +177,7 @@
         <div style="bottom: -5%;position: relative">
           <img src="./img/home/go.png" id="playMember-go" class="button-go">
           <span style="margin-left:20px"></span>
-          <div class="tooltip"><img src="./img/home/private.png" id="playMember-priv" class="button-private"><span class="tooltip-text" style="margin-left:-150%;" id="playMember-privtext">Solo game for testing</span></div>
+          <div class="tooltip"><img src="./img/home/private.png" id="playMember-priv" class="button-private"><span class="tooltip-text" style="margin-left:-170%;top:-75px;" id="playMember-privtext">Solo game for testing</span></div>
         </div>
       </div>
       
@@ -285,7 +286,7 @@
       </div>
 
       <!-- Controls -->
-      <div id="controls" class="container-password" style="display:none;height:430px;">
+      <div id="controls" class="container-password" style="display:none;height:470px;">
         <span style="position: absolute;right: 10px;top: 4px;" id="controls-close">x</span>
         <p id="controlsTitle">Controls</p>
 
@@ -318,8 +319,8 @@
         <div class="t" style="padding-top: 12px">Test</div>
         <div class="a">
           <div>
-            <div><span id="control-gamepad">Gamepad</span> <span class="i" id="test-pad-id" style="display: inline-block;max-width:415px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Awaiting input...</span></div>
-            <div class="tooltip">Analog<span class="tooltip-text" style="font-size: 11px;margin-left: -105%;top:-75px;" id="control-tooltip">Analog input is detected when the axis exceeds -0.25 or 0.25</span> <span class="i" id="test-analog">0, 0</span></div>
+            <div><span id="control-gamepad">Gamepad</span> <span class="i" id="test-pad-id" style="display: inline-block;max-width:415px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:4;">Awaiting input...</span></div>
+            <div class="tooltip">Analog<span class="tooltip-text" style="font-size: 11px;margin-left: -105%;top:-60px;" id="control-tooltip">Analog input is detected when the axis exceeds -0.25 or 0.25</span> <span class="i" id="test-analog">0, 0</span></div>
             <div class="s"></div>
             <span class="n" id="test-up">🢁</span>
             <span class="n" id="test-down">🢃</span>
@@ -331,20 +332,36 @@
         </div>
       </div>
 
+      <!-- Langauge -->
+      <div id="language" class="container-password" style="display:none;height: 430px;">
+        <span style="position: absolute;right: 10px;top: 4px;" id="language-close">x</span>
+        <p style="margin-bottom: 0" id="languageTitle">Langauge</p>
+        <div id="changelog-container" style="text-align:center;width:595px;">
+          <button class="lang-button" onclick="Cookies.set('lang', 'en', {'expires':365});Cookies.set('skip_disclaimer', '1');location.reload();">English</button>
+          <button class="lang-button" onclick="Cookies.set('lang', 'es', {'expires':365});Cookies.set('skip_disclaimer', '1');location.reload();">Español</button>
+          <button class="lang-button" onclick="Cookies.set('lang', 'pt-br', {'expires':365});Cookies.set('skip_disclaimer', '1');location.reload();">Português (Brasil)</button>
+          <button class="lang-button" onclick="Cookies.set('lang', 'fr', {'expires':365});Cookies.set('skip_disclaimer', '1');location.reload();">Français</button>
+        </div>
+      </div>
+
       <!-- Changelog -->
       <div id="changelog" class="container-password" style="display:none;height:430px;">
         <span style="position: absolute;right: 10px;top: 4px;" id="changelog-close">x</span>
         <p style="margin-bottom: 0" id="changelogTitle">Changelog</p>
         <div id="changelog-container">
-          <h1>Version 3.3.0</h1>
-          <h2>April 13, 2023 - New World</h2>
-          <p>Added a new Royale world: Tricorn Kingdom</p>
-          <p class="note">This is a touched up Royale world of the Legacy version made by Pyriel</p>
-          
-          <h1>Version 3.2.0</h1>
-          <h2>April 13, 2023 - New World</h2>
-          <p>Added a new PVP world: Unfair Hockey</p>
-          <p class="note">This is a new PVP world made by Pyriel</p>
+          <h1>Version 4.0.0</h1>
+          <h2>April 16, 2023 - Major Update</h2>
+          <p>Added translations</p>
+          <p class="note">Click the globe button in the top right to change the game language!</p>
+          <p class="note">Major thanks to dimension for the Spanish translation, RayTheMaymay for the Brazilian Portuguese translation, and Pyriel for the French translation!</p>
+          <p class="note">Also thanks to Captain for the globe button!</p>
+          <p>Added new areas to the lobby</p>
+          <p>The raccoon leaf uses a smoother attacking animation now</p>
+          <p>Enemies have a better dying animation when you kill them with the leaf or a fireball</p>
+          <p>The game now uses the font outline accurate to the original SMAS game</p>
+          <p>Fixed being able to jump over the flagpole in World 2-1</p>
+          <p>Fixed rare tile animation glitches in the menu background</p>
+          <p>Reverted world file indentation due to inflated file sizes</p>
         </div>
         <div class="past-patches" onclick="window.open('https://github.com/mroyale/MarioRoyaleDeluxe/blob/main/patch.md')">Past Patches</div>
         </div>
@@ -374,8 +391,7 @@
       <!-- Stolen from Legacy. If it ain't broke, don't fix it. -->
       <div id='return' class='container-return' style='display: none'>
         <span id='return-main' class='launch' onclick='Cookies.set("skip_disclaimer", "1");location.reload();'>Return to Main</span><br>
-        <span id='return-lobby' class='launch' onclick='Cookies.set("go_to_lobby", "1");location.reload();'>Return to
-          Lobby</span>
+        <span id='return-lobby' class='launch' onclick='Cookies.set("go_to_lobby", "1");location.reload();'>Return to Lobby</span>
       </div>
 
       <!-- Dev Console -->
@@ -385,10 +401,10 @@
           <div class='devConsole-select' id="devConsole-kick">kick</div>
           <div class='devConsole-select' id="devConsole-ban">ban</div>
           <div class='devConsole-select' id="devConsole-rename">rename</div> | <div class='devConsole-select'
-            id="devConsole-forceStart">Force Start</div>
+          id="devConsole-forceStart">Force Start</div>
           <div class="name" id="devConsole-renameForm" style="display: none;">
             <input id="devConsole-renameField" type="text" class="devConsole-name-input" placeholder="new name"
-              autocomplete="off" data-lpignore="true" />
+            autocomplete="off" data-lpignore="true" />
             <div class='devConsole-select' id="devConsole-renameDone">ok</div><br>
           </div>
           <span id="devConsole-playerList"></span>
@@ -406,13 +422,17 @@
       <script src='js/lib/jquery/jquery-3.1.1.min.js'></script>
       <script src='js/lib/cookie/js.cookie.min.js'></script>
       <script src="js/lib/jsgif/jsgif.js"></script>
+      <script type="module" defer>
+        import { polyfillCountryFlagEmojis } from "https://cdn.skypack.dev/country-flag-emoji-polyfill";
+        polyfillCountryFlagEmojis();
+      </script>
 
       <!-- Localization -->
-      <script src='js/app/util/localization.js'></script>
+      <script src='js/app/localization/localization.js'></script>
+
       
       <!-- Controls -->
       <script src='js/control/app.js'></script>
-
       
       <!-- Util -->
       <script src='js/app/util/util.js'></script>
@@ -483,6 +503,8 @@
       <script src='js/app/game/effect/transform.js'></script>
       <script src='js/app/game/effect/explode.js'></script>
       <script src='js/app/game/effect/1up.js'></script>
+      <script src='js/app/game/panel/panel.js'></script>
+      <script src='js/app/game/panel/emote.js'></script>
       <script src='js/app/game/input.js'></script>
       <script src='js/app/util/snitch.js'></script>
       <script src='js/app/game/display/resource.js'></script>
@@ -495,7 +517,6 @@
       <script src='js/app/game/game.js'></script>
       <script src='js/app/game/lobby.js'></script>
       <script src='js/app/game/jail.js'></script>
-
       
       <!-- Main Exec -->
       <script src='js/app/app.js'></script>

@@ -4,6 +4,8 @@
 function App() {
   this.menu = new Menu();                // Handles HTML menus
   this.file = new File();                // Manages loading files
+
+  this.lang = "en"; // there's no localization for this just set it to english because loading resources says undefined otherwise
 }
 
 App.prototype.init = function() {

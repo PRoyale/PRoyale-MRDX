@@ -24,7 +24,7 @@ function LifeEffect(pos) {
 LifeEffect.SPRITE = [0x010];
 
 LifeEffect.ANIMATION_RATE = 1;
-LifeEffect.LIFE_TIME = 48;
+LifeEffect.LIFE_TIME = 72;
 
 LifeEffect.prototype.step = function() {
   Effect.prototype.step.call(this);

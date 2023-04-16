@@ -8,6 +8,8 @@ function MenuMain() {
   this.winElement = document.getElementById("win");
   this.launchBtn = document.getElementById("main-launch");
 
+  this.languageBtn = document.getElementById("link-language");
+
   this.controlBtn = document.getElementById("main-controls");
   this.changelogBtn = document.getElementById("main-changelog");
   this.settingsBtn = document.getElementById("main-settings");
@@ -22,6 +24,9 @@ function MenuMain() {
 
   this.changelogMenu = document.getElementById("changelog");
   this.changelogCloseBtn = document.getElementById("changelog-close");
+
+  this.languageMenu = document.getElementById("language");
+  this.languageCloseBtn = document.getElementById("language-close");
 
   this.darkBackground = document.getElementById("dark-bg");
 
@@ -71,6 +76,7 @@ function MenuMain() {
   this.settingsCloseBtn.onclick = function() { that.settingsMenu.style.display = "none"; }
   this.controlsCloseBtn.onclick = function() { that.hideControlsMenu(); };
   this.changelogCloseBtn.onclick = function() { that.hideChangelogMenu(); };
+  this.languageCloseBtn.onclick = function() { that.hideLanguageMenu(); };
 
   this.launchBtn.onclick = function() { that.showPlayMenu(); };
   this.playGo.onclick = function() { that.launch(false); };
@@ -78,6 +84,7 @@ function MenuMain() {
   this.playCloseBtn.onclick = function() { that.hidePlayMenu(); };
   this.controlBtn.onclick = function() { that.showControlsMenu(); };
   this.changelogBtn.onclick = function() { that.showChangelogMenu(); };
+  this.languageBtn.onclick = function() { that.showLanguageMenu(); };
   this.settingsBtn.onclick = function() { that.showSettingsMenu(); };
   this.loginBtn.onclick = function() { that.showLoginMenu(); };
   this.loginCloseBtn.onclick = function() { that.hideLoginMenu(); };
@@ -140,6 +147,16 @@ MenuMain.prototype.hideChangelogMenu = function() {
   this.changelogMenu.style.display = "none";
 };
 
+/* Language Menu */
+MenuMain.prototype.showLanguageMenu = function() {
+  this.darkBackground.style.display = "";
+  this.languageMenu.style.display = "";
+};
+
+MenuMain.prototype.hideLanguageMenu = function() {
+  this.darkBackground.style.display = "none";
+  this.languageMenu.style.display = "none";
+};
 
 /* Settings Menu */
 MenuMain.prototype.showSettingsMenu = function() {
@@ -180,7 +197,7 @@ MenuMain.prototype.login = function() {
   var that = this;
   if (name.length < 4) { that.loginError("Username is too short"); return; }
   if (name.length > 20) { that.loginError("Username is too long"); return; }
-  if (pass.length < 4) { that.loginError("Password is too short"); return; }
+  if (pass.length < 4) { that.loginError(TEXTS["#PASSWORD_SHORT"][app.lang]); return; }
   
   this.hideLoginMenu();
   app.login(name, pass);
@@ -213,8 +230,8 @@ MenuMain.prototype.register = function() {
   var that = this;
   if (name.length < 4) { that.registerError("Username is too short"); return; }
   if (name.length > 20) { that.registerError("Username is too long"); return; }
-  if (pass.length < 4) { that.registerError("Password is too short"); return; }
-  if (pass != verify) { that.registerError("Passwords don't match"); return; }
+  if (pass.length < 4) { that.registerError(TEXTS["#PASSWORD_SHORT"][app.lang]); return; }
+  if (pass != verify) { that.registerError(TEXTS["#PASSWORD_MISMATCH"][app.lang]); return; }
   
   this.hideRegisterMenu();
   app.register(name, pass);

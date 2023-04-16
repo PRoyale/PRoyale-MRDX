@@ -21,16 +21,10 @@
 }
 
 #controls {
-  font-family: SmbWeb;
-  font-size: 16px;
+  font-size: 18px;
   image-rendering: pixelated;
   image-rendering: crisp-edges;
   line-height: 1.4;
-  -moz-user-select: -moz-none;
-  -khtml-user-select: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-  user-select: none
 }
 
 #container {
@@ -82,14 +76,16 @@ button {
   border: 2px solid #E2D800;
   color: #FFF;
   font: 10px SmbWeb;
-  cursor: pointer
+  cursor: pointer;
+  text-transform: uppercase;
 }
 button:hover {
   background: #D59D00
 }
 
 .i {
-  font-weight: normal
+  font-weight: normal;
+  height: 25px;
 }
 
 #test-pad-id {

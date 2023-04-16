@@ -517,7 +517,7 @@ PlayerObject.prototype.step = function() {
   if(this.attackCharge < PlayerObject.MAX_CHARGE) { this.attackCharge++; }
   if(this.attackTimer > 0) { this.attackTimer--; }
   if(this.spinCharge < PlayerObject.MAX_CHARGE) { this.spinCharge++; }
-  if(this.spinTimer > 0) { this.spinTimer--; }
+  if(this.spinTimer > 0) { this.spinTimer--; this.sprite = PlayerObject.SPRITE[this.spinTimer > 13 ? "L_ATTACK0" : this.spinTimer > 8 ? "L_ATTACK1" : this.spinTimer > 3 ? "L_ATTACK2" : "L_ATTACK3"]; }
   if(this.glideTimer > 0) { this.glideTimer--; }
   
   if(this.autoTarget) { this.autoMove(); }  
@@ -714,7 +714,7 @@ PlayerObject.prototype.physics = function() {
   var on = [];              // Tiles we are directly standing on
   var psh = [];             // Tiles we are directly pushing against
   var bmp = [];             // Tiles we bumped from below when jumping
-  var smsh = [];            // Tiles we.. smashed... by spinning  into them with the raccoon powerup
+  var smsh = [];            // Tiles we.. smashed... by spinning into them with the raccoon powerup
   var slopes = [];          // Tiles which are slopes
   var slopecollide = [];    // Slopes we collided with
   var semisolids = [];      // Tiles which are semisolids
@@ -942,7 +942,7 @@ PlayerObject.prototype.collisionTest = function(pos, dim) {
   var tiles = this.game.world.getZone(this.level, this.zone).getTiles(pos, dim);
   for(var i=0;i<tiles.length;i++) {
     var tile = tiles[i];
-    if(!tile.definition.COLLIDE || tile.definition.SEMISOLID) { continue; }
+    if(!tile.definition.COLLIDE || tile.definition.SEMISOLID || tile.definition.HIDDEN) { continue; }
     
     if(squar.intersection(tile.pos, tdim, pos, dim)) { return true; }
   }
@@ -961,14 +961,15 @@ PlayerObject.prototype.interaction = function() {
       var fhit = squar.intersection(obj.pos, obj.dim, fpos, fdim);
       if(this.spinTimer) {
         if (fhit && obj.bonk) {
-          obj.bonk();
+          /* Whack an enemy with the tail */
+          obj.bonk(!this.reverse);
           this.game.out.push(NET020.encode(obj.level, obj.zone, obj.oid, 0x01));
         }
       }
       if(hit) {
-        if((this.starTimer > 0 || this.spinTimer > 0) && obj.bonk) {
+        if((this.starTimer > 0) && obj.bonk) {
           /* Touch something with Star */
-          obj.bonk();
+          obj.bonk(!this.reverse);
           this.game.out.push(NET020.encode(obj.level, obj.zone, obj.oid, 0x01));
         }
         if(obj instanceof PlayerObject && (obj.starTimer > 0 || (obj.spinTimer > 0 && this.game.gameMode === 1)) && !this.autoTarget) {
@@ -1243,7 +1244,7 @@ PlayerObject.prototype.isState = function(SNAME) {
 };
 
 PlayerObject.prototype.draw = function(sprites) {
-  if(this.isState(PlayerObject.SNAME.HIDE) || this.pipeDelay > 0 || (this.transformTimer > 0 && (this.transformTarget > 2 || this.power > 2))) { return; } // Don't render when hidden, transforming into a tanooki or when in a pipe
+  if(this.isState(PlayerObject.SNAME.HIDE) || this.pipeDelay > 0 || (this.transformTimer > 0 && (this.transformTarget > 2 || this.power > 2))) { return; } // Don't render when hidden, transforming into a raccoon or when in a pipe
   if(this.damageTimer > 0 && this.damageTimer % 3 > 1) { return; } // Post damage timer blinking
   if(this.sprite.ID === 0x69 || this.sprite.ID === 0x110) { return; }
   

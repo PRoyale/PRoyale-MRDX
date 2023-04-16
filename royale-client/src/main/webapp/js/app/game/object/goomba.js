@@ -28,6 +28,7 @@ function GoombaObject(game, level, zone, pos, oid, variant) {
   this.disabled = false;
   this.disabledTimer = 0;
   this.proxHit = false;    // So we don't send an enable event every single frame while waiting for server response.
+  this.bonkDir = false;    // Where to go after being bonked
   
   /* Control */
   this.dir = true; /* false = right, true = left */
@@ -95,7 +96,8 @@ GoombaObject.prototype.update = function(event) {
   /* Event trigger */
   switch(event) {
     case 0x00 : { this.kill(); break; }
-    case 0x01 : { this.bonk(); break; }
+    case 0x01 : { this.bonk(false); break; }
+    case 0x02 : { this.bonk(true); break; }
     case 0xA0 : { this.enable(); break; }
   }
 };
@@ -107,11 +109,10 @@ GoombaObject.prototype.step = function() {
   
   /* Bonked */
   if(this.state === GoombaObject.STATE.BONK) {
-    if(this.bonkTimer++ > GoombaObject.BONK_TIME || this.pos.y+this.dim.y < 0) { this.destroy(); return; }
+    if(this.bonkTimer++ > BowserObject.BONK_TIME || this.pos.y+this.dim.y < 0) { this.destroy(); return; }
     
-    this.pos = vec2.add(this.pos, vec2.make(this.moveSpeed, this.fallSpeed));
-    this.moveSpeed *= GoombaObject.BONK_DECEL;
-    this.fallSpeed = Math.max(this.fallSpeed - GoombaObject.FALL_SPEED_ACCEL, -GoombaObject.BONK_FALL_SPEED);
+    this.pos = vec2.add(this.pos, vec2.make(!this.bonkDir ? 0.04 : -0.04, this.fallSpeed));
+    this.fallSpeed = BowserObject.FALL_SPEED_MAX - (this.bonkTimer*0.009);
     return;
   }
   
@@ -222,16 +223,18 @@ GoombaObject.prototype.disable = function() {
   this.disabled = true;
 };
 
-GoombaObject.prototype.damage = function(p) { if(!this.dead) { this.bonk(); this.game.out.push(NET020.encode(this.level, this.zone, this.oid, 0x01)); } };
+GoombaObject.prototype.damage = function(p) { if(!this.dead) { var dir = Number(p instanceof PlayerObject ? !p.reverse : p.dir); this.bonk(dir); this.game.out.push(NET020.encode(this.level, this.zone, this.oid, dir+1)); } };
 
 /* 'Bonked' is the type of death where an enemy flips upside down and falls off screen */
 /* Generally triggred by shells, fireballs, etc */
-GoombaObject.prototype.bonk = function() {
+GoombaObject.prototype.bonk = function(dir) {
   if(this.dead) { return; }
   this.setState(GoombaObject.STATE.BONK);
   this.moveSpeed = GoombaObject.BONK_IMP.x;
   this.fallSpeed = GoombaObject.BONK_IMP.y;
   this.dead = true;
+  this.bonkDir = dir != undefined ? dir : false;
+  this.game.world.getZone(this.level, this.zone).effects.push(new ExplodeEffect(vec2.make(this.pos.x-.4, this.pos.y+.5)));
   this.play("kick.mp3", 1., .04);
 };
 

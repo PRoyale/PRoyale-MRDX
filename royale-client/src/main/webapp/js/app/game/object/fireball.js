@@ -21,7 +21,7 @@ function FireballProj(game, level, zone, pos, dir, owner) {
   /* Physics */
   this.dim = vec2.make(.5, .5);
   this.fallSpeed = -FireballProj.FALL_SPEED_MAX;
-  this.dir = dir;
+  this.dir = !dir;
 }
 
 
@@ -98,7 +98,7 @@ FireballProj.prototype.step = function() {
 FireballProj.prototype.control = function() { };
 
 FireballProj.prototype.physics = function() {
-  var speed = this.dir?FireballProj.SPEED:-FireballProj.SPEED;
+  var speed = this.dir?-FireballProj.SPEED:FireballProj.SPEED;
   this.fallSpeed = Math.max(this.fallSpeed - FireballProj.FALL_SPEED_ACCEL, -FireballProj.FALL_SPEED_MAX);
   
   var mov = vec2.add(this.pos, vec2.make(speed, this.fallSpeed));
@@ -181,9 +181,9 @@ FireballProj.prototype.interaction = function() {
         if (this.game.gameMode === 1 && obj instanceof PlayerObject && obj.pid == this.game.pid && obj.dead && !(this.owner instanceof Object))
           this.game.out.push(NET017.encode(this.owner));
 
-        if(this.owner instanceof FireHammerObject && !(obj instanceof PlayerObject)) { continue; } // Fire bro fireballs shouldn't explode on our enemies
+        if(this.owner instanceof FirebroObject && !(obj instanceof PlayerObject)) { continue; } // Fire bro fireballs shouldn't explode on our enemies
 
-        if(this.owner instanceof FireHammerObject && obj instanceof PlayerObject && obj.pid == this.game.pid) {
+        if(this.owner instanceof FirebroObject && obj instanceof PlayerObject && obj.pid == this.game.pid) {
           obj.damage(this);
         }
         
@@ -201,7 +201,7 @@ FireballProj.prototype.playerBump = function(p) { };
 
 FireballProj.prototype.kill = function() {
   this.setState(FireballProj.STATE.DEAD);
-  this.play("firework.mp3", 0.7, .04);
+  this.play("bump.mp3", 0.7, .04);
   this.dead = true;
 };
 
