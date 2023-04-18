@@ -1107,6 +1107,22 @@ PlayerObject.prototype.warp = function(wid) {
   var wrp = this.game.world.getLevel(this.level).getWarp(wid);
   if(!wrp) { return; } /* Error */
 
+if(this.game instanceof Lobby) {
+  if(wid === 232) {
+    app.menu.main.menuMusic.src = "audio/lobby/lobbyspecial-pizzatower.mp3";
+    app.menu.main.menuMusic.load();
+    app.menu.main.menuMusic.play();
+  }
+  else if(wid === 149) {
+    if (app.menu.main) {
+      var pref = "audio/lobby/";
+      var music = ["lobby-smb3w1.mp3", "lobby-smb3w4.mp3", "lobby-yi.mp3", "lobby-special.mp3"];
+      app.menu.main.menuMusic.src = pref + music[parseInt(Math.random() * music.length)];
+      app.menu.main.menuMusic.play();
+    }
+  }
+}
+
   if(this.zone !== wrp.zone) {
     /* Unlock camera when warping zones */
     this.game.cameraLockedX = false;
