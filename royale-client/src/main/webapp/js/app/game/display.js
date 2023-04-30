@@ -58,21 +58,21 @@ Display.prototype.draw = function() {
   var dim = zone.dimensions();
   
   context.save();
-  //context.translate(0.5, 0.5);
+  context.translate(0.5, 0.5);
   context.translate(parseInt(this.canvas.width*.5), parseInt(this.canvas.height*.5));
   context.scale(this.camera.scale, this.camera.scale);
   context.translate(parseInt(-this.camera.pos.x*Display.TEXRES), parseInt(-this.camera.pos.y*Display.TEXRES));
   
   /* Draw Game */
-  if (this.drawGame) {
-    if (zone.background.length && !app.settings.disableBg) {
+  if(this.drawGame) {
+    if(zone.background.length && !app.settings.disableBg) {
       for (var i=0; i<zone.background.length; i++) {
         var layer = zone.background[i];
         
         this.drawBackground(layer, false);
         for (var j = 0; j < zone.layers.length; j++) {
           this.drawMap(zone.layers[j].data, false); // Render depth 0
-          if (zone.layers[j].z == 0) {
+          if(zone.layers[j].z == 0) {
             this.drawObject();
             this.drawMap(zone.layers[j].data, true); // Render depth 1
           }
@@ -82,7 +82,7 @@ Display.prototype.draw = function() {
     } else {
       for (var j = 0; j < zone.layers.length; j++) {
         this.drawMap(zone.layers[j].data, false); // Render depth 0
-        if (zone.layers[j].z == 0) {
+        if(zone.layers[j].z == 0) {
           this.drawObject();
           this.drawMap(zone.layers[j].data, true); // Render depth 1
         }
@@ -96,6 +96,11 @@ Display.prototype.draw = function() {
   context.restore();
   this.drawTouch();
   this.drawUI();
+
+  for(var i=0;i<this.game.panel.panels.length;i++) {
+    var panel = this.game.panel.panels[i];
+    if(panel.active) { panel.draw(this, this.resource); }
+  }
 };
 
 /* Draw Background/Foreground */
@@ -106,7 +111,7 @@ Display.prototype.drawBackground = function(layer, depth) {
   var texture = this.resource.getTexture("bg" + layer.z + zone.level + zone.id);
   var tex;
 
-  if (texture.animated !== undefined) {
+  if(texture.animated !== undefined) {
     var frames = texture.frames;
     var delay = texture.delay;
     
@@ -115,12 +120,12 @@ Display.prototype.drawBackground = function(layer, depth) {
     tex = texture;
   }
 
-  if (layer.z < 1 && depth) { return; }
+  if(layer.z < 1 && depth) { return; }
 
-  if (tex) {
+  if(tex) {
     var loopCount = layer.loop || parseInt(dim.x*16/tex.width)+1; //Maybe should be Math.round instead of parseInt
 
-    if (loopCount <= 1) {
+    if(loopCount <= 1) {
       /* Draw once */
       context.drawImage(tex, this.camera.pos.x * layer.speed + layer.offset.x, layer.offset.y, tex.width, tex.height);
     } else {
@@ -153,9 +158,9 @@ Display.prototype.drawMap = function(data, depth) {
       var st;
       var ind = td.index;
 
-      if (ind === 30) { continue; } // Do not render tile 30
+      if(ind === 30) { continue; } // Do not render tile 30
 
-      if (ind in TILE_ANIMATION_FILTERED) {
+      if(ind in TILE_ANIMATION_FILTERED) {
         var anim = TILE_ANIMATION_FILTERED[ind];
         var delay = anim.delay;
         var frame = Math.floor(this.game.frame % (anim.tiles.length * delay) / delay);
@@ -193,8 +198,8 @@ Display.prototype.drawObject = function() {
     var obj = this.game.objects[i];
     if(obj.level === zone.level && obj.zone === zone.id && obj.pid !== this.game.pid) {
       if((obj.pos.x >= cx0 && obj.pos.x <= cx1) || obj instanceof TextObject) {
-        if(obj.write) { if (obj instanceof PlayerObject) {
-          if (!this.game.disableText) { obj.write(names) }
+        if(obj.write) { if(obj instanceof PlayerObject) {
+          if(!this.game.disableText) { obj.write(names) }
         } else { obj.write(texts); } }
         if(obj.draw) { obj.draw(sprites); }
       }
@@ -293,6 +298,7 @@ Display.prototype.drawEffect = function() {
   var texMap = this.resource.getTexture("map");
   var texObj = this.resource.getTexture("obj");
   var texEffects = this.resource.getTexture("effects");
+  var texEmotes = this.resource.getTexture("emotes");
   
   var fxs = [];
   zone.getEffects(fxs);
@@ -305,6 +311,7 @@ Display.prototype.drawEffect = function() {
       case "map" : { tex = texMap; break; }
       case "obj" : { tex = texObj; break; }
       case "effects": { tex = texEffects; break; }
+      case "emotes": { tex = texEmotes; break; }
     }
     
     var st = util.sprite.getSprite(tex, fx.ind);
@@ -381,7 +388,7 @@ Display.prototype.drawUI = function() {
     this.drawGame = false;
   }
 
-  if (this.game.getDebug("level") || this.game.getDebug("zone") || this.game.getDebug("god") || this.game.getDebug("lives") || this.game.getDebug("powerup") || this.game.getDebug("star")) {
+  if(this.game.getDebug("level") || this.game.getDebug("zone") || this.game.getDebug("god") || this.game.getDebug("lives") || this.game.getDebug("powerup") || this.game.getDebug("star")) {
     context.textAlign = "left";
     context.fillStyle = "whitesmoke";
     context.globalAlpha = 1;
@@ -436,11 +443,11 @@ Display.prototype.drawUI = function() {
 
     context.fillStyle = "white";
     context.font = "24px SmbWeb";
-    context.fillText(this.game.coinsCollected + " " + TEXTS["#GAME_COINS_COLLECTED"][app.lang], 0.8 * W, 0.3 * H + 32 + 16 + 20);
+    context.fillText(this.game.coins + " " + TEXTS["#GAME_COINS_COLLECTED"][app.lang], 0.8 * W, 0.3 * H + 32 + 16 + 20);
     
     context.font = "24px SmbOutline";
     context.fillStyle = "#000073";
-    context.fillText(this.game.coinsCollected + " " + TEXTS["#GAME_COINS_COLLECTED"][app.lang], 0.8 * W, 0.3 * H + 32 + 16 + 20);
+    context.fillText(this.game.coins + " " + TEXTS["#GAME_COINS_COLLECTED"][app.lang], 0.8 * W, 0.3 * H + 32 + 16 + 20);
   }
   else {
     context.fillStyle = "white";
@@ -458,11 +465,11 @@ Display.prototype.drawUI = function() {
     context.drawImage(tex, st[0], st[1], Display.TEXRES, Display.TEXRES, 8, 64, 48, 48);
     context.font = "24px SmbWeb";
     context.fillStyle = "white";
-    context.fillText(ctxt, l-42, 100);
+    context.fillText(ctxt, 60, 100);
     
     context.font = "24px SmbOutline";
     context.fillStyle = "#000073";
-    context.fillText(ctxt, l-42, 100);
+    context.fillText(ctxt, 60, 100);
     
     var st = util.sprite.getSprite(app.net.character ? (app.net.character === 3 ? wartex : app.net.character === 2 ? inftex : luitex) : martex, PLAY);
     context.drawImage(app.net.character ? (app.net.character === 3 ? wartex : app.net.character === 2 ? inftex : luitex) : martex, st[0], st[1], Display.TEXRES, Display.TEXRES, 8, 6, 48, 48);
@@ -474,13 +481,13 @@ Display.prototype.drawUI = function() {
     context.fillStyle = "white";
     context.font = "24px SmbWeb";
     context.drawImage(uitex, st[0], st[1], Display.TEXRES, Display.TEXRES, 8, 116, 48, 48);
-    context.fillText(ctxt, l-42, 150);
+    context.fillText(ctxt, 60, 150);
 
     context.font = "24px SmbOutline";
     context.fillStyle = "#000073";
-    context.fillText(ctxt, l-42, 150);
+    context.fillText(ctxt, 60, 150);
 
-    if (this.game.getDebug("lives")) {
+    if(this.game.getDebug("lives")) {
       context.font = "24px SmbWeb";
       context.fillStyle = "white";
       context.fillText("×INF", l-42, 60);
@@ -501,7 +508,7 @@ Display.prototype.drawUI = function() {
     var w;
     if(this.game instanceof Game) {
       context.font = "24px SmbWeb";
-      if (!app.settings.hideTimer) {
+      if(!app.settings.hideTimer) {
         var time = this.game.getGameTimer(this.game.touchMode);
         var w =  context.measureText(time).width;
         context.fillStyle = "white";

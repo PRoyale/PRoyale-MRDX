@@ -50,7 +50,7 @@
           /* There may be some archaic web browser that relies on this and the CSS solution doesn't work, so L. */
           document.addEventListener('touchmove', function(event) {
             event = event.originalEvent || event;
-            if (event.scale !== undefined) { event.preventDefault(); }
+            if(event.scale !== undefined) { event.preventDefault(); }
           }, false);
           </script>
     </head>
@@ -161,7 +161,7 @@
         <div style="bottom: -5%;position: relative">
           <img src="./img/home/go.png" id="play-go" class="button-go">
           <span style="margin-left:20px"></span>
-          <div class="tooltip"><img src="./img/home/private.png" id="play-priv" class="button-private"><span class="tooltip-text" style="margin-left:-170%;top:-75px;" id="play-privtext">Solo game for testing</span></div>
+          <div class="tooltip"><img src="./img/home/private.png" class="button-private-guest"><span class="tooltip-text" style="margin-left:-170%;top:-75px;" id="play-privtext">Register an account to play on private lobbies</span></div>
         </div>
       </div>
 
@@ -177,7 +177,22 @@
         <div style="bottom: -5%;position: relative">
           <img src="./img/home/go.png" id="playMember-go" class="button-go">
           <span style="margin-left:20px"></span>
-          <div class="tooltip"><img src="./img/home/private.png" id="playMember-priv" class="button-private"><span class="tooltip-text" style="margin-left:-170%;top:-75px;" id="playMember-privtext">Solo game for testing</span></div>
+          <img src="./img/home/private.png" id="playMember-priv" class="button-private">
+        </div>
+      </div>
+
+      <!-- Private Game - Logged In only -->
+      <div id="private" class="container-password" style="height:430px;display:none;">
+        <span style="position:absolute;right: 10px" id="private-close">x</span>
+        <p id="private-title">Private Game</p>
+        <input class="profile-nickname" id="private-code" placeholder="Room Code" style="margin-block-end: 1em" maxlength="15">
+        <div style="image-rendering: pixelated">
+          <img id="private-royale" src="img/home/vanilla.png" style="width: 192px;height: 192px">
+          <img id="private-pvp" src="img/home/pvp.png" style="width: 192px;height: 192px">
+        </div>
+        
+        <div style="bottom: -5%;position: relative">
+          <img src="./img/home/go.png" id="private-go" class="button-go">
         </div>
       </div>
       
@@ -214,11 +229,11 @@
       </div>
 
       <!-- World Selection -->
-      <div id='worlds' class='container-private' style="display: none">
+      <div id="worlds" class='container-private' style="display: none">
         <span id="wrldbtn" style="border: 2px solid #FFF">Worlds</span> <span id="debgbtn">Debug</span>
         <div id='wrld' style="margin-top: 15px">
-          <select name='levels' id='levels'><option disabled value="" selected>-- Select World --</option></select>
-          <p><span id="updone">Custom</span> <input type="file" id="levelSelectInput" name="levelSelectInput[]" accept=".json,.game,.txt"></p>
+          <div id="levels"></div>
+          <p><span id="custom">Custom</span> <input type="file" id="levelSelectInput" name="levelSelectInput[]" accept=".json,.game,.txt"></p>
         </div>
         <div id='debg' style='display:none'>
           <p style="display: inline">Infinite Lives</p><input type="checkbox" id="infLives"><br>
@@ -286,7 +301,7 @@
       </div>
 
       <!-- Controls -->
-      <div id="controls" class="container-password" style="display:none;height:470px;">
+      <div id="controls" class="container-password" style="display:none;height:505px;top:10%;">
         <span style="position: absolute;right: 10px;top: 4px;" id="controls-close">x</span>
         <p id="controlsTitle">Controls</p>
 
@@ -299,6 +314,7 @@
             <div><span class="n">🢂</span><button class="i" onclick="controlApp.setK('right')">Set</button><span class="v" id="key-right">0x44</span></div>
             <div><span class="n">A</span><button class="i" onclick="controlApp.setK('a')">Set</button><span class="v" id="key-a">0x20</span></div>
             <div><span class="n">B</span><button class="i" onclick="controlApp.setK('b')">Set</button><span class="v" id="key-b">0x10</span></div>
+            <div><span class="na">EMOTE</span><button class="i" onclick="controlApp.setK('emote')">Set</button><span class="v" id="key-emote">0x10</span></div>
           </div>
           <button class="i" onclick="controlApp.reset('K')" id="control-resetk">Reset</button>
         </div>
@@ -312,6 +328,7 @@
             <div><span class="n">🢂</span><button class="i" onclick="controlApp.setG('right')">Set</button><span class="v" id="pad-right">0x3</span></div>
             <div><span class="n">A</span><button class="i" onclick="controlApp.setG('a')">Set</button><span class="v" id="pad-a">0x4</span></div>
             <div><span class="n">B</span><button class="i" onclick="controlApp.setG('b')">Set</button><span class="v" id="pad-b">0x5</span></div>
+            <div><span class="na">EMOTE</span><button class="i" onclick="controlApp.setG('emote')">Set</button><span class="v" id="pad-emote">0x5</span></div>
           </div>
           <button class="i" onclick="controlApp.reset('G')" id="control-resetg">Reset</button>
         </div>
@@ -328,6 +345,7 @@
             <span class="n" id="test-right">🢂</span>
             <span class="n" id="test-a">A</span>
             <span class="n" id="test-b">B</span>
+            <span class="n" id="test-emote">EMOTE</span>
           </div>
         </div>
       </div>
@@ -349,19 +367,19 @@
         <span style="position: absolute;right: 10px;top: 4px;" id="changelog-close">x</span>
         <p style="margin-bottom: 0" id="changelogTitle">Changelog</p>
         <div id="changelog-container">
-          <h1>Version 4.0.0</h1>
-          <h2>April 16, 2023 - Major Update</h2>
-          <p>Added translations</p>
-          <p class="note">Click the globe button in the top right to change the game language!</p>
-          <p class="note">Major thanks to dimension for the Spanish translation, RayTheMaymay for the Brazilian Portuguese translation, and Pyriel for the French translation!</p>
-          <p class="note">Also thanks to Captain for the globe button!</p>
-          <p>Added new areas to the lobby</p>
-          <p>The raccoon leaf uses a smoother attacking animation now</p>
-          <p>Enemies have a better dying animation when you kill them with the leaf or a fireball</p>
-          <p>The game now uses the font outline accurate to the original SMAS game</p>
-          <p>Fixed being able to jump over the flagpole in World 2-1</p>
-          <p>Fixed rare tile animation glitches in the menu background</p>
-          <p>Reverted world file indentation due to inflated file sizes</p>
+          <h1>Version 4.1.0</h1>
+          <h2>April 30, 2023 - Major Update</h2>
+          <p>Added Emotes</p>
+          <p class="note">Press Left-Shift to toggle the emote menu and numbers 1-8 to pick an emote</p>
+          <p>Added Private Lobbies</p>
+          <p class="note">Click the "Private" button on the play menu and enter a room code to make a private lobby</p>
+          <p class="note">If there's no room code, then you'll be put into a singleplayer private game</p>
+          <p class="note">Please note that you need an account to play in private lobbies</p>
+          <p>Pressing the return to menu/lobby buttons doesn't refresh the page anymore</p>
+          <p>Collecting a life by getting 30 coins no longer resets the coin counter to 0</p>
+          <p>Added the option to use a custom URL to load audio from in custom worlds</p>
+          <p>Fixed a bug with the editor replace tool</p>
+          <p>Fixed guest names not being uppercased like registered names</p>
         </div>
         <div class="past-patches" onclick="window.open('https://github.com/mroyale/MarioRoyaleDeluxe/blob/main/patch.md')">Past Patches</div>
         </div>
@@ -378,8 +396,8 @@
         <div id="sfx_vol"></div>
         <div id="hideTimer">[ ] Hide In-Game Timer</div>
         <div id="disableBackground" style="margin-block-end:0.5em;">[ ] Disable Backgrounds</div>
-        <div id="settings-returnMain" style="display:none;" onclick='Cookies.set("skip_disclaimer", "1");location.reload();'>Return to Main Menu</div>
-        <div id="settings-returnLobby" style="display:none;" onclick='Cookies.set("go_to_lobby", "1");location.reload();'>Return to Lobby</div>
+        <div id="settings-returnMain" style="display:none;" onclick='app.close();'>Return to Main Menu</div>
+        <div id="settings-returnLobby" style="display:none;" onclick='app.close(true);'>Return to Lobby</div>
       </div>
 
       <!-- Message Block -->
@@ -390,8 +408,8 @@
       <!-- Return to Main/Lobby -->
       <!-- Stolen from Legacy. If it ain't broke, don't fix it. -->
       <div id='return' class='container-return' style='display: none'>
-        <span id='return-main' class='launch' onclick='Cookies.set("skip_disclaimer", "1");location.reload();'>Return to Main</span><br>
-        <span id='return-lobby' class='launch' onclick='Cookies.set("go_to_lobby", "1");location.reload();'>Return to Lobby</span>
+        <span id='return-main' class='launch' onclick='app.close();'>Return to Main</span><br>
+        <span id='return-lobby' class='launch' onclick='app.close(true);'>Return to Lobby</span>
       </div>
 
       <!-- Dev Console -->
@@ -413,9 +431,9 @@
       
       <!-- Game -->
       <div id='game' class='fullscreen' oncontextmenu="return false">
-          <canvas id="game-canvas" width="320" height="240">
-            Your browser doesn’t appear to support the <code>&lt;canvas&gt;</code> element.
-          </canvas>
+        <canvas id="game-canvas" width="320" height="240">
+          Your browser doesn’t appear to support the <code>&lt;canvas&gt;</code> element.
+        </canvas>
       </div>
       
       <!-- Libs -->
@@ -503,6 +521,7 @@
       <script src='js/app/game/effect/transform.js'></script>
       <script src='js/app/game/effect/explode.js'></script>
       <script src='js/app/game/effect/1up.js'></script>
+      <script src='js/app/game/effect/emote.js'></script>
       <script src='js/app/game/panel/panel.js'></script>
       <script src='js/app/game/panel/emote.js'></script>
       <script src='js/app/game/input.js'></script>

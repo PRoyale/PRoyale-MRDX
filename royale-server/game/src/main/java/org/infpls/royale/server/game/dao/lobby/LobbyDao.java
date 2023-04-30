@@ -43,7 +43,7 @@ public class LobbyDao {
       if(!db.exists()) { 
         dbExists = false;
       }
-      if (dbExists) {
+      if(dbExists) {
         Scanner reader = new Scanner(db);
         while (reader.hasNextLine()) {
           database = reader.nextLine();
@@ -57,7 +57,7 @@ public class LobbyDao {
     
     loggedIn = new HashMap<String, String>();
     accounts = new Gson().fromJson(database, new TypeToken<List<RoyaleAccount>>() {}.getType());
-    if (accounts == null) {
+    if(accounts == null) {
       accounts = Collections.synchronizedList(new ArrayList());
     }
   }
@@ -65,7 +65,7 @@ public class LobbyDao {
   public RoyaleAccount findAccount(String username) {
     for(int i=0;i<accounts.size();i++) {
       final RoyaleAccount account = accounts.get(i);
-      if (account.username.equals(username) || account.nickname.equals(username)) {
+      if(account.username.equals(username) || account.nickname.equals(username)) {
         return account;
       }
     }
@@ -190,21 +190,35 @@ public class LobbyDao {
     }
   }
 
-  public GameLobby createLobby(boolean priv, String mode) throws IOException {
-    GameLobby lobby = new OfficialLobby(priv, mode);
+  public GameLobby createLobby(boolean priv, String mode, String room) throws IOException {
+    GameLobby lobby = new OfficialLobby(priv, mode, room);
     lobbies.add(lobby);
     lobby.start();
     return lobby;
   }
 
   /* Returns a lobby with open space for a player to join. */
-  public GameLobby findLobby(boolean priv, int mode) throws IOException {
+  public GameLobby findLobby(boolean priv, int mode, String room) throws IOException {
     cleanUp();
     String[] GAMEMODES = { "vanilla", "pvp" };
-    //if(mode < 0 || mode >= GAMEMODES.length) { mode = 0; }
     String gameMode = GAMEMODES[mode];
 
-    if (priv) { return createLobby(true, gameMode); }
+    if(priv) {
+      if(room.length() > 0) {
+        for(int i=0;i<lobbies.size();i++) {
+          final GameLobby lobby = lobbies.get(i);
+
+          if(lobby.isPrivate() && !lobby.isFull() && !lobby.isLocked() && lobby.getMode() == gameMode && lobby.getCode().equals(room)) {
+            return lobby;
+          }
+        }
+
+        return createLobby(true, gameMode, room);
+      } else {
+        return createLobby(true, gameMode, "");
+      }
+
+    }
 
     for(int i=0;i<lobbies.size();i++) {
       final GameLobby lobby = lobbies.get(i);
@@ -213,7 +227,7 @@ public class LobbyDao {
         return lobby;
       }
     }
-    final GameLobby lobby = createLobby(priv, gameMode);
+    final GameLobby lobby = createLobby(false, gameMode, "public");
     return lobby;
   }
   

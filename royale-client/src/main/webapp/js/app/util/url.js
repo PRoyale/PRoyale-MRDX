@@ -9,8 +9,8 @@ let TILE_ANIM_BG_FILTERED = [];
 /* This function gets the assets file for animations. */
 
 (function() {
-    $.getJSON(/royale/ + 'assets/assets.json', function(data) {
-        if (data.tileAnim) {
+    $.getJSON(/royale/ + "assets/assets.json", function(data) {
+        if(data.tileAnim) {
             for (var anim of data.tileAnim) {
                 var obj = {};
                 obj.tiles = anim.tiles;
@@ -24,50 +24,67 @@ let TILE_ANIM_BG_FILTERED = [];
 
 /* Details on private lobby world selection */
 
-const levelSelectors = [
-    {name: 'SMB :: World 1', worldId: 'world-1' },
-    {name: 'SMB :: World 2', worldId: 'world-2' },
-    {name: 'SMB :: World 3', worldId: 'world-3' },
-    {name: 'SMB :: World 4', worldId: 'world-4' },
-    {name: 'SMB :: World 5', worldId: 'world-5' },
-    {name: 'SMB :: World 6', worldId: 'world-6' },
-    {name: 'SMB :: World 7', worldId: 'world-7' },
-    {name: 'SMB :: World 8', worldId: 'world-8' },
-    {name: 'TLL :: World 1', worldId: 'world-lost'},
-    {name: 'VAN :: Tricorn Kingdom', worldId: 'world-tricorn'},
-    {name: 'PVP :: Mario Kart', worldId: 'pvp-mariokart'},
-    {name: 'PVP :: Super Mario Bros. 2', worldId: 'pvp-smb2'},
-    {name: 'PVP :: Mario Maker Beta', worldId: 'pvp-maker'},
-    {name: 'PVP :: Super Paper Mario', worldId: 'pvp-spm'},
-    {name: 'PVP :: New Super Mario Bros.', worldId: 'pvp-nsmb'},
-    {name: 'PVP :: Blackout', worldId: 'pvp-blackout'},
-    {name: 'PVP :: Unfair Hockey', worldId: 'pvp-hockey'}
+const levelSelectorsVanilla = [
+    {
+        "title": "Super Mario Bros",
+        "levels": [
+            {name: "W1", worldId: "world-1" },
+            {name: "W2", worldId: "world-2" },
+            {name: "W3", worldId: "world-3" },
+            {name: "W4", worldId: "world-4" },
+            {name: "W5", worldId: "world-5" },
+            {name: "W6", worldId: "world-6" },
+            {name: "W7", worldId: "world-7" },
+            {name: "W8", worldId: "world-8" },
+        ]
+    }, {
+        "title": "Misc",
+        "levels": [
+            {name: "Lost 1", worldId: "world-lost"},
+            {name: "Tricorn", worldId: "world-tricorn"}
+        ]
+    }
+];
+
+const levelSelectorsPVP = [
+    {
+        "title": "World Select",
+        "levels": [
+            {name: "MK", worldId: "pvp-mariokart"},
+            {name: "SMB2", worldId: "pvp-smb2"},
+            {name: "Maker", worldId: "pvp-maker"},
+            {name: "SPM", worldId: "pvp-spm"},
+            {name: "NSMB", worldId: "pvp-nsmb"},
+            {name: "Blackout", worldId: "pvp-blackout"},
+            {name: "Hockey", worldId: "pvp-hockey"}
+        ]
+    }
 ];
 
 /* Editor */
 
 const mapsheets = [
-    {name: 'Super Mario Bros. 1', url: "img/game/smb_map.png"},
-    {name: 'Super Mario Bros. 2', url: "img/game/smb2_map.png"},
-    {name: 'Tricorn Kingdom', url: "img/game/tricorn_map.png"},
-    {name: 'Mario Kart (PVP)', url: "img/game/mariokart_map.png"},
-    {name: 'Rainbow Road (PVP)', url: "img/game/rainbowroad_map.png"},
-    {name: 'Maker 2014 (PVP)', url: "img/game/maker_map.png"},
-    {name: 'Super Paper Mario (PVP)', url: "img/game/spm_map.png"},
-    {name: 'New Super Mario Bros. (PVP)', url: "img/game/nsmb_map.png"},
-    {name: 'Blackout (PVP)', url: "img/game/blackout_map.png"},
-    {name: 'Unfair Hockey (PVP)', url: "img/game/hockey_map.png"},
-    {name: 'Lobby', url: "https://raw.githubusercontent.com/RayTheMaymay/hostingthings/main/lobby.png"},
-    {name: 'Custom', url: "custom"}
+    {name: "Super Mario Bros. 1", url: "img/game/smb_map.png"},
+    {name: "Super Mario Bros. 2", url: "img/game/smb2_map.png"},
+    {name: "Tricorn Kingdom", url: "img/game/tricorn_map.png"},
+    {name: "Mario Kart (PVP)", url: "img/game/mariokart_map.png"},
+    {name: "Rainbow Road (PVP)", url: "img/game/rainbowroad_map.png"},
+    {name: "Maker 2014 (PVP)", url: "img/game/maker_map.png"},
+    {name: "Super Paper Mario (PVP)", url: "img/game/spm_map.png"},
+    {name: "New Super Mario Bros. (PVP)", url: "img/game/nsmb_map.png"},
+    {name: "Blackout (PVP)", url: "img/game/blackout_map.png"},
+    {name: "Unfair Hockey (PVP)", url: "img/game/hockey_map.png"},
+    {name: "Lobby", url: "https://raw.githubusercontent.com/RayTheMaymay/hostingthings/main/lobby.png"},
+    {name: "Custom", url: "custom"}
 ];
 
 const objsheets = [
-    {name: 'Super Mario Bros. 1', url: "img/game/smb_obj.png"},
-    {name: 'Super Mario Maker 2014', url: "img/game/maker_obj.png"},
-    {name: 'Tricorn Kingdom', url: "img/game/tricorn_obj.png"},
-    {name: 'New Super Mario Bros. (PVP)', url: "img/game/nsmb_obj.png"},
-    {name: 'Unfair Hockey (PVP)', url: "img/game/hockey_obj.png"},
-    {name: 'Custom', url: "custom"},
+    {name: "Super Mario Bros. 1", url: "img/game/smb_obj.png"},
+    {name: "Super Mario Maker 2014", url: "img/game/maker_obj.png"},
+    {name: "Tricorn Kingdom", url: "img/game/tricorn_obj.png"},
+    {name: "New Super Mario Bros. (PVP)", url: "img/game/nsmb_obj.png"},
+    {name: "Unfair Hockey (PVP)", url: "img/game/hockey_obj.png"},
+    {name: "Custom", url: "custom"},
 ];
 
 const assetsurl = [
@@ -110,13 +127,13 @@ const soundPaths = [
 
 function uploadFile(binary, event, callback) {
     var files = event.target.files;
-    if (files.length == 0) return;
+    if(files.length == 0) return;
     var reader = new FileReader();
-    reader.onload = function (event) {
+    reader.onload = function(event) {
         callback(event.target.result);
     }
     var file = files[0];
-    if (binary)
+    if(binary)
         reader.readAsBinaryString(file);
     else
         reader.readAsText(file);
@@ -134,7 +151,7 @@ function hexToRgb(hex) {
 function gzipToText(input) {
     try {
         var stringValue = atob(input.trim());
-        var charArray = stringValue.split('').map(function(x){return x.charCodeAt(0);});
+        var charArray = stringValue.split("").map(function(x){return x.charCodeAt(0);});
         return pako.inflate(charArray, { to: "string" });
     } catch (error) {
         throw new Error("Value is not a valid GZIP compressed text.");

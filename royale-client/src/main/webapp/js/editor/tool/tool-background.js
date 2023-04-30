@@ -26,12 +26,12 @@ function ToolBackground(editor) {
 
 ToolBackground.prototype.addLayer = function() {
   var z = parseInt(window.prompt("Choose Z [less than 1 will appear behind the zone, greater will appear infront of the zone]"));
-  if (isNaN(z)) return alert("Invalid value.");
-  if (!this.zone.background) this.zone.background = [];
+  if(isNaN(z)) return alert("Invalid value.");
+  if(!this.zone.background) this.zone.background = [];
   var i=0;
   for (; i<this.zone.background.length; ++i) {
-      if (this.zone.background[i].z == z) return alert("There is already a layer with this Z value ("+z+")");
-      if (this.zone.background[i].z > z) break;
+      if(this.zone.background[i].z == z) return alert("There is already a layer with this Z value ("+z+")");
+      if(this.zone.background[i].z > z) break;
   }
 
   var layer = {"z":z, "url": "", "offset": vec2.make(0, 0), "speed": 0, "loop": 0};
@@ -58,7 +58,7 @@ ToolBackground.prototype.apply = function() {
   var zone = this.editor.currentZone;
   
   for (var i=0; i<zone.background.length; i++) {
-    if (zone.background[i].z === this.editor.currentBgLayer.z) {
+    if(zone.background[i].z === this.editor.currentBgLayer.z) {
       zone.background[i] = { 'z': this.editor.currentBgLayer.z, 'url': this.valURL.value, 'offset': vec2.make(parseInt(this.valXOffset.value), parseInt(this.valYOffset.value)), 'speed': parseFloat(this.valSpeed.value), 'loop': parseInt(this.valLoop.value) };
     }
   }
@@ -81,7 +81,7 @@ ToolBackground.prototype.load = function() {
   this.zone = this.editor.currentZone;
   var layer = this.editor.currentBgLayer;
 
-  if (layer) {
+  if(layer) {
     this.valURL.value = layer.url || "";
     this.valXOffset.value = layer.offset.x || "0";
     this.valYOffset.value = layer.offset.y || "0";
@@ -94,7 +94,7 @@ ToolBackground.prototype.load = function() {
 };
 
 ToolBackground.prototype.save = function() {
-  if (this.container.style.display === "none") { return; }
+  if(this.container.style.display === "none") { return; }
 
   try {
     var x = parseInt(this.valXOffset.value);  // X Offset

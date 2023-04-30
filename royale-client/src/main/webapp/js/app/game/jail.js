@@ -15,7 +15,7 @@ Jail.prototype.send = Game.prototype.send;
 Jail.prototype.handlePacket = Game.prototype.handlePacket;
 Jail.prototype.updatePlayerList = Game.prototype.updatePlayerList;
 Jail.prototype.gameStartTimer = function() { /* Null for lobby */ };
-Jail.prototype.updateTeam = Game.prototype.updateTeam;
+Jail.prototype.updateLobby = Game.prototype.updateLobby;
 Jail.prototype.handleBinary = Game.prototype.handleBinary;
 Jail.prototype.updatePacket = Game.prototype.updatePacket;
 
@@ -26,6 +26,7 @@ Jail.prototype.doNET010 = Game.prototype.doNET010;
 Jail.prototype.doNET011 = Game.prototype.doNET011;
 Jail.prototype.doNET012 = Game.prototype.doNET012;
 Jail.prototype.doNET013 = Game.prototype.doNET013;
+Jail.prototype.doNET014 = Game.prototype.doNET014;
 Jail.prototype.doNET020 = Game.prototype.doNET020;
 Jail.prototype.doNET030 = Game.prototype.doNET030;
 

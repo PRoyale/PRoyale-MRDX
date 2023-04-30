@@ -1,21 +1,32 @@
 "use strict";
 /* global app */
-/* global util, vec2 */
 
-/* Abstract parent class */
 function Panel(game) {  
   this.game = game;
 
+  this.panels = [];
+
   for(var i=0;i<Panel.REGISTERED_PANELS.length;i++) {
-    this[Panel.REGISTERED_PANELS[i].NAME] = Panel.REGISTERED_PANELS[i];
+    this.panels.push(new Panel.REGISTERED_PANELS[i]);
   }
 };
 
-Panel.prototype.step = function() {};
+Panel.prototype.step = function() {
+  var keys = this.game.input.keyboard.keys;
 
-Panel.prototype.destroy = function() {};
+  for(var i=0;i<this.panels.length;i++) {
+    var panel = this.panels[i];
+    
+    if(!this["inx" + panel.input] && keys[panel.input]) {
+      if(!panel.active && panel.cooldown === -1) { panel.active = true; }
+      else { panel.active = false; }
+      this["inx" + panel.input] = true;
+    };
+    this["inx" + panel.input] = keys[panel.input];
 
-Panel.prototype.draw = function(fxs) { /* Abstract */ };
+    panel.step(this);
+  }
+};
 
 /* ====== STATIC ====== */
 Panel.REGISTERED_PANELS = [];

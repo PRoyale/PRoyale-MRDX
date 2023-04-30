@@ -35,9 +35,9 @@ ToolResources.prototype.update = function() {
   (this.objs.value === "custom") ? this.cobjs.disabled = false : this.cobjs.disabled = true;
   (this.assets.value === "custom") ? this.cassets.disabled = false : this.cassets.disabled = true;
 
-  if (!(this.maps.value) in maps) { this.cmaps.value = this.maps.value; this.maps.value = "custom"; this.cmaps.disabled = false; }
-  if (!(this.objs.value) in objs) { this.cobjs.value = this.objs.value; this.objs.value = "custom"; this.cobjs.disabled = false; }
-  if (!(this.assets.value) in asts) { this.cassets.value = this.assets.value; this.assets.value = "custom"; this.cassets.disabled = false; }
+  if(!(this.maps.value) in maps) { this.cmaps.value = this.maps.value; this.maps.value = "custom"; this.cmaps.disabled = false; }
+  if(!(this.objs.value) in objs) { this.cobjs.value = this.objs.value; this.objs.value = "custom"; this.cobjs.disabled = false; }
+  if(!(this.assets.value) in asts) { this.cassets.value = this.assets.value; this.assets.value = "custom"; this.cassets.disabled = false; }
 };
 
 ToolResources.prototype.reload = function() {

@@ -204,7 +204,7 @@ td32.TILE_PROPERTIES = {
         /* Stand */
         case 0x00 :
         case 0x05 : {
-          if (game.pid === pid) {
+          if(game.pid === pid) {
             var data = Math.max(0, Math.min(1, parseInt(td.data) || 0));
             switch (data) {
               case 1 : { game.getPlayer().kill(); break; }
@@ -226,7 +226,7 @@ td32.TILE_PROPERTIES = {
       switch(type) {
         /* Touch */
         case 0x00 : {
-          if (game.pid === pid) {
+          if(game.pid === pid) {
             game.getPlayer().damage();
           }
           break;
@@ -267,7 +267,7 @@ td32.TILE_PROPERTIES = {
         case 0x10 :
         case 0x11 :
         case 0x04 : {
-          if (game.pid === pid) { game.out.push(NET030.encode(level, zone, shor2.encode(x, y), type)); }
+          if(game.pid === pid) { game.out.push(NET030.encode(level, zone, shor2.encode(x, y), type)); }
           game.world.getZone(level, zone).flip(x, y, parseInt(td.data));
           td32.GEN_FUNC.BUMP(game, pid, td, level, zone, x, y, type);
           game.world.getZone(level, zone).play(x, y, "bump.mp3", 1., 0.04);
@@ -304,7 +304,7 @@ td32.TILE_PROPERTIES = {
       switch (type) {
         /* Stand */
         case 0x05: {
-            if (game.pid === pid) { game.getPlayer().bounce(); game.out.push(NET030.encode(level, zone, shor2.encode(x, y), type)); }
+            if(game.pid === pid) { game.getPlayer().bounce(); game.out.push(NET030.encode(level, zone, shor2.encode(x, y), type)); }
             td32.GEN_FUNC.BUMP(game, pid, td, level, zone, x, y, type);
             break;
         }
@@ -313,7 +313,7 @@ td32.TILE_PROPERTIES = {
         /* Big Bump */
         case 0x10:
         case 0x11: {
-            if (game.pid === pid) { game.out.push(NET030.encode(level, zone, shor2.encode(x, y), type)); }
+            if(game.pid === pid) { game.out.push(NET030.encode(level, zone, shor2.encode(x, y), type)); }
             td32.GEN_FUNC.BUMP(game, pid, td, level, zone, x, y, type);
             break;
         }
@@ -327,13 +327,13 @@ td32.TILE_PROPERTIES = {
     COLLIDE: true,
     HIDDEN: false,
     ASYNC: true,
-    TRIGGER: function (game, pid, td, level, zone, x, y, type) {
+    TRIGGER: function(game, pid, td, level, zone, x, y, type) {
         switch (type) {
             /* Stand */
             /* Shell */
             case 0x05:
             case 0x04: {
-                if (game.pid === pid) { game.getPlayer().bounce(); game.out.push(NET030.encode(level, zone, shor2.encode(x, y), type)); }
+                if(game.pid === pid) { game.getPlayer().bounce(); game.out.push(NET030.encode(level, zone, shor2.encode(x, y), type)); }
 
                 var rep = td32.encode(td.index, 0, td.depth, 0xb, 0); // Replacement td32 data for tile.
                 game.world.getZone(level, zone).replace(x, y, rep);
@@ -349,7 +349,7 @@ td32.TILE_PROPERTIES = {
             /* Big bump */
             case 0x10:
             case 0x11: {
-                if (game.pid === pid) { game.out.push(NET030.encode(level, zone, shor2.encode(x, y), type)); }
+                if(game.pid === pid) { game.out.push(NET030.encode(level, zone, shor2.encode(x, y), type)); }
                 var rep = [td.index, 0, td.depth, 0xb, 0]; // Replacement td32 data for tile.
                 game.world.getZone(level, zone).replace(x, y, rep);
                 game.createObject(td.data, level, zone, vec2.make(x, y), [shor2.encode(x, y), false, false]);
@@ -369,7 +369,7 @@ td32.TILE_PROPERTIES = {
     HIDDEN: false,
     ASYNC: false,
     ICE: true,
-    TRIGGER: function (game, pid, td, level, zone, x, y, type, obj) {
+    TRIGGER: function(game, pid, td, level, zone, x, y, type, obj) {
         switch (type) {
             /* Fireball */
             case 0x03: {
@@ -458,7 +458,7 @@ td32.TILE_PROPERTIES = {
     HIDDEN: true,
     ASYNC: false,
     TRIGGER: function(game, pid, td, level, zone, x, y, type) {
-      if (type === 0x10 || type === 0x11 || type === 0x04) {
+      if(type === 0x10 || type === 0x11 || type === 0x04) {
         if(game.pid === pid) { game.out.push(NET030.encode(level, zone, shor2.encode(x,y), type)); }
         var ply = game.getPlayer();
         var rep = [27, 0, 1, 1, 0] // Replacement td32 data for tile.
@@ -591,7 +591,7 @@ td32.TILE_PROPERTIES = {
     HIDDEN: false,
     ASYNC: false,
     TRIGGER: function(game, pid, td, level, zone, x, y, type) {
-      if (type === 0x10 || type === 0x11 || type === 0x04) {
+      if(type === 0x10 || type === 0x11 || type === 0x04) {
         if(game.pid === pid) { game.out.push(NET030.encode(level, zone, shor2.encode(x,y), type)); }
         var ply = game.getPlayer();
         var rep = [27, 0, 1, 1, 0] // Replacement td32 data for tile.
@@ -916,22 +916,22 @@ td32.TILE_PROPERTIES = {
     COLLIDE: true,
     HIDDEN: false,
     ASYNC: true,
-    TRIGGER: function (game, pid, td, level, zone, x, y, type) {
+    TRIGGER: function(game, pid, td, level, zone, x, y, type) {
       switch (type) {
           /* Small+Big Bump */
           case 0x10:
           case 0x11: {
-            if (game.pid === pid) {
+            if(game.pid === pid) {
               var ply = game.getPlayer();
               var l = game.world.getZone(level, zone).getTile(vec2.make(x - 1, y));
               var r = game.world.getZone(level, zone).getTile(vec2.make(x + 1, y));
 
               var cx;
-              if (l.definition === this) { cx = x; }
-              else if (r.definition === this) { cx = x + 1; }
+              if(l.definition === this) { cx = x; }
+              else if(r.definition === this) { cx = x + 1; }
               else { return; }
 
-              if (Math.abs((ply.pos.x + (ply.dim.x * .5)) - cx) <= 0.45 && ply.btnU) { ply.pipe(1, parseInt(td.data), 50); }
+              if(Math.abs((ply.pos.x + (ply.dim.x * .5)) - cx) <= 0.45 && ply.btnU) { ply.pipe(1, parseInt(td.data), 50); }
             }
 
             break;
@@ -946,22 +946,22 @@ td32.TILE_PROPERTIES = {
     COLLIDE: true,
     HIDDEN: false,
     ASYNC: true,
-    TRIGGER: function (game, pid, td, level, zone, x, y, type) {
+    TRIGGER: function(game, pid, td, level, zone, x, y, type) {
       switch (type) {
           /* Small+Big Bump */
           case 0x10:
           case 0x11: {
-            if (game.pid === pid) {
+            if(game.pid === pid) {
               var ply = game.getPlayer();
               var l = game.world.getZone(level, zone).getTile(vec2.make(x - 1, y));
               var r = game.world.getZone(level, zone).getTile(vec2.make(x + 1, y));
 
               var cx;
-              if (l.definition === this) { cx = x; }
-              else if (r.definition === this) { cx = x + 1; }
+              if(l.definition === this) { cx = x; }
+              else if(r.definition === this) { cx = x + 1; }
               else { return; }
 
-              if (Math.abs((ply.pos.x + (ply.dim.x * .5)) - cx) <= 0.45 && ply.btnU) { ply.pipe(1, parseInt(td.data), 0); }
+              if(Math.abs((ply.pos.x + (ply.dim.x * .5)) - cx) <= 0.45 && ply.btnU) { ply.pipe(1, parseInt(td.data), 0); }
             }
 
             break;
@@ -982,7 +982,7 @@ td32.TILE_PROPERTIES = {
         case 0x01 : {
           if(game.pid === pid) {
             var ply = game.getPlayer();
-            if (parseInt(ply.pos.x) === x || ply.pos.x + 0.1 === x || ply.pos.x - 0.1 === x) ply.pipe(2, parseInt(td.data), 50);
+            if(parseInt(ply.pos.x) === x || ply.pos.x + 0.1 === x || ply.pos.x - 0.1 === x) ply.pipe(2, parseInt(td.data), 50);
           }
         }
       }
@@ -1001,7 +1001,7 @@ td32.TILE_PROPERTIES = {
         case 0x01 : {
           if(game.pid === pid) {
             var ply = game.getPlayer();
-            if (parseInt(ply.pos.x) === x || ply.pos.x + 0.1 === x || ply.pos.x - 0.1 === x) ply.pipe(2, parseInt(td.data), 0);
+            if(parseInt(ply.pos.x) === x || ply.pos.x + 0.1 === x || ply.pos.x - 0.1 === x) ply.pipe(2, parseInt(td.data), 0);
           }
         }
       }
@@ -1080,12 +1080,12 @@ td32.TILE_PROPERTIES = {
     HIDDEN: false,
     ASYNC: false,
     TRIGGER: function(game, pid, td, level, zone, x, y, type) {
-      if (game.pid !== pid) { return; }
+      if(game.pid !== pid) { return; }
 
       switch(type) {
         /* Touch */
         case 0x00: {
-          if (!(td.data) || !(td.data.trim())) { app.menu.warn.show("Faulty music value."); return; }
+          if(!(td.data) || !(td.data.trim())) { app.menu.warn.show("Faulty music value."); return; }
           game.getZone().musicBlock = td.data;
         }
       }
@@ -1103,8 +1103,8 @@ td32.TILE_PROPERTIES = {
         /* Big bump */
         case 0x10 :
         case 0x11 : {
-          if (!game.pid === pid) { return; }
-          if (game.messageTimer) { clearTimeout(game.messageTimer); }
+          if(!game.pid === pid) { return; }
+          if(game.messageTimer) { clearTimeout(game.messageTimer); }
 
           var tmp = document.getElementById("messageBlock");
 
@@ -1136,6 +1136,7 @@ NETX.decode = function(/* Uint8Array */ data) {
       case 0x11 : { de.push(NET011.decode(data.slice(i, i+=NET011.BYTES-1))); break; }
       case 0x12 : { de.push(NET012.decode(data.slice(i, i+=NET012.BYTES-1))); break; }
       case 0x13 : { de.push(NET013.decode(data.slice(i, i+=NET013.BYTES-1))); break; }
+      case 0x14 : { de.push(NET014.decode(data.slice(i, i+=NET014.BYTES-1))); break; }
       case 0x17 : { de.push(NET017.decode(data.slice(i, i+=NET017.BYTES-1))); break; }
       case 0x18 : { de.push(NET018.decode(data.slice(i, i+=NET018.BYTES-1))); break; }
       case 0x20 : { de.push(NET020.decode(data.slice(i, i+=NET020.BYTES-1))); break; }
@@ -1288,6 +1289,25 @@ NET013.decode = function(/* NET013_SERV */ a) {
     designation: NET013.DESIGNATION,
     pid: (a[1] & 0x00FF) | ((a[0] << 8) & 0xFF00),
     type: a[2]
+  };
+};
+
+var NET014 = {}; // PLAYER_EMOTE_EVENT [0x14] // As Uint8Array
+/* ======================================================================================== */
+NET014.DESIGNATION = 0x14;
+NET014.BYTES = 4;
+
+/* Client->Server */
+NET014.encode = function(/* byte */ emote) {
+  return new Uint8Array([NET014.DESIGNATION, emote]);
+};
+
+/* Server->>>Client */
+NET014.decode = function(/* NET013_SERV */ a) {
+  return {
+    designation: NET014.DESIGNATION,
+    pid: (a[1] & 0x00FF) | ((a[0] << 8) & 0xFF00),
+    emote: a[2]
   };
 };
 

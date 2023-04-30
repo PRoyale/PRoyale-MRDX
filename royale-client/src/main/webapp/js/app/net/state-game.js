@@ -13,6 +13,7 @@ StateGame.prototype.handlePacket = function(packet) {
     case "g01" : { this.load(packet); return true; }
     case "g06" : { this.globalWarn(packet); return true; }
     case "g21" : { this.recievePing(packet); return true; }
+    case "gcl" : { this.changeLevel(packet); return true; }
     default : { return app.ingame() ? app.game.handlePacket(packet) : false; }
   }
 };
@@ -30,48 +31,26 @@ StateGame.prototype.load = function(p) {
   var address = window.location.host;
   var that = this;
 
-  if (app.ingame() && app.game.worldSelected && app.net.prefLobby && !app.game.customLevelData) {
-    $.ajax({
-      url: window.location.protocol + "//" + address + /royale/ + "game/" + app.game.worldSelected,
-      type: 'GET',
-      timeout: 5000,
-      success: function(data) {
-        app.load(data);
-        that.send({type: "g03"});
-      },
-      error: function() {
-        if (e.status === 404) {
-          app.menu.error.show("Server returned FNF(404) for game file: " + p.game);
-        }
-  
-        if (e.status === 200) {
-          app.menu.error.show("Failed to parse game file: " + p.game);
-        }
-      }
-    });
+  if(p.game === "custom") {
+    app.load(JSON.parse(p.data), p.gameMode);
+    that.send({type:"g03"});
     return;
-  }
-
-  if (app.ingame() && app.game.customLevelData && app.net.prefLobby) {
-    app.load(app.game.customLevelData);
-    that.send({type: "g03"});
-    return;
-  }
+  };
   
   $.ajax({
     url: window.location.protocol + "//" + address + /royale/ + "game/" + p.game,
     type: 'GET',
     timeout: 5000,
     success: function(data) {
-      app.load(data);
+      app.load(data, p.gameMode);
       that.send({type: "g03"});
     },
     error: function(e) {
-      if (e.status === 404) {
+      if(e.status === 404) {
         app.menu.error.show("Server returned FNF(404) for game file: " + p.game);
       }
 
-      if (e.status === 200) {
+      if(e.status === 200) {
         app.menu.error.show("Failed to parse game file: " + p.game);
       }
     }
@@ -100,6 +79,13 @@ StateGame.prototype.recievePing = function(p) {
   var now = util.time.now();
   app.net.ping = now - p.delta;
   this.pingOut = false;
+};
+
+// GCL
+StateGame.prototype.changeLevel = function(p) {
+  var game = app.game;
+  if(!(game instanceof Lobby)) { return; }
+  game.changeLevel(p);
 };
 
 StateGame.prototype.send = function(data) {

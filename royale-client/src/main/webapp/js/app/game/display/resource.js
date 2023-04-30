@@ -14,7 +14,7 @@ function Resource(src) {
   this.load(src);
 }
 
-Resource.prototype.load = function (src) {
+Resource.prototype.load = function(src) {
   for(var i=0;i<src.length;i++) {
     var s = src[i];
     var ext = s.src.split(".").pop().toLowerCase();
@@ -26,7 +26,7 @@ Resource.prototype.load = function (src) {
   }
 };
 
-Resource.prototype.loadAnimatedTexture = function (src) {
+Resource.prototype.loadAnimatedTexture = function(src) {
   var tex = this.texture;
   if(tex.cache[src.id]) { return; }
   else {

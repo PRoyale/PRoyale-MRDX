@@ -58,7 +58,7 @@ Menu.prototype.background = function(bid) {
     case 'b' : { toset = "background-b"; break; }
     case 'c' : { toset = "background-c"; break; }
   }
-  if (bid === "a") {
+  if(bid === "a") {
     this.bg.position();
     this.bg.container.style.display = "";
   } else {

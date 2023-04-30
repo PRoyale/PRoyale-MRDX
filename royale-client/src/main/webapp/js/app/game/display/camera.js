@@ -9,7 +9,7 @@ function Camera(display) {
   this.pos = vec2.make(0,0);                // Camera position
 
   var tmp = this;
-  window.onresize = function (e) {
+  window.onresize = function(e) {
     tmp.screenScale = window.innerHeight / 672;
     tmp.scale = tmp.screenScale * 3 + 0.1; // How large we draw each tile. At 1.0 we draw tiles at their native resolution defined by Display.TEXRES.
   }

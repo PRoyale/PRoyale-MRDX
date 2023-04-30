@@ -264,7 +264,7 @@ HammerObject.prototype.attack = function() {
 
 /* Keeps the hammer we are throwing attached to us until it's time to actually throw it */
 HammerObject.prototype.attach = function() {
-  if(this.hammer) { this.hammer.pos = vec2.add(this.pos, HammerObject.PROJ_OFFSET); this.hammer.dir = !this.dir; }
+  if(this.hammer) { this.hammer.pos = vec2.add(this.pos, HammerObject.PROJ_OFFSET); this.hammer.dir = this.dir; }
 };
 
 HammerObject.prototype.playerCollide = function(p) {

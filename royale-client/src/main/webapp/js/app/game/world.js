@@ -124,13 +124,13 @@ function Zone(game, level, data) {
   this.layers = data.layers || []; // All layers which are 2D arrays of td32
 
   /* If we have an (old) level that uses the old data system, adjust. */
-  if (data.data) {
+  if(data.data) {
     for (var i = 0; i < this.layers.length && this.layers[i].z < 0; i++);
     this.layers.splice(i, 0, { z: 0, data: data.data });
   }
 
   this.mainLayer = undefined;
-  for (var layer of this.layers) if (layer.z == 0) {
+  for (var layer of this.layers) if(layer.z == 0) {
       this.mainLayer = layer;
       break;
   }
@@ -149,7 +149,7 @@ function Zone(game, level, data) {
 
 Zone.prototype.getLayer = function(z) {
   for (var i=0; i<this.layers.length; i++) {
-    if (this.layers[i].z == z) {
+    if(this.layers[i].z == z) {
       return this.layers[i];
     }
   }

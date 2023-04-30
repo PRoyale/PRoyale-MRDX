@@ -1,4 +1,18 @@
 # Mario Royale Deluxe Patch Notes
+## Version 4.1.0
+### April 30, 2023 - Major Update
+* Added Emotes
+>   Press Left-Shift to toggle the emote menu and numbers 1-8 to pick an emote
+* Added Private Lobbies
+>   Click the "Private" button on the play menu and enter a room code to make a private lobby
+>   If there's no room code, then you'll be put into a singleplayer private game
+>   Please note that you need an account to play in private lobbies
+* Pressing the return to menu/lobby buttons doesn't refresh the page anymore
+* Collecting a life by getting 30 coins no longer resets the coin counter to 0
+* Added the option to use a custom URL to load audio from in custom worlds
+* Fixed a bug with the editor replace tool
+* Fixed guest names not being uppercased like registered names
+
 ## Version 4.0.0
 ### April 16, 2023 - Major Update
 * Added translations

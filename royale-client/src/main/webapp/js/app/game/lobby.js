@@ -3,18 +3,53 @@
 /* global util, shor2, vec2, td32, MERGE_BYTE */
 /* global Game */
 
-function Lobby(data) {
+function Lobby(data, gameMode) {
   Game.call(this, data);
+  this.gameMode = Number(gameMode === "pvp");
+  this.selectedWorld = "";
 
   var pref = "audio/lobby/";
 
-  if (app.menu.main) {
+  if(app.menu.main) {
     var music = ["lobby-smb3w1.mp3", "lobby-smb3w4.mp3", "lobby-yi.mp3", "lobby-special.mp3"];
     app.menu.main.menuMusic.src = pref + music[parseInt(Math.random() * music.length)];
     app.menu.main.menuMusic.play();
   }
 
+  var levels = document.getElementById("levels");
+  var customLevel = document.getElementById("levelSelectInput");
+
+  customLevel.addEventListener("change", (function() { return function(event) {
+    uploadFile(false, event, function(data) { app.net.send({ 'type': "gsl", 'name': "custom", 'data': data }); });
+  }; })());
+
+  var levelSelector = this.gameMode ? levelSelectorsPVP : levelSelectorsVanilla;
+  levelSelector.forEach(page => {
+    for(var level of page.levels) {
+        var elem = document.createElement("div");
+        elem.className = "level-select-button";
+        elem.id = level.worldId;
+        elem.innerText = level.name;
+        elem.addEventListener("click", (function (id) { return function () { app.net.send({ 'type': "gsl", 'name': id, 'data': "" }); }; })(level.worldId));
+
+        levels.appendChild(elem);
+    }
+  })
+
   this.lobbyTimer = 90;
+};
+
+/* PRIVATE LOBBY / DEV */
+Lobby.prototype.changeLevel = function(p) {
+  if(!this.selectedWorld) {
+    this.selectedWorld = p.world;
+    document.getElementById(p.world).style.border = "2px solid";
+    return;
+  }
+
+  document.getElementById(this.selectedWorld).style.border = "none";
+  this.selectedWorld = p.world;
+  document.getElementById(this.selectedWorld).style.border = "2px solid";
 };
 
 Lobby.prototype.changePrivMenu = Game.prototype.changePrivMenu;
@@ -29,7 +64,7 @@ Lobby.prototype.send = Game.prototype.send;
 Lobby.prototype.handlePacket = Game.prototype.handlePacket;
 Lobby.prototype.updatePlayerList = Game.prototype.updatePlayerList;
 Lobby.prototype.gameStartTimer = function() { /* Null for lobby */ };
-Lobby.prototype.updateTeam = Game.prototype.updateTeam;
+Lobby.prototype.updateLobby = Game.prototype.updateLobby;
 Lobby.prototype.handleBinary = Game.prototype.handleBinary;
 Lobby.prototype.updatePacket = Game.prototype.updatePacket;
 
@@ -40,6 +75,7 @@ Lobby.prototype.doNET010 = Game.prototype.doNET010;
 Lobby.prototype.doNET011 = Game.prototype.doNET011;
 Lobby.prototype.doNET012 = Game.prototype.doNET012;
 Lobby.prototype.doNET013 = Game.prototype.doNET013;
+Lobby.prototype.doNET014 = Game.prototype.doNET014;
 Lobby.prototype.doNET020 = Game.prototype.doNET020;
 Lobby.prototype.doNET030 = Game.prototype.doNET030;
 
@@ -85,6 +121,7 @@ Lobby.prototype.levelWarp = Game.prototype.levelWarp;
 
 Lobby.prototype.coinage = Game.prototype.coinage;
 Lobby.prototype.lifeage = Game.prototype.lifeage;
+Lobby.prototype.emote = Game.prototype.emote;
 
 Lobby.prototype.loop = function() {
   if(this.lobbyTimer > 0) { this.lobbyTimer--; }

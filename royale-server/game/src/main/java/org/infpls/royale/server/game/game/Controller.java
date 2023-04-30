@@ -22,6 +22,7 @@ public class Controller {
   protected short sprite;
   protected byte character;
   public int kills;
+  public int coins;
   
   protected byte result;
   
@@ -52,6 +53,7 @@ public class Controller {
     sprite = 0x00;
     
     result = 0x00;
+    coins = 0x00;
     kills = 0x00;
     
     garbage = false;
@@ -97,6 +99,7 @@ public class Controller {
             case 0x11 : { process011((ByteMe.NET011)n); glo.add(n); break; }
             case 0x12 : { if(process012((ByteMe.NET012)n)) { break; } if(!strikelock) { loc.add(n); } break; }
             case 0x13 : { process013((ByteMe.NET013)n); if(!strike) { glo.add(n); } break; }
+            case 0x14 : { process014((ByteMe.NET014)n); if(!strike) { glo.add(n); } break; }
             case 0x15 : { process015((ByteMe.NET015)n); break; }
             case 0x17 : { process017((ByteMe.NET017)n); break; }
             case 0x18 : {
@@ -104,7 +107,7 @@ public class Controller {
               if(wr == null) { break; }
               else if(!strike) {
                 RoyaleAccount acc = session.getAccount();
-                if (acc != null && session.getPrivate() != true) {
+                if(acc != null && session.getPrivate() != true) {
                   acc.updateWins(1);
                 }
                 glo.add(wr);
@@ -138,7 +141,7 @@ public class Controller {
   /* KILL_PLAYER_OBJECT */
   public void process011(ByteMe.NET011 n) {
     RoyaleAccount acc = session.getAccount();
-    if (acc != null && session.getPrivate() != true) {
+    if(acc != null && session.getPrivate() != true) {
       acc.updateDeaths(1);
     }
 
@@ -210,6 +213,11 @@ private static final byte[] VALID_SPRITES = new byte[] {
       if(game instanceof RoyaleLobby) { strike("Star In Lobby"); }
     }
   }
+
+  /* PLAYER_TAUNT_EVENT */
+  public void process014(ByteMe.NET014 n) {
+
+  }
   
   /* PLAYER_INVALID_MOVE */
   public void process015(ByteMe.NET015 n) {
@@ -223,7 +231,7 @@ private static final byte[] VALID_SPRITES = new byte[] {
     if(kler != null) {
       kler.send(n.encode().array());
       RoyaleAccount klerAcc = kler.session.getAccount();
-      if (klerAcc != null && kler.session.getPrivate() != true) {
+      if(klerAcc != null && kler.session.getPrivate() != true) {
         klerAcc.updateKills(1);
       }
     }
@@ -253,8 +261,9 @@ private static final byte[] VALID_SPRITES = new byte[] {
 
   /* PLAYER_COLLECT_COIN */
   public void process021(ByteMe.NET021 n) {
+    coins += 1;
     RoyaleAccount acc = session.getAccount();
-    if (acc != null && session.getPrivate() != true) {
+    if(acc != null && session.getPrivate() != true) {
       acc.updateCoins(1);
     }
   }
@@ -288,20 +297,20 @@ private static final byte[] VALID_SPRITES = new byte[] {
     RoyaleAccount acc = session.getAccount();
 
     /* Guest */
-    if (acc == null) { return "[G]" + session.getUser(); }
+    if(acc == null) { return "[G]" + session.getUser(); }
 
     /* Developer */
-    if (isDev()) {
+    if(isDev()) {
       return "[DEV]" + session.getUser();
     }
 
     return session.getUser();
   }
-  public String getTeam() { return session.getTeam(); }
+  public String getRoom() { return session.getRoom(); }
   public boolean getPriv() { return session.getPrivate(); }
   public boolean isDev() {
     RoyaleAccount acc = session.getAccount();
-    if (acc == null) { return false; }
+    if(acc == null) { return false; }
 
     String[] DEVELOPERS = new String[] {
       "TERMINALARCH",

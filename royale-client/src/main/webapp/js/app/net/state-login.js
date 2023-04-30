@@ -35,7 +35,7 @@ StateLogin.prototype.loggedIn = function(p) {
 
 // LLG, LRS
 StateLogin.prototype.handleLogin = function(p) {
-  if (p.status) {
+  if(p.status) {
     app.menu.main.hideLoginMenu();
 
     var data = JSON.parse(p.msg);
@@ -71,7 +71,7 @@ StateLogin.prototype.handleLogin = function(p) {
 
 // LRG
 StateLogin.prototype.handleRegister = function(p) {
-  if (p.status) {
+  if(p.status) {
     app.menu.main.hideRegisterMenu();
 
     var data = JSON.parse(p.msg);
@@ -96,12 +96,13 @@ StateLogin.prototype.handleRegister = function(p) {
 // LLO
 StateLogin.prototype.handleLogout = function(p) {
   Cookies.remove("session");
+  clearInterval(app.menu.mainMember.scienceInterval);
   app.close();
 };
 
 // LPU
 StateLogin.prototype.handleUpdate = function(p) {
-  if (p.error) {
+  if(p.error) {
     app.menu.mainMember.profileReport(p.error);
     return;
   }
@@ -113,7 +114,7 @@ StateLogin.prototype.handleUpdate = function(p) {
 
 // LCP
 StateLogin.prototype.handlePassword = function(p) {
-  if (p.error) {
+  if(p.error) {
     app.menu.mainMember.profileReport(p.error);
     return;
   }

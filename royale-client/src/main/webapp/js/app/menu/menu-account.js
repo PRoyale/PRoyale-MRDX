@@ -38,6 +38,14 @@ function MenuAccount() {
 
   this.playVanilla = document.getElementById("playMember-royale");
   this.playPVP = document.getElementById("playMember-pvp");
+
+  this.privateMenu = document.getElementById("private");
+  this.privateCloseBtn = document.getElementById("private-close");
+  this.privateRoomCode = document.getElementById("private-code");
+  this.privateGo = document.getElementById("private-go");
+
+  this.privateVanilla = document.getElementById("private-royale");
+  this.privatePVP = document.getElementById("private-pvp");
   
   this.profileMenu = document.getElementById("profile");
   this.profileSaveBtn = document.getElementById("profile-save");
@@ -66,8 +74,9 @@ function MenuAccount() {
   
   var that = this;
   $(document).keyup(function(event) {
-    if (event.which === 13) {
+    if(event.which === 13) {
       if(that.playMenu.style.display === "") { that.launch(false); };
+      if(that.privateMenu.style.display === "") { that.launch(true, app.roomMode); };
       if(that.profileMenu.style.display === "") { that.saveProfile(); };
       if(that.passwordMenu.style.display === "") { that.savePassword(); };
     }
@@ -76,6 +85,9 @@ function MenuAccount() {
   this.playVanilla.onclick = function() { that.changeGamemode(0); };
   this.playPVP.onclick = function() { that.changeGamemode(1); };
 
+  this.privateVanilla.onclick = function() { that.changeGamemodePriv(0); };
+  this.privatePVP.onclick = function() { that.changeGamemodePriv(1); };
+
   this.padLoop = undefined;
   
   this.settingsCloseBtn.onclick = function() { that.hideSettingsMenu(); };
@@ -83,12 +95,14 @@ function MenuAccount() {
   this.changelogCloseBtn.onclick = function() { that.hideChangelogMenu(); };
   this.languageCloseBtn.onclick = function() { that.hideLanguageMenu(); };
   this.playCloseBtn.onclick = function() { that.hidePlayMenu(); };
+  this.privateCloseBtn.onclick = function() { that.hidePrivateMenu(true); };
   this.profileCloseBtn.onclick = function() { that.hideProfileMenu(); };
   this.passwordCloseBtn.onclick = function() { that.hidePasswordMenu(); };
   this.leaderboardCloseBtn.onclick = function() { that.hideLeaderboards(); };
 
   this.playGo.onclick = function() { that.launch(false); };
-  this.playPriv.onclick = function() { that.launch(true); };
+  this.privateGo.onclick = function() { that.launch(true, app.roomMode); };
+  this.playPriv.onclick = function() { that.showPrivateMenu(); };
   this.profileSaveBtn.onclick = function() { that.saveProfile(); };
   this.passwordSaveBtn.onclick = function() { that.savePassword(); };
 
@@ -111,10 +125,10 @@ function MenuAccount() {
   this.infringioHead = document.getElementById("profile-selectInfringio");
   this.warioHead = document.getElementById("profile-selectWario");
 
-  this.marioHead.addEventListener("click", (function () { return function (event) { that.selectCharacter(0); }; })());
-  this.luigiHead.addEventListener("click", (function () { return function (event) { that.selectCharacter(1); }; })());
-  this.infringioHead.addEventListener("click", (function () { return function (event) { that.selectCharacter(2); }; })());
-  this.warioHead.addEventListener("click", (function () { return function (event) { that.selectCharacter(3); }; })());
+  this.marioHead.addEventListener("click", (function() { return function(event) { that.selectCharacter(0); }; })());
+  this.luigiHead.addEventListener("click", (function() { return function(event) { that.selectCharacter(1); }; })());
+  this.infringioHead.addEventListener("click", (function() { return function(event) { that.selectCharacter(2); }; })());
+  this.warioHead.addEventListener("click", (function() { return function(event) { that.selectCharacter(3); }; })());
 
   this.pendingChar = null;
 
@@ -144,7 +158,7 @@ function MenuAccount() {
 
 /* Controls Menu */
 MenuAccount.prototype.showControlsMenu = function() {
-  if (!app.ingame()) {
+  if(!app.ingame()) {
     this.darkBackground.style.display = "";
   }
   this.controlsMenu.style.display = "";
@@ -179,7 +193,7 @@ MenuAccount.prototype.hideLanguageMenu = function() {
 
 /* Settings Menu */
 MenuAccount.prototype.showSettingsMenu = function() {
-  if (!app.ingame()) {
+  if(!app.ingame()) {
     this.darkBackground.style.display = "";
   }
   this.settingsMenu.style.display = "";
@@ -211,6 +225,24 @@ MenuAccount.prototype.hidePlayMenu = function() {
   this.playMenu.style.display = "none";
 };
 
+/* Private Menu */
+MenuAccount.prototype.showPrivateMenu = function() {
+  this.hideProfileMenu();
+  this.hidePasswordMenu();
+  this.hideLeaderboards();
+  this.darkBackground.style.display = "";
+  this.privateMenu.style.display = "";
+
+  var mode = Cookies.get("modePriv") === '1' ? 1 : 0;
+  this.changeGamemodePriv(mode);
+};
+
+MenuAccount.prototype.hidePrivateMenu = function(showPlay) {
+  this.darkBackground.style.display = "none";
+  this.privateMenu.style.display = "none";
+  if(showPlay) { this.showPlayMenu(); };
+};
+
 MenuAccount.prototype.changeGamemode = function(mode) {
   app.net.gm = mode;
   Cookies.set("mode", mode, {expires: 30});
@@ -223,16 +255,31 @@ MenuAccount.prototype.changeGamemode = function(mode) {
   }
 };
 
-MenuAccount.prototype.launch = function(priv) {
-  this.hidePlayMenu();
-  clearInterval(this.scienceInterval);
-  Cookies.set("priv", priv, {'expires': 14});
-  app.join(app.net.nickname, app.net.squad, Cookies.get("priv") === 'true', parseInt(Cookies.get("mode")));
+MenuAccount.prototype.changeGamemodePriv = function(mode) {
+  app.roomMode = mode;
+  Cookies.set("modePriv", mode, {expires: 30});
+
+  var that = this;
+  switch(mode) {
+    default:
+    case 0 : { that.privateVanilla.src = "img/home/vanilla-selected.png"; that.privatePVP.src = "img/home/pvp.png"; break; }
+    case 1 : { that.privateVanilla.src = "img/home/vanilla.png"; that.privatePVP.src = "img/home/pvp-selected.png"; break; }
+  }
 };
 
-MenuAccount.prototype.quickLaunch = function() {
+MenuAccount.prototype.launch = function(priv, mode) {
+  this.hidePlayMenu();
+  this.hidePrivateMenu(false);
   clearInterval(this.scienceInterval);
-  app.join(app.net.nickname, app.net.squad, Cookies.get("priv") === 'true', parseInt(Cookies.get("mode")));
+  Cookies.set("priv", priv, {'expires': 14});
+  app.private = priv;
+  if(app.private) { app.roomCode = this.privateRoomCode.value; }
+  app.join(app.net.nickname, priv ? this.privateRoomCode.value : "", Cookies.get("priv") === 'true', mode ? mode : parseInt(Cookies.get("mode")));
+};
+
+MenuAccount.prototype.quickLaunch = function(code, mode) {
+  clearInterval(this.scienceInterval);
+  app.join(app.net.nickname, code ? code : "", Cookies.get("priv") === 'true', mode ? mode : parseInt(Cookies.get("mode")));
 };
 
 /* Change Password Menu */
@@ -251,8 +298,8 @@ MenuAccount.prototype.savePassword = function() {
   var pass = this.passwordNew.value;
   var verify = this.passwordVerify.value;
 
-  if (pass.length < 4) { this.passwordReport(TEXTS["#PASSWORD_SHORT"][app.lang]); return; }
-  if (pass != verify) { this.passwordReport(TEXTS["#PASSWORD_MISMATCH"][app.lang]); return; }
+  if(pass.length < 4) { this.passwordReport(TEXTS["#PASSWORD_SHORT"][app.lang]); return; }
+  if(pass != verify) { this.passwordReport(TEXTS["#PASSWORD_MISMATCH"][app.lang]); return; }
 
   app.net.send({
     'type': 'lcp',
@@ -455,7 +502,7 @@ MenuAccount.prototype.show = function(stats) {
   this.linkMemberElement.style.display = "block";
   this.linkElement.style.display = "block";
   this.element.style.display = "block";
-  if(app.goToLobby) { this.quickLaunch(); }
+  if(app.goToLobby) { this.quickLaunch(app.roomCode, app.roomMode); }
 };
 
 MenuAccount.prototype.hide = function() {

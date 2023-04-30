@@ -120,7 +120,7 @@ BowserObject.prototype.step = function() {
   else {
     this.setState(BowserObject.STATE.RUN);
     if(this.attackTimer++ > BowserObject.ATTACK_DELAY) { this.attack(); }
-    else if ((BowserObject.ATTACK_DELAY - this.attackTimer) < 20) { this.setState(BowserObject.STATE.PREPARE); }
+    else if((BowserObject.ATTACK_DELAY - this.attackTimer) < 20) { this.setState(BowserObject.STATE.PREPARE); }
   
     if(this.attackAnimTimer > 0) { this.setState(BowserObject.STATE.ATTACK); this.attackAnimTimer--; }
   }

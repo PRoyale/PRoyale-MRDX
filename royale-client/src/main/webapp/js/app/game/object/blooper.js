@@ -115,7 +115,7 @@ BlooperObject.prototype.physics = function() {
   if(this.pos.x > 0) {
     this.setState(BlooperObject.STATE.COMPRESS);
     this.face();
-    if (++this.moveTimer >= 20 + this.holdTime) {
+    if(++this.moveTimer >= 20 + this.holdTime) {
       this.setState(BlooperObject.STATE.IDLE);
       var ang = 45 * Math.PI / 180;
       var x = Math.cos(ang) * BlooperObject.SPEED/2;
@@ -124,7 +124,7 @@ BlooperObject.prototype.physics = function() {
       this.pos.x += (this.direction ? x : -x);
       this.pos.y += y;
 
-      if (this.moveTimer >= 110) {
+      if(this.moveTimer >= 110) {
         this.moveTimer = 0;
       }
     } else {

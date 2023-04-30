@@ -126,7 +126,7 @@ FireballProj.prototype.physics = function() {
   for(var i=0;i<hit.length;i++) {
     var tile = hit[i];
 
-    if (tile.definition.ICE) {
+    if(tile.definition.ICE) {
       tile.definition.TRIGGER(this.game, this.pid, tile, this.level, this.zone, tile.pos.x, tile.pos.y, td32.TRIGGER.TYPE.FIREBALL, this);
     }
 
@@ -152,7 +152,7 @@ FireballProj.prototype.physics = function() {
     var tile = hit[i];
     if(!squar.intersection(tile.pos, tdim, mov, this.dim)) { continue; }
 
-    if (squar.intersection(tile.pos, tdim, mvx, this.dim) && tile.definition.SEMISOLID) { continue; }
+    if(squar.intersection(tile.pos, tdim, mvx, this.dim) && tile.definition.SEMISOLID) { continue; }
     
     /* -Y */
     if(this.pos.y >= mov.y) {
@@ -178,7 +178,7 @@ FireballProj.prototype.interaction = function() {
         if(obj instanceof PlayerObject && !(this.owner instanceof Object) && !(this.game.gameMode === 1)) { continue; }             // Fireballs created by other players don't do damage. They are just ghosts.
         
         (this.game.gameMode !== 1 ? this.owner === this.game.pid : (obj instanceof PlayerObject ? obj.pid == this.game.pid : this.owner === this.game.pid)) && obj.damage(this);
-        if (this.game.gameMode === 1 && obj instanceof PlayerObject && obj.pid == this.game.pid && obj.dead && !(this.owner instanceof Object))
+        if(this.game.gameMode === 1 && obj instanceof PlayerObject && obj.pid == this.game.pid && obj.dead && !(this.owner instanceof Object))
           this.game.out.push(NET017.encode(this.owner));
 
         if(this.owner instanceof FirebroObject && !(obj instanceof PlayerObject)) { continue; } // Fire bro fireballs shouldn't explode on our enemies

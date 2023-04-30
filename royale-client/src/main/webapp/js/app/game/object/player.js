@@ -161,10 +161,10 @@ PlayerObject.ARROW_RAD_OUT = 7;
 PlayerObject.ARROW_THRESHOLD_MIN = 4;
 PlayerObject.ARROW_THRESHOLD_MAX = 6;
 
-PlayerObject.TEAM_OFFSET = vec2.make(0., 0.);
-PlayerObject.TEAM_SIZE = .3;
-PlayerObject.TEAM_COLOR = "rgba(255,255,255,0.75)";
-PlayerObject.DEV_TEAM_COLOR = "rgba(255,255,0,1)";
+PlayerObject.NAME_OFFSET = vec2.make(0., 0.);
+PlayerObject.NAME_SIZE = .3;
+PlayerObject.NAME_COLOR = "rgba(255,255,255,0.75)";
+PlayerObject.DEV_NAME_COLOR = "rgba(255,255,0,1)";
 
 PlayerObject.SPRITE = {};
 PlayerObject.SPRITE_LIST = [
@@ -364,8 +364,8 @@ PlayerObject.prototype.update = function(data) {
   this.sprite = PlayerObject.SPRITE[data.sprite];
   this.reverse = data.reverse;
   this.character = data.character;
-  if (this.damageTimer) this.damageTimer--;
-  if (this.spinTimer) this.spinTimer--;
+  if(this.damageTimer) this.damageTimer--;
+  if(this.spinTimer) this.spinTimer--;
 };
 
 PlayerObject.prototype.trigger = function(type) {
@@ -377,6 +377,10 @@ PlayerObject.prototype.trigger = function(type) {
     case 0x05 : { this.throw(); break; }
     case 0x06 : { this.effect(); break; }
   }
+};
+
+PlayerObject.prototype.emote = function(emote) {
+  this.game.world.getZone(this.level, this.zone).effects.push(new EmoteEffect(this.pos, this.pid, emote));
 };
 
 PlayerObject.prototype.step = function() {
@@ -407,7 +411,7 @@ PlayerObject.prototype.step = function() {
       var hit = false;
       for(var i=0;i<tiles.length;i++) {
         var tile = tiles[i];
-        if(squar.intersection(tile.pos, tdim, mov, this.dim) && tile.definition.COLLIDE) { hit = true; break; }
+        if(squar.intersection(tile.pos, tdim, mov, this.dim) && (tile.definition.COLLIDE || tile.definition.BARRIER)) { hit = true; break; }
       }
       
       if(hit) {
@@ -458,7 +462,7 @@ PlayerObject.prototype.step = function() {
   if(this.isState(PlayerObject.SNAME.TRANSFORM)) {
     if(--this.transformTimer > 0) {
       var target = this.transformTarget;
-      if (this.transformTimer === 14 && (target > 2 || this.power > 2)) { this.game.world.getZone(this.level, this.zone).effects.push(new TransformEffect(vec2.make(this.pos.x, this.pos.y+.5))); this.game.out.push(NET013.encode(0x06)); }
+      if(this.transformTimer === 14 && (target > 2 || this.power > 2)) { this.game.world.getZone(this.level, this.zone).effects.push(new TransformEffect(vec2.make(this.pos.x, this.pos.y+.5))); this.game.out.push(NET013.encode(0x06)); }
       var ind = parseInt(this.anim/PlayerObject.TRANSFORM_ANIMATION_RATE) % 3;
       var high = this.power>this.transformTarget?this.power:this.transformTarget;
       switch(ind) {
@@ -555,8 +559,8 @@ PlayerObject.prototype.control = function() {
   if(this.grounded) { this.btnBg = this.btnB; this.glideTimer = 0; }
   
   if(this.isState(PlayerObject.SNAME.DOWN) && !this.crouchJump && this.grounded && this.collisionTest(this.pos, this.getStateByPowerIndex(PlayerObject.SNAME.STAND, this.power).DIM)) {
-    if (this.btnA) {
-      if ((this.grounded || this.underWater) && !this.btnAHot) {
+    if(this.btnA) {
+      if((this.grounded || this.underWater) && !this.btnAHot) {
           this.jumping = 0x0;
           this.play(this.underWater ? "swim.mp3" : 0x0 < this.power ? "jump1.mp3" : "jump0.mp3", 0.7, 0.04);
           this.btnAHot = true;
@@ -576,11 +580,11 @@ PlayerObject.prototype.control = function() {
       this.moveSpeed += (this.icePhysics ? PlayerObject.MOVE_ICE_DECEL : PlayerObject.MOVE_SPEED_DECEL) * this.btnD[0];
       this.spinTimer > 0 && this.power === 3 ? this.setState(PlayerObject.SNAME.ATTACK) : this.setState(PlayerObject.SNAME.SLIDE);
 
-      if (!this.skidEffect && this.grounded) { this.game.world.getZone(this.level, this.zone).effects.push(new DustEffect(this.pos)); this.skidEffect = true; }
+      if(!this.skidEffect && this.grounded) { this.game.world.getZone(this.level, this.zone).effects.push(new DustEffect(this.pos)); this.skidEffect = true; }
     }
     else {
       this.moveSpeed = this.btnD[0] * Math.min(Math.abs(this.moveSpeed) + (this.icePhysics ? PlayerObject.MOVE_ICE_ACCEL : PlayerObject.MOVE_SPEED_ACCEL), this.underWater ? PlayerObject.WATER_SPEED_MAX : this.btnBg?(this.starTimer > 0 ? PlayerObject.STAR_SPEED_MAX : PlayerObject.RUN_SPEED_MAX):this.autoTarget?PlayerObject.AUTO_SPEED_MAX:PlayerObject.MOVE_SPEED_MAX);
-      if (this.grounded /* We need to check for this. Otherwise the water animation is bugged for some reason. */) {
+      if(this.grounded /* We need to check for this. Otherwise the water animation is bugged for some reason. */) {
         this.spinTimer > 0 && this.power === 3 ? this.setState(PlayerObject.SNAME.ATTACK) : this.setState(PlayerObject.SNAME.RUN);
       }
       this.skidEffect = false;
@@ -588,7 +592,7 @@ PlayerObject.prototype.control = function() {
     if(this.grounded || this.underWater) { this.reverse = this.btnD[0] >= 0; }
   }
   else {
-    if (!this.underWater || this.grounded) {
+    if(!this.underWater || this.grounded) {
         if(Math.abs(this.moveSpeed) > 0.01) {
           this.moveSpeed = Math.sign(this.moveSpeed) * Math.max(Math.abs(this.moveSpeed) - (this.icePhysics ? PlayerObject.MOVE_ICE_DECEL : PlayerObject.MOVE_SPEED_DECEL), 0);
           this.spinTimer > 0 && this.power === 3 ? this.setState(PlayerObject.SNAME.ATTACK) : this.setState(PlayerObject.SNAME.RUN);
@@ -615,7 +619,7 @@ PlayerObject.prototype.control = function() {
       this.btnAHot = true;
       this.crouchJump = (this.power > 0 && this.btnD[1] === -1) ? true : false;
     } else {
-      if (this.glideTimer === 0 && !this.btnAHot && !this.spring && !this.isSpring && !this.isBounce && this.power === 3 && !this.crouchJump) {
+      if(this.glideTimer === 0 && !this.btnAHot && !this.spring && !this.isSpring && !this.isBounce && this.power === 3 && !this.crouchJump) {
         this.glideTimer = 20;
         this.play("spin.mp3", .7, .04);
         this.btnAHot = true;
@@ -635,16 +639,16 @@ PlayerObject.prototype.control = function() {
     }
   }
 
-  if (this.btnU && this.grounded && !this.moveSpeed && !this.isState(PlayerObject.SNAME.DOWN)) { this.setState(PlayerObject.SNAME.TAUNT); }
+  if(this.btnU && this.grounded && !this.moveSpeed && !this.isState(PlayerObject.SNAME.DOWN)) { this.setState(PlayerObject.SNAME.TAUNT); }
   
   /* Run across 1-block gaps */
-  if (this.moveSpeed > 0.400 || this.moveSpeed < -0.400) {
-    if (DIM0.x || DIM1.x == 1)  {
+  if(this.moveSpeed > 0.400 || this.moveSpeed < -0.400) {
+    if(DIM0.x || DIM1.x == 1)  {
       DIM0.x = 1; // increase small hitbox
       DIM1.x = 1; // increase big hitbox
     }
   } else {
-    if (DIM0.x || DIM1.x !== 1) {
+    if(DIM0.x || DIM1.x !== 1) {
       DIM0.x = 0.9; // reset small hitbox
       DIM1.x = 0.9; // reset big hitbox
     }
@@ -732,10 +736,7 @@ PlayerObject.prototype.physics = function() {
     else if(tile.definition.SLOPE) {
       slopes.push(tile);
     }
-    else if(tile.definition.BARRIER && (squar.intersection(tile.pos, tdim, this.pos, this.dim) || squar.intersection(tile.pos, tdim, this.pos, this.dim))) {
-      hit.push(tile);
-    }
-    else if(tile.definition.COLLIDE) {
+    else if(tile.definition.COLLIDE || tile.definition.BARRIER) {
       if(tile.definition.HIDDEN) { hit.push(tile); continue; }
 
       var dim = vec2.make(1., 1.85);
@@ -805,8 +806,8 @@ PlayerObject.prototype.physics = function() {
     if(squar.intersection(tile.pos, tdim, mov, this.dim)) {
       if(this.fallSpeed > PlayerObject.BLOCK_BUMP_THRESHOLD) { bmp.push(tile); }
       if(this.fallSpeed < 0 && this.pos.y >= tile.pos.y) {
-        if (tile.definition.ICE) { ice = true; }
-        if (tile.definition.CONVEYOR !== undefined) { conveyor = tile.definition.CONVEYOR; }
+        if(tile.definition.ICE) { ice = true; }
+        if(tile.definition.CONVEYOR !== undefined) { conveyor = tile.definition.CONVEYOR; }
         on.push(tile);
       }
     }
@@ -826,9 +827,9 @@ PlayerObject.prototype.physics = function() {
     }
     /* +Y */
     else {
-      if (tile.definition.HIDDEN) {
+      if(tile.definition.HIDDEN) {
         var cpos = vec2.chop(mov);
-        if (cpos.y === tile.pos.y) { continue; }
+        if(cpos.y === tile.pos.y) { continue; }
       }
 
       mov.y = tile.pos.y - this.dim.y;
@@ -852,8 +853,8 @@ PlayerObject.prototype.physics = function() {
   /* We use DIM0 because otherwise it acts as Semisolid Weak */
   for(var i=0;i<semicollide.length;i++) {
     var semi = semicollide[i];
-    if (squar.intersection(semi.pos, tdim, mov, DIM0)) {
-      if (this.pos.y - DIM0.y >= semi.pos.y) {
+    if(squar.intersection(semi.pos, tdim, mov, DIM0)) {
+      if(this.pos.y - DIM0.y >= semi.pos.y) {
         mov.y = semi.pos.y + tdim.y;
         this.fallSpeed = 0;
         grounded = true;
@@ -864,7 +865,7 @@ PlayerObject.prototype.physics = function() {
   /* Handle slope collision. X pos is normal. Y pos = slope y+x decimal points */
   for(var i=0;i<slopecollide.length;i++) {
     var slope = slopecollide[i];
-    if (squar.intersection(slope.pos, tdim, mov, DIM0)) {      
+    if(squar.intersection(slope.pos, tdim, mov, DIM0)) {      
       mov.y = parseInt(mov.y) + ((mov.x - parseInt(mov.x)));
       grounded = true;
     }
@@ -926,7 +927,7 @@ PlayerObject.prototype.physics = function() {
     var tile = bmp[i];
     var cpos = vec2.chop(this.pos); // Our position converted to an integer
 
-    if (tile.definition.HIDDEN && cpos.y === tile.pos.y) { continue; }
+    if(tile.definition.HIDDEN && cpos.y === tile.pos.y) { continue; }
 
     var bty = this.power>0?td32.TRIGGER.TYPE.BIG_BUMP:td32.TRIGGER.TYPE.SMALL_BUMP;
     tile.definition.TRIGGER(this.game, this.pid, tile, this.level, this.zone, tile.pos.x, tile.pos.y, bty);
@@ -942,7 +943,7 @@ PlayerObject.prototype.collisionTest = function(pos, dim) {
   var tiles = this.game.world.getZone(this.level, this.zone).getTiles(pos, dim);
   for(var i=0;i<tiles.length;i++) {
     var tile = tiles[i];
-    if(!tile.definition.COLLIDE || tile.definition.SEMISOLID || tile.definition.HIDDEN) { continue; }
+    if(!tile.definition.COLLIDE || tile.definition.SEMISOLID || tile.definition.HIDDEN || tile.definition.BARRIER) { continue; }
     
     if(squar.intersection(tile.pos, tdim, pos, dim)) { return true; }
   }
@@ -960,7 +961,7 @@ PlayerObject.prototype.interaction = function() {
       var fpos = vec2.make(this.pos.x-.5, this.pos.y);
       var fhit = squar.intersection(obj.pos, obj.dim, fpos, fdim);
       if(this.spinTimer) {
-        if (fhit && obj.bonk) {
+        if(fhit && obj.bonk) {
           /* Whack an enemy with the tail */
           obj.bonk(!this.reverse);
           this.game.out.push(NET020.encode(obj.level, obj.zone, obj.oid, 0x01));
@@ -1027,7 +1028,7 @@ PlayerObject.prototype.throw = function() {
   this.attackCharge -= PlayerObject.ATTACK_CHARGE;
   var p = this.reverse?vec2.add(this.pos, PlayerObject.PROJ_OFFSET):vec2.add(vec2.add(this.pos, vec2.make(0.5, 0.)), vec2.multiply(PlayerObject.PROJ_OFFSET, vec2.make(-1., 1.)));
   var obj = this.game.createObject(HammerProj.ID, this.level, this.zone, p, [this.pid]);
-  obj.dir = this.reverse;
+  obj.dir = !this.reverse;
   obj.throwTimer = 0;
 };
 
@@ -1089,12 +1090,12 @@ PlayerObject.prototype.star = function() {
 };
 
 PlayerObject.prototype.transform = function(to) {
-  if (!this.isState(PlayerObject.STATE.TRANSFORM)) {
+  if(!this.isState(PlayerObject.STATE.TRANSFORM)) {
     if(this.power<=to) { this.play(to > 2 ? "leaf.mp3" : "powerup.mp3", 1., .04); }
     else { this.play(this.power > 2 ? "leaf.mp3" : "powerdown.mp3", 1., .04); }
   }
   
-  if (to !== this.power) {
+  if(to !== this.power) {
     this.spinTimer = 0;
   }
 
@@ -1107,21 +1108,20 @@ PlayerObject.prototype.warp = function(wid) {
   var wrp = this.game.world.getLevel(this.level).getWarp(wid);
   if(!wrp) { return; } /* Error */
 
-if(this.game instanceof Lobby) {
-  if(wid === 232) {
-    app.menu.main.menuMusic.src = "audio/lobby/lobbyspecial-pizzatower.mp3";
-    app.menu.main.menuMusic.load();
-    app.menu.main.menuMusic.play();
-  }
-  else if(wid === 149) {
-    if (app.menu.main) {
-      var pref = "audio/lobby/";
-      var music = ["lobby-smb3w1.mp3", "lobby-smb3w4.mp3", "lobby-yi.mp3", "lobby-special.mp3"];
-      app.menu.main.menuMusic.src = pref + music[parseInt(Math.random() * music.length)];
+  if(this.game instanceof Lobby) {
+    if(wid === 232) {
+      app.menu.main.menuMusic.src = "audio/lobby/lobbyspecial-pizzatower.mp3";
+      app.menu.main.menuMusic.load();
       app.menu.main.menuMusic.play();
+    } else if(wid === 149) {
+      if(app.menu.main) {
+        var pref = "audio/lobby/";
+        var music = ["lobby-smb3w1.mp3", "lobby-smb3w4.mp3", "lobby-yi.mp3", "lobby-special.mp3"];
+        app.menu.main.menuMusic.src = pref + music[parseInt(Math.random() * music.length)];
+        app.menu.main.menuMusic.play();
+      }
     }
   }
-}
 
   if(this.zone !== wrp.zone) {
     /* Unlock camera when warping zones */
@@ -1153,7 +1153,7 @@ if(this.game instanceof Lobby) {
   }
 
   /* Fix for getting stuck in pipes and then being able to clip out of bounds */
-  if (this.power > 0 && this.pipeExt === 2) {
+  if(this.power > 0 && this.pipeExt === 2) {
     this.pos.y -= 1;
   }
   
@@ -1307,7 +1307,7 @@ PlayerObject.prototype.write = function(texts) {
     var ply = this.game.getPlayerInfo(this.pid)
     var dev = ply ? ply.isDev : false;
     if(this.sprite === undefined || this.sprite.INDEX === undefined) { return; }
-    texts.push({pos: vec2.add(vec2.add(this.pos, vec2.make(0., this.sprite.INDEX instanceof Array?2.:1.)), PlayerObject.TEAM_OFFSET), size: PlayerObject.TEAM_SIZE, color: dev ? PlayerObject.DEV_TEAM_COLOR : PlayerObject.TEAM_COLOR, text: this.name, 'outline': dev ? "#FFF" : null});
+    texts.push({pos: vec2.add(vec2.add(this.pos, vec2.make(0., this.sprite.ID >= 0x20 && this.sprite.ID < 320 ? 1.7 : .7)), PlayerObject.NAME_OFFSET), size: PlayerObject.NAME_SIZE, color: dev ? PlayerObject.DEV_NAME_COLOR : PlayerObject.NAME_COLOR, text: this.name, 'outline': dev ? "#FFF" : null});
   }
 };
 

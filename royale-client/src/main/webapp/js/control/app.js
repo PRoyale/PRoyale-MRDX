@@ -3,9 +3,9 @@
 
 /* App for control binding page */
 
-var INPUTS = ["up","down","left","right","a","b"];
-var K_DEFAULT = [38, 40, 37, 39, 88, 90];
-var G_DEFAULT = [12, 13, 14, 15, 0, 2];
+var INPUTS = ["up","down","left","right","a","b","emote"];
+var K_DEFAULT = [38, 40, 37, 39, 88, 90, 16];
+var G_DEFAULT = [12, 13, 14, 15, 0, 2, 3];
 var K_MAP = [
   "", // [0]
   "", // [1]
@@ -277,9 +277,6 @@ function ControlApp() {
   this.elementK = undefined;
   this.elementG = undefined;
   
-  document.onkeyup = function(event) { that.keyEvent(event, false); };
-  document.onkeydown = function(event) { that.keyEvent(event, true); };
-  
   /* Prevents keyup from triggering button clicks */
   document.querySelectorAll("button").forEach( function(item) {
       item.addEventListener('focus', function() {
@@ -304,6 +301,11 @@ function ControlApp() {
 };
 
 ControlApp.prototype.load = function() {
+  var that = this;
+
+  /* Set this on load for return to main/lobby related reasons */
+  document.onkeyup = function(event) { that.keyEvent(event, false); };
+  document.onkeydown = function(event) { that.keyEvent(event, true); };
   
   this.elementK = {};
   this.assignK = {};
@@ -347,12 +349,12 @@ ControlApp.prototype.init = function() {
 
 ControlApp.prototype.reset = function(type) {
   /* Keyboard Controls */
-  if (type.toLowerCase() === "k") {
+  if(type.toLowerCase() === "k") {
     for (var i=0;i<INPUTS.length;i++) {
       Cookies.remove("k_" + INPUTS[i]);
     }
   /* Gamepad Controls */
-  } else if (type.toLowerCase() === "g") {
+  } else if(type.toLowerCase() === "g") {
     for (var i=0;i<INPUTS.length;i++) {
       Cookies.remove("g_" + INPUTS[i]);
     }

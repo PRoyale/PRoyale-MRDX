@@ -13,6 +13,20 @@ const TEXTS = {
         "fr": "Si 70% des joueurs sont prêts, la partie commencera plus tôt"
     },
 
+    "#PANEL_EMOTE_TITLE": {
+        "en": "Emotes",
+        "es": "Emotes",
+        "pt-br": "Gestos",
+        "fr": "Émotes"
+    },
+
+    "#PANEL_CANCEL_TITLE": {
+        "en": "Press 'kek' to cancel",
+        "es": "Presiona 'kek' para cancelar",
+        "pt-br": "Aperte 'kek' para cancelar",
+        "fr": "Appuyez sur 'kek' pour annuler"
+    },
+
     "#GAME_PLAYERS_REMAIN": {
         "en": "Players Remain",
         "es": "Jugadores Restantes",
@@ -90,11 +104,29 @@ const TEXTS = {
         "fr": "Joueurs en ligne"
     },
 
-    "#PLAY_PRIVATE_TOOLTIP": {
-        "en": "Solo game for testing",
-        "es": "Juego solitario para testeo",
-        "pt-br": "Partida solo por razões de teste",
-        "fr": "Jeu en solo pour faire des tests"
+    "#PLAY_PRIVATE_TOOLTIP_GUEST": {
+        "en": "Register an account to play private games",
+        "es": "Inicia sesión para jugar en lobbies privados",
+        "pt-br": "Faça login para jogar em lobbies privados",
+        "fr": "Connectez-vous pour jouer dans des lobbies privés"
+    },
+
+    "#PRIVATE_MENU_TITLE": {
+        "en": "Private Game",
+        "pt-br": "Partida Privada",
+        "fr": "Partie Privée"
+    },
+
+    "#PRIVATE_ROOM_CODE": {
+        "en": "Room Code",
+        "pt-br": "Código de Sala",
+        "fr": "Code De Salle"
+    },
+
+    "#PRIVATE_SINGLEPLAYER_GAME": {
+        "en": "You're joining a singleplayer game!",
+        "pt-br": "Está entrando em uma partida de um jogador!",
+        "fr": "Vous rejoignez une partie solo!"
     },
 
     "#PLAY_TITLE": {
@@ -488,7 +520,11 @@ const TEXTS = {
         "pt-br": "Login",
         "fr": "Connexion"
     }
-}
+};
+
+function getTranslation(id, lang) {
+    return TEXTS[id][lang ? lang : app.lang] || TEXTS[id]["en"];
+};
 
 /* Localizes HTML elements. In-game translation is searching for the translation in the variable instead of a function to localize. */
 function localize(lang) {
@@ -496,102 +532,103 @@ function localize(lang) {
     app.lang = lang;
 
     /* Disclaimer */
-    document.getElementById("dis-title").innerText = TEXTS["#DISCLAIMER_TITLE"][lang];
-    document.getElementById("dis-info1").innerText = TEXTS["#DISCLAIMER_INFO1"][lang];
-    document.getElementById("dis-info2").innerText = TEXTS["#DISCLAIMER_INFO2"][lang];
-    document.getElementById("dis-info3").innerText = TEXTS["#DISCLAIMER_INFO3"][lang];
-    document.getElementById("next").innerText = TEXTS["#DISCLAIMER_CONTINUE"][lang];
+    document.getElementById("dis-title").innerText = getTranslation("#DISCLAIMER_TITLE");
+    document.getElementById("dis-info1").innerText = getTranslation("#DISCLAIMER_INFO1");
+    document.getElementById("dis-info2").innerText = getTranslation("#DISCLAIMER_INFO2");
+    document.getElementById("dis-info3").innerText = getTranslation("#DISCLAIMER_INFO3");
+    document.getElementById("next").innerText = getTranslation("#DISCLAIMER_CONTINUE");
 
     /* Menu */
-    document.getElementById("main-playNow").innerText = TEXTS["#MENU_PLAY"][lang];
-    document.getElementById("mainMember-playNow").innerText = TEXTS["#MENU_PLAY"][lang];
+    document.getElementById("main-playNow").innerText = getTranslation("#MENU_PLAY");
+    document.getElementById("mainMember-playNow").innerText = getTranslation("#MENU_PLAY");
 
-    document.getElementById("main-controlsText").innerText = TEXTS["#MENU_CONTROLS"][lang];
-    document.getElementById("mainMember-controlsText").innerText = TEXTS["#MENU_CONTROLS"][lang];
+    document.getElementById("main-controlsText").innerText = getTranslation("#MENU_CONTROLS");
+    document.getElementById("mainMember-controlsText").innerText = getTranslation("#MENU_CONTROLS");
 
-    document.getElementById("main-changelogText").innerText = TEXTS["#MENU_CHANGELOG"][lang];
-    document.getElementById("mainMember-changelogText").innerText = TEXTS["#MENU_CHANGELOG"][lang];
+    document.getElementById("main-changelogText").innerText = getTranslation("#MENU_CHANGELOG");
+    document.getElementById("mainMember-changelogText").innerText = getTranslation("#MENU_CHANGELOG");
 
-    document.getElementById("main-settingsText").innerText = TEXTS["#MENU_SETTINGS"][lang];
-    document.getElementById("mainMember-settingsText").innerText = TEXTS["#MENU_SETTINGS"][lang];
+    document.getElementById("main-settingsText").innerText = getTranslation("#MENU_SETTINGS");
+    document.getElementById("mainMember-settingsText").innerText = getTranslation("#MENU_SETTINGS");
 
-    document.getElementById("loginText").innerText = TEXTS["#MENU_LOGIN"][lang];
-    document.getElementById("registerText").innerText = TEXTS["#MENU_REGISTER"][lang];
+    document.getElementById("loginText").innerText = getTranslation("#MENU_LOGIN");
+    document.getElementById("registerText").innerText = getTranslation("#MENU_REGISTER");
 
     /* Players Online */
-    document.getElementById("play-online-royale").innerText = TEXTS["#MENU_ONLINE"][lang];
-    document.getElementById("play-online-pvp").innerText = TEXTS["#MENU_ONLINE"][lang];
-    document.getElementById("playMember-online-royale").innerText = TEXTS["#MENU_ONLINE"][lang];
-    document.getElementById("playMember-online-pvp").innerText = TEXTS["#MENU_ONLINE"][lang];
+    document.getElementById("play-online-royale").innerText = getTranslation("#MENU_ONLINE");
+    document.getElementById("play-online-pvp").innerText = getTranslation("#MENU_ONLINE");
+    document.getElementById("playMember-online-royale").innerText = getTranslation("#MENU_ONLINE");
+    document.getElementById("playMember-online-pvp").innerText = getTranslation("#MENU_ONLINE");
 
     /* Choose Game */
-    document.getElementById("play-title").innerText = TEXTS["#PLAY_TITLE"][lang];
-    document.getElementById("playMember-title").innerText = TEXTS["#PLAY_TITLE"][lang];
+    document.getElementById("play-title").innerText = getTranslation("#PLAY_TITLE");
+    document.getElementById("playMember-title").innerText = getTranslation("#PLAY_TITLE");
 
     /* Profile Sections */
-    document.getElementById("profile-title").innerText = TEXTS["#PROFILE_TITLE"][lang];
+    document.getElementById("profile-title").innerText = getTranslation("#PROFILE_TITLE");
 
-    document.getElementById("loginUnTitle").innerText = TEXTS["#USERNAME"][lang];
-    document.getElementById("regUnTitle").innerText = TEXTS["#USERNAME"][lang];
-    document.getElementById("profile-username-title").innerText = TEXTS["#USERNAME"][lang];
+    document.getElementById("loginUnTitle").innerText = getTranslation("#USERNAME");
+    document.getElementById("regUnTitle").innerText = getTranslation("#USERNAME");
+    document.getElementById("profile-username-title").innerText = getTranslation("#USERNAME");
 
-    document.getElementById("loginPwTitle").innerText = TEXTS["#PASSWORD"][lang];
-    document.getElementById("regPwTitle").innerText = TEXTS["#PASSWORD"][lang];
-    document.getElementById("regVerTitle").innerText = TEXTS["#VERIFYPASSWORD"][lang];
+    document.getElementById("loginPwTitle").innerText = getTranslation("#PASSWORD");
+    document.getElementById("regPwTitle").innerText = getTranslation("#PASSWORD");
+    document.getElementById("regVerTitle").innerText = getTranslation("#VERIFYPASSWORD");
 
-    document.getElementById("profile-nickname-title").innerText = TEXTS["#NICKNAME"][lang];
-    document.getElementById("profile-charTitle").innerText = TEXTS["#CHANGE_CHARACTER"][lang];
+    document.getElementById("profile-nickname-title").innerText = getTranslation("#NICKNAME");
+    document.getElementById("profile-charTitle").innerText = getTranslation("#CHANGE_CHARACTER");
 
     /* Return to Menu/Lobby */
-    document.getElementById("settings-returnMain").innerText = TEXTS["#MENU_RETURN_MENU"][lang];
-    document.getElementById("return-main").innerText = TEXTS["#MENU_RETURN_MENU"][lang];
+    document.getElementById("settings-returnMain").innerText = getTranslation("#MENU_RETURN_MENU");
+    document.getElementById("return-main").innerText = getTranslation("#MENU_RETURN_MENU");
 
-    document.getElementById("settings-returnLobby").innerText = TEXTS["#MENU_RETURN_LOBBY"][lang];
-    document.getElementById("return-lobby").innerText = TEXTS["#MENU_RETURN_LOBBY"][lang];
+    document.getElementById("settings-returnLobby").innerText = getTranslation("#MENU_RETURN_LOBBY");
+    document.getElementById("return-lobby").innerText = getTranslation("#MENU_RETURN_LOBBY");
 
     /* Login */
-    document.getElementById("loginTitle").innerText = TEXTS["#LOGIN_TITLE"][lang];
+    document.getElementById("loginTitle").innerText = getTranslation("#LOGIN_TITLE");
 
     /* Change Password */
-    document.getElementById("changePwTitle").innerText = TEXTS["#CHANGEPASSWORD_TITLE"][lang];
-    document.getElementById("newPwTitle").innerText = TEXTS["#NEWPASSWORD_TITLE"][lang];
-    document.getElementById("verifyPwTitle").innerText = TEXTS["#VERIFYPASSWORD_TITLE"][lang];
+    document.getElementById("changePwTitle").innerText = getTranslation("#CHANGEPASSWORD_TITLE");
+    document.getElementById("newPwTitle").innerText = getTranslation("#NEWPASSWORD_TITLE");
+    document.getElementById("verifyPwTitle").innerText = getTranslation("#VERIFYPASSWORD_TITLE");
     
     /* Register */
-    document.getElementById("registerTitle").innerText = TEXTS["#REGISTER"][lang];
-    document.getElementById("register-permanent").innerText = "(" + TEXTS["#REGISTER_PERMANENT"][lang] + ")";
+    document.getElementById("registerTitle").innerText = getTranslation("#REGISTER");
+    document.getElementById("register-permanent").innerText = "(" + getTranslation("#REGISTER_PERMANENT") + ")";
 
     /* Controls */
-    document.getElementById("controlsTitle").innerText = TEXTS["#CONTROLS_TITLE"][lang];
-    document.getElementById("control-tooltip").innerText = TEXTS["#CONTROLS_ANALOG_TOOLTIP"][lang];
-    document.getElementById("control-gamepad").innerText = TEXTS["#CONTROLS_GAMEPAD_ID"][lang];
-    controlApp.kTitle.innerText = TEXTS["#CONTROLS_KEYBOARD_TITLE"][lang];
-    controlApp.gTitle.innerText = TEXTS["#CONTROLS_GAMEPAD_TITLE"][lang];
-    document.getElementById("control-resetk").innerText = TEXTS["#CONTROLS_RESET"][lang];
-    document.getElementById("control-resetg").innerText = TEXTS["#CONTROLS_RESET"][lang];
+    document.getElementById("controlsTitle").innerText = getTranslation("#CONTROLS_TITLE");
+    document.getElementById("control-tooltip").innerText = getTranslation("#CONTROLS_ANALOG_TOOLTIP");
+    document.getElementById("control-gamepad").innerText = getTranslation("#CONTROLS_GAMEPAD_ID");
+    controlApp.kTitle.innerText = getTranslation("#CONTROLS_KEYBOARD_TITLE");
+    controlApp.gTitle.innerText = getTranslation("#CONTROLS_GAMEPAD_TITLE");
+    document.getElementById("control-resetk").innerText = getTranslation("#CONTROLS_RESET");
+    document.getElementById("control-resetg").innerText = getTranslation("#CONTROLS_RESET");
 
     /* Language */
-    document.getElementById("languageTitle").innerText = TEXTS["#LANGUAGE_TITLE"][lang];
+    document.getElementById("languageTitle").innerText = getTranslation("#LANGUAGE_TITLE");
 
     /* Changelog */
-    document.getElementById("changelogTitle").innerText = TEXTS["#CHANGELOG_TITLE"][lang];
+    document.getElementById("changelogTitle").innerText = getTranslation("#CHANGELOG_TITLE");
 
     /* Private Game */
-    document.getElementById("play-privtext").innerText = TEXTS["#PLAY_PRIVATE_TOOLTIP"][lang];
-    document.getElementById("playMember-privtext").innerText = TEXTS["#PLAY_PRIVATE_TOOLTIP"][lang];
+    document.getElementById("play-privtext").innerText = getTranslation("#PLAY_PRIVATE_TOOLTIP_GUEST");
+    document.getElementById("private-title").innerText = getTranslation("#PRIVATE_MENU_TITLE");
+    document.getElementById("private-code").placeholder = getTranslation("#PRIVATE_ROOM_CODE");
 
     /* Leaderboards */
-    document.getElementById("leaderboard-title").innerText = TEXTS["#LEADERBOARD_TITLE"][lang];
-    document.getElementById("leaderboard-select").innerText = TEXTS["#LEADERBOARD_SELECT"][lang] + ":";
+    document.getElementById("leaderboard-title").innerText = getTranslation("#LEADERBOARD_TITLE");
+    document.getElementById("leaderboard-select").innerText = getTranslation("#LEADERBOARD_SELECT") + ":";
 
-    document.getElementById("leaderboard-winsBtn").innerText = TEXTS["#STATS_WINS"][lang];
-    document.getElementById("leaderboard-coinsBtn").innerText = TEXTS["#STATS_COINS"][lang];
-    document.getElementById("leaderboard-killsBtn").innerText = TEXTS["#STATS_KILLS"][lang];
+    document.getElementById("leaderboard-winsBtn").innerText = getTranslation("#STATS_WINS");
+    document.getElementById("leaderboard-coinsBtn").innerText = getTranslation("#STATS_COINS");
+    document.getElementById("leaderboard-killsBtn").innerText = getTranslation("#STATS_KILLS");
 
     /* Settings */
-    document.getElementById("settingsTitle").innerText = TEXTS["#SETTINGS_TITLE"][lang];
-    document.getElementById("musicTitle").innerText = TEXTS["#SETTINGS_MUSIC"][lang];
-    document.getElementById("soundTitle").innerText = TEXTS["#SETTINGS_SOUND"][lang];
-    document.getElementById("hideTimer").innerText = (app.settings.hideTimer ? "[*]" : "[ ]") + " " + TEXTS["#SETTINGS_TIMER"][lang];
-    document.getElementById("disableBackground").innerText = (app.settings.disableBg ? "[*]" : "[ ]") + " " + TEXTS["#SETTINGS_BG"][lang];
+    document.getElementById("settingsTitle").innerText = getTranslation("#SETTINGS_TITLE");
+    document.getElementById("musicTitle").innerText = getTranslation("#SETTINGS_MUSIC");
+    document.getElementById("soundTitle").innerText = getTranslation("#SETTINGS_SOUND");
+    document.getElementById("hideTimer").innerText = (app.settings.hideTimer ? "[*]" : "[ ]") + " " + getTranslation("#SETTINGS_TIMER");
+    document.getElementById("disableBackground").innerText = (app.settings.disableBg ? "[*]" : "[ ]") + " " + getTranslation("#SETTINGS_BG");
 };

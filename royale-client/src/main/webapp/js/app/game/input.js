@@ -30,9 +30,9 @@ function Input(game, container) {
   this.load();
 };
 
-Input.INPUTS = ["up","down","left","right","a","b"];
-Input.K_DEFAULT = [38, 40, 37, 39, 88, 90];
-Input.G_DEFAULT = [12, 13, 14, 15, 0, 2];
+Input.INPUTS = ["up","down","left","right","a","b","emote"];
+Input.K_DEFAULT = [38, 40, 37, 39, 88, 90, 16];
+Input.G_DEFAULT = [12, 13, 14, 15, 0, 2, 3];
 
 Input.prototype.load = function() {
   this.assignK = {};

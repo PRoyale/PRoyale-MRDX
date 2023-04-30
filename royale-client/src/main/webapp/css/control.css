@@ -68,7 +68,14 @@ a {
 .n {
   display: inline-block;
   font-weight: bold;
-  width: 73px
+  width: 73px;
+}
+
+.na {
+  display: inline-block;
+  font-weight: bold;
+  width: 73px;
+  font-size: 14px;
 }
 
 button {

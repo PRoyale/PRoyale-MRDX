@@ -66,12 +66,12 @@ public class Login extends SessionState {
     .hashString(p.password, StandardCharsets.UTF_8)
     .toString();
     
-    if (acc == null) {
+    if(acc == null) {
       sendPacket(new PacketLLG(false, "Account does not exist"));
       return;
     }
     
-    if (!acc.getHash().equals(hashedPassword)) {
+    if(!acc.getHash().equals(hashedPassword)) {
       sendPacket(new PacketLLG(false, "Incorrect password"));
       return;
     }
@@ -87,7 +87,7 @@ public class Login extends SessionState {
   private void accountRegister(final PacketLRR p) throws IOException {
     final Gson json = new GsonBuilder().create();
     String name = p.username.toUpperCase().trim();
-    if (lobbyDao.findAccount(name) == null) {
+    if(lobbyDao.findAccount(name) == null) {
       if(!(name.matches("[a-zA-Z0-9 ]*"))) {
         sendPacket(new PacketLRG(false, "Invalid username"));
         return;
@@ -128,7 +128,7 @@ public class Login extends SessionState {
   private void accountResume(final PacketLSR p) throws IOException {
     final Gson json = new GsonBuilder().create();
     
-    if (lobbyDao.findToken(p.session) == null) {
+    if(lobbyDao.findToken(p.session) == null) {
       sendPacket(new PacketLRS(false, "Session expired. Please login again."));
     } else {
       RoyaleAccount acc = lobbyDao.findAccount(lobbyDao.findToken(p.session));
@@ -150,19 +150,19 @@ public class Login extends SessionState {
 
   /* Update our profile settings */
   private void accountUpdate(final PacketLPU p) throws IOException {
-    if (p.nickname == null) {
+    if(p.nickname == null) {
       sendPacket(new PacketLPU(p.character, p.nickname, "You must provide a nickname"));
       return;
     }
 
     String name = p.nickname.trim().toUpperCase();
     
-    if (name.length() < 4) {
+    if(name.length() < 4) {
       sendPacket(new PacketLPU(p.character, p.nickname, "Nickname is too short"));
       return;
     }
 
-    if (name.length() > 20) {
+    if(name.length() > 20) {
       sendPacket(new PacketLPU(p.character, p.nickname, "Nickname is too long"));
       return;
     }
@@ -198,7 +198,7 @@ public class Login extends SessionState {
       .hashString(p.password, StandardCharsets.UTF_8)
       .toString();
 
-    if (p.password.length() < 4) {
+    if(p.password.length() < 4) {
       sendPacket(new PacketLCP("", "Password is too short"));
       return;
     } else if(p.password.length() > 4096) {
@@ -215,16 +215,16 @@ public class Login extends SessionState {
   private void login(final PacketL00 p) throws IOException {
     /* Username */
     String defaultName = "MARIO";
-    String name = p.name==null?defaultName:p.name.trim();
+    String name = p.name==null?defaultName:p.name.trim().toUpperCase();
     ArrayList<String> swearWords = Filter.badWordsFound(name);
     if(name.length() > 20) { name = name.substring(0, 20); }
     else if(name.length() < 1 || !(name.matches("[a-zA-Z0-9 ]*"))) { name = defaultName; }
     if(swearWords.size() > 0) { name = defaultName; }
     
-    /* Team */
-    String team = p.team==null?"":p.team.trim().toLowerCase();
-    if(team.length() > 3) { team = team.substring(0, 3); }
-    else if(team.length() < 1) { team = ""; }
+    /* Private Room Code */
+    String room = p.room==null?"":p.room.trim().toLowerCase();
+    if(room.length() > 15) { room = room.substring(0, 15); }
+    else if(room.length() < 1) { room = ""; }
 
     /* Private */
     boolean priv = p.priv==false?false:true;
@@ -234,14 +234,20 @@ public class Login extends SessionState {
     int mode = p.mode;
     if(mode < 0 || mode >= GAMEMODES.length) { mode = 0; }
 
+    /* Validate user is registered if joining a private game */
+    if(priv) {
+      RoyaleAccount acc = session.getAccount();
+      if(acc == null) { session.close("Tried to join a private game unregistered"); }
+    }
+
     /* Login */
-    session.login(name, team, priv, mode);
+    session.login(name, room, priv, mode);
     
     /* Return data */
-    sendPacket(new PacketL01(session.getSessionId(), session.getUser(), session.getTeam(), session.getPrivate(), mode));
+    sendPacket(new PacketL01(session.getSessionId(), session.getUser(), session.getRoom(), session.getPrivate(), mode));
     
     /* Choose Lobby */
-    final GameLobby lobby = lobbyDao.findLobby(session.getPrivate(), mode);
+    final GameLobby lobby = lobbyDao.findLobby(session.getPrivate(), mode, session.getRoom());
     
     /* Join Lobby */
     session.join(lobby);

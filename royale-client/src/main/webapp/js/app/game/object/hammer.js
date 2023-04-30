@@ -115,7 +115,7 @@ HammerProj.prototype.interaction = function() {
           if(obj instanceof PlayerObject && !(this.owner instanceof Object) && !(this.game.gameMode === 1)) { continue; }  // Hammers created by other players don't do damage. They are just ghosts.
           
           (this.game.gameMode !== 1 ? this.owner === this.game.pid : (obj instanceof PlayerObject ? obj.pid == this.game.pid : this.owner === this.game.pid)) && obj.damage(this);
-          if (this.game.gameMode === 1 && obj instanceof PlayerObject && obj.pid == this.game.pid && obj.dead) {
+          if(this.game.gameMode === 1 && obj instanceof PlayerObject && obj.pid == this.game.pid && obj.dead) {
             this.game.out.push(NET017.encode(this.owner));
           }
 
@@ -131,7 +131,7 @@ HammerProj.prototype.interaction = function() {
 };
 
 HammerProj.prototype.throw = function() {  
-  this.moveSpeed = this.dir?this.impulse.x:-this.impulse.x;
+  this.moveSpeed = this.dir?-this.impulse.x:this.impulse.x;
   this.fallSpeed = this.impulse.y;
   
   this.play(Number.isInteger(this.owner) ? "fireball.mp3" : "hammer.mp3", 1., .04);

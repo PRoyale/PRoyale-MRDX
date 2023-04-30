@@ -15,7 +15,7 @@ Network.TYPES.GET_CAPTCHA = 3;
 Network.TYPES.RESUME = 4;
 
 /* Returns true if connected to websocket */
-Network.prototype.connected = function () {
+Network.prototype.connected = function() {
   return this.webSocket !== undefined && this.webSocket.readyState !== WebSocket.CLOSED;
 };
 
@@ -55,7 +55,7 @@ Network.prototype.connect = function(args) {
   var that = this;
   
   this.pendingArgs = [];
-  if (!this.connected()) {
+  if(!this.connected()) {
     this.pendingArgs = args;
     this.connectWS(args);
     return;
@@ -65,11 +65,11 @@ Network.prototype.connect = function(args) {
   switch(type) {
     case Network.TYPES.PLAY : {
       this.prefName = args[1];
-      this.prefTeam = args[2];
+      this.prefRoom = args[2];
       this.prefLobby = args[3];
       this.prefMode = args[4];
 
-      this.send({type: "l00", name: this.prefName, team: this.prefTeam, priv: this.prefLobby, mode: this.prefMode});
+      this.send({type: "l00", name: this.prefName, room: this.prefRoom, priv: this.prefLobby, mode: this.prefMode});
       break;
     }
 

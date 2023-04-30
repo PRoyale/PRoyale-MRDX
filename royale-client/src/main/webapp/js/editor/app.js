@@ -40,5 +40,5 @@ app.init();
 
 /* Prevent the user from potentially losing data */
 window.onbeforeunload = (e) => {
-  if (app.editor) { if (app.editor.dirty) { return "Do you want to exit this page?" } }
+  if(app.editor) { if(app.editor.dirty) { return "Do you want to exit this page?" } }
 }

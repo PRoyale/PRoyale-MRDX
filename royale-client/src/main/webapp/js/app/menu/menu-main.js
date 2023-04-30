@@ -33,7 +33,6 @@ function MenuMain() {
   this.playMenu = document.getElementById("play");
   this.playCloseBtn = document.getElementById("play-close");
   this.playName = document.getElementById("play-name");
-  this.playPriv = document.getElementById("play-priv");
   this.playGo = document.getElementById("play-go");
 
   this.playVanilla = document.getElementById("play-royale");
@@ -56,10 +55,10 @@ function MenuMain() {
 
   var that = this;
   $(document).keyup(function(event) {
-    if (event.which === 13) {
-        if (that.playMenu.style.display === "") { that.launch(false); }
-        if (that.loginMenu.style.display === "") { that.login(); };
-        if (that.registerMenu.style.display === "") { that.register(); };
+    if(event.which === 13) {
+        if(that.playMenu.style.display === "") { that.launch(false); }
+        if(that.loginMenu.style.display === "") { that.login(); };
+        if(that.registerMenu.style.display === "") { that.register(); };
     }
   });
 
@@ -80,7 +79,6 @@ function MenuMain() {
 
   this.launchBtn.onclick = function() { that.showPlayMenu(); };
   this.playGo.onclick = function() { that.launch(false); };
-  this.playPriv.onclick = function() { that.launch(true); };
   this.playCloseBtn.onclick = function() { that.hidePlayMenu(); };
   this.controlBtn.onclick = function() { that.showControlsMenu(); };
   this.changelogBtn.onclick = function() { that.showChangelogMenu(); };
@@ -170,6 +168,7 @@ MenuMain.prototype.hideSettingsMenu = function() {
 };
 
 MenuMain.prototype.launch = function(priv) {
+  if(priv) { app.net.close(); }
   this.hidePlayMenu();
   Cookies.set("name", this.playName.value, {expires: 30});
   Cookies.set("priv", priv, {'expires': 30});
@@ -195,9 +194,9 @@ MenuMain.prototype.login = function() {
   var pass = this.signinPassword.value;
 
   var that = this;
-  if (name.length < 4) { that.loginError("Username is too short"); return; }
-  if (name.length > 20) { that.loginError("Username is too long"); return; }
-  if (pass.length < 4) { that.loginError(TEXTS["#PASSWORD_SHORT"][app.lang]); return; }
+  if(name.length < 4) { that.loginError("Username is too short"); return; }
+  if(name.length > 20) { that.loginError("Username is too long"); return; }
+  if(pass.length < 4) { that.loginError(TEXTS["#PASSWORD_SHORT"][app.lang]); return; }
   
   this.hideLoginMenu();
   app.login(name, pass);
@@ -228,10 +227,10 @@ MenuMain.prototype.register = function() {
   var verify = this.signupVerify.value;
 
   var that = this;
-  if (name.length < 4) { that.registerError("Username is too short"); return; }
-  if (name.length > 20) { that.registerError("Username is too long"); return; }
-  if (pass.length < 4) { that.registerError(TEXTS["#PASSWORD_SHORT"][app.lang]); return; }
-  if (pass != verify) { that.registerError(TEXTS["#PASSWORD_MISMATCH"][app.lang]); return; }
+  if(name.length < 4) { that.registerError("Username is too short"); return; }
+  if(name.length > 20) { that.registerError("Username is too long"); return; }
+  if(pass.length < 4) { that.registerError(TEXTS["#PASSWORD_SHORT"][app.lang]); return; }
+  if(pass != verify) { that.registerError(TEXTS["#PASSWORD_MISMATCH"][app.lang]); return; }
   
   this.hideRegisterMenu();
   app.register(name, pass);

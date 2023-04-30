@@ -28,6 +28,11 @@ Audio.MASTER_VOLUME = .5;
 Audio.MUSIC_VOLUME = .5;
 Audio.EFFECT_VOLUME = .75;
 
+/* Set a unique audio URL to load from. Instead of marioroyale.com/royale/audio use raw.githubusercontent.com/Syembol/thingthing/main/audio for example */
+Audio.prototype.setAudioOverride = function(url) {
+  this.overrideURL = url;
+};
+
 /* Set unique audio prefix. Used for ex: mariokart/music, smb2/sfx */
 Audio.prototype.setMusicPrefix = function(val) {
   this.musicPrefix = val;
@@ -86,7 +91,7 @@ Audio.prototype.initWebAudio = function(music) {
     "gameover.mp3"
   ];
 
-  if (music) { musicList = musicList.concat(music); }
+  if(music) { musicList = musicList.concat(music); }
   this.sounds = [];
   
   var tmp = this;
@@ -177,7 +182,7 @@ Audio.prototype.updateVolume = function() {
 };
 
 Audio.prototype.saveSettings = function() {
-  if (app && this.game instanceof Lobby) {
+  if(app && this.game instanceof Lobby) {
     app.menu.main.menuMusic.volume = this.muteMusic?0:Audio.MUSIC_VOLUME;
   }
 
@@ -187,7 +192,7 @@ Audio.prototype.saveSettings = function() {
 
 Audio.prototype.setMusic = function(path, loop) {
   if(this.music) {
-    if (!(!this.music.played && this.music.data.ready() && this.music.partialLoad)) {
+    if(!(!this.music.played && this.music.data.ready() && this.music.partialLoad)) {
       if(this.music.path === path) { return; }
       this.music.stop();
     }
@@ -203,7 +208,7 @@ Audio.prototype.stopMusic = function() {
 
 /* Returns boolean. True if created succesfully and false if failed to create. */
 Audio.prototype.createAudio = function(path, prefix) {
-  var snd = new AudioData(this.context, path, prefix);
+  var snd = new AudioData(this.context, path, prefix, this.overrideURL);
   this.sounds.push(snd);
   return true;
 };

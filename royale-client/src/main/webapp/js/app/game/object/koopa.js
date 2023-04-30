@@ -215,7 +215,7 @@ KoopaObject.prototype.physics = function() {
         changeDir = true;
       }
 
-      if (this.state === KoopaObject.STATE.SPIN) {
+      if(this.state === KoopaObject.STATE.SPIN) {
         tile.definition.TRIGGER(this.game, this.pid, tile, this.level, this.zone, tile.pos.x, tile.pos.y, td32.TRIGGER.TYPE.SHELL);
         var pos = !this.dir ? vec2.add(this.pos, vec2.make(0,0.6)) : vec2.add(this.pos, vec2.make(-1,0.6));
         this.game.world.getZone(this.level, this.zone).effects.push(new ExplodeEffect(pos));

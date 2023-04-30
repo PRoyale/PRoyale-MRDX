@@ -19,6 +19,9 @@ function App() {
 
   this.lang = this.settings.language;   // Localization
 
+  this.private = false;
+  this.roomCode = null;
+
   this.statusUpdate = null;
   this.session = Cookies.get("session");
 
@@ -103,7 +106,7 @@ App.prototype.init = function() {
     var serverResponse = function(data) {
       fadeIn();
 
-      if (that.goToLobby && !that.session) {
+      if(that.goToLobby && !that.session) {
         var nam = Cookies.get("name");
         var priv = Cookies.get("priv");
         var gm = Cookies.get("mode");
@@ -167,13 +170,13 @@ App.prototype.updateStatus = function() {
 };
 
 /* Load a game from .game file */
-App.prototype.load = function(data, dm) {
+App.prototype.load = function(data, gameMode) {
   if(this.game instanceof Game) { this.menu.error.show("State error. Game already loaded."); return; }
   if(this.game instanceof Lobby) { this.game.destroy(); }
   
   switch(data.type) {
     case "game" : { this.game = new Game(data); break; }
-    case "lobby": { this.game = new Lobby(data); break; }
+    case "lobby": { this.game = new Lobby(data, gameMode);  break; }
     case "jail": { this.game = new Jail(data); break; }
     default : { this.menu.error.show("Critical error! Game file missing type!"); break; }
   }
@@ -191,12 +194,12 @@ App.prototype.loggedIn = function() {
 };
 
 /* Connect to game server and join a game */
-App.prototype.join = function(name, team, priv, gameMode) {
+App.prototype.join = function(name, room, priv, gameMode) {
   if(this.ingame()) {
     this.menu.error.show("An error occurred while starting game..."); return;
   }
   this.menu.load.show();
-  this.net.connect([Network.TYPES.PLAY, name, team, priv, gameMode]);
+  this.net.connect([Network.TYPES.PLAY, name, room, priv, gameMode]);
 };
 
 /* Login to our account */
@@ -218,12 +221,31 @@ App.prototype.resumeSession = function(session) {
 }
 
 /* Close active game and reload page */
-App.prototype.close = function() {
-  this.menu.load.show();
-  if(this.ingame()) {
-    this.net.close();
-  }
-  location.reload();
+App.prototype.close = function(goToLobby) {
+  fadeOutCallback(function() {
+    app.menu.main.menuMusic.pause();
+    app.net.close();
+    app.menu.bg.destroy();
+    controlApp.load();
+
+    document.getElementById("devConsole").style.display = "none";
+    document.getElementById("worlds").style.display = "none";
+    document.getElementById("return").style.display = "none";
+    document.getElementById("settings-returnMain").style.display = "none";
+    document.getElementById("settings-returnLobby").style.display = "none";
+    document.getElementById("settings").style.display = "none";
+    document.getElementById("controls").style.display = "none";
+    document.getElementById("levels").innerHTML = "";
+    
+    var code = app.roomCode;
+    var mode = app.roomMode;
+    app = new App();
+    app.skipDisclaimer = true;
+    app.roomCode = code;
+    app.roomMode = mode;
+    app.goToLobby = Boolean(goToLobby);
+    app.init();
+  });
 };
 
 /* Starts the App */

@@ -19,7 +19,7 @@ public class AccountController {
   public @ResponseBody ResponseEntity getStatus(@RequestParam String name) {
     final Gson gson = new GsonBuilder().create();
     final RoyaleAccount acc = dao.getLobbyDao().findAccount(name.toUpperCase());
-    if (acc == null) {
+    if(acc == null) {
         return new ResponseEntity(gson.toJson(new Account("Profile not found.")), HttpStatus.NOT_FOUND);
     }
 

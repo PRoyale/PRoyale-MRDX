@@ -42,7 +42,7 @@ function Editor(data) {
     valParam.setAttribute("class", "tool-val");
     valParam.innerText = "type"+(i+1);
     box.appendChild(valParam);
-    }
+  }
   
   this.load(data);
   
@@ -144,8 +144,9 @@ Editor.prototype.compile = function() {
   data.initial = this.world.initial;
   data.assets = this.dataRaw.assets
   data.mode = this.dataRaw.mode;
-  if(this.dataRaw.musicOverridePath) { data.musicOverridePath = this.dataRaw.musicOverridePath }
-  if(this.dataRaw.soundOverridePath) { data.soundOverridePath = this.dataRaw.soundOverridePath }
+  if(this.dataRaw.audioOverrideURL) { data.audioOverrideURL = this.dataRaw.audioOverrideURL; }
+  if(this.dataRaw.musicOverridePath) { data.musicOverridePath = this.dataRaw.musicOverridePath; }
+  if(this.dataRaw.soundOverridePath) { data.soundOverridePath = this.dataRaw.soundOverridePath; }
 
   data.world = [];
   
@@ -220,7 +221,7 @@ Editor.prototype.doInput = function() {
   if(mous.rmb) { this.display.camera.move(vec2.make(mous.mov.x,-mous.mov.y)); }
   if(mous.spin) { this.display.camera.zoom(mous.spin); }
   
-  if (document.activeElement.tagName === 'INPUT') { return; }
+  if(document.activeElement.tagName === 'INPUT') { return; }
   if(keys[82] && !this.inx82) { this.showRef = !this.showRef; this.inx82 = true; } this.inx82 = keys[82]; // R -> Toggle Ref
   if(keys[71] && !this.inx71) { this.showGrid = !this.showGrid; this.inx71 = true; } this.inx71 = keys[71]; // G -> Toggle Grid
   if(keys[76] && !this.inx76) { this.showLines = !this.showLines; this.inx76 = true; } this.inx76 = keys[76]; // L -> Toggle Lines
@@ -264,7 +265,7 @@ Editor.prototype.setBgLayer = function(layer) {
     item.setAttribute("class", item.layer.z == layer.z ? "list-zone-current" : "list-zone");
   }
 
-  if (this.tool instanceof ToolBackground) {
+  if(this.tool instanceof ToolBackground) {
     this.tool.setLayer(layer);
   }
 }

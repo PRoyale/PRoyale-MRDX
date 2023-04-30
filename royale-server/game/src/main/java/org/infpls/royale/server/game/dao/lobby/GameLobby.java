@@ -31,7 +31,7 @@ public abstract class GameLobby {
   private final GameLoop loop; /* Seperate timer thread to trigger game steps */
   public RoyaleCore game; /* The actual game object */
   
-  protected final String gameFile;
+  protected String gameFile;
   
   private final InputSync inputs; /* Packets that the game must handle are stored until a gamestep happens. This is for synchronization. */
   private final EventSync events; /* Second verse same as the first. */
@@ -45,8 +45,11 @@ public abstract class GameLobby {
 
   private final boolean privat;
   private final String gameMode;
+  private final String code;
 
-  public GameLobby(boolean priv, String mode) throws IOException {
+  protected String levelData; // For custom levels. TODO: use this for normal levels too
+
+  public GameLobby(boolean priv, String mode, String room) throws IOException {
     lid = Key.generate32();
     
     players = new ArrayList();
@@ -63,6 +66,8 @@ public abstract class GameLobby {
 
     privat = priv;
     gameMode = mode;
+    code = room;
+    levelData = "";
     
     game = new RoyaleLobby();
     gameFile = gameMode == "pvp" ? GAME_FILES_PVP[(int)Math.min(GAME_FILES_PVP.length-1, Math.random()*GAME_FILES_PVP.length)] : GAME_FILES[(int)Math.min(GAME_FILES.length-1, Math.random()*GAME_FILES.length)];
@@ -118,7 +123,7 @@ public abstract class GameLobby {
     try { if(isClosed() || loading.contains(session) || players.contains(session)) { session.close("Error joining lobby."); return; } }
     catch(IOException ioex) { Oak.log(Oak.Level.ERR, "Error during player disconnect.", ioex); return; }
     loading.add(session);
-    sendPacket(new PacketG01(LOBBY_FILE), session);
+    sendPacket(new PacketG01(LOBBY_FILE, "", gameMode), session);
   }
   
   private void readyEvent(RoyaleSession session) throws IOException {
@@ -147,7 +152,7 @@ public abstract class GameLobby {
   
   private void voteEvent(RoyaleSession session) {
     session.readyVote = true;
-    if(isPrivate()) { whereWeDroppin(); return; }
+    if(isPrivate() && players.size() == 1 && getCode() == "") { whereWeDroppin(); return; }
     if(players.size() < (gameMode == "pvp" ? MIN_PLAYERS_PVP : MIN_PLAYERS) || locked) { return; }
     
     int vr = 0;
@@ -178,7 +183,7 @@ public abstract class GameLobby {
 
   /* Starts the automatic timer */
   private void startAutoTimer() {
-    if (closed) { return; }
+    if(closed) { return; }
     autoTimer = -1;
   }
   
@@ -199,10 +204,23 @@ public abstract class GameLobby {
       try { if(isClosed()) { session.close("Error during game setup."); return; } }
       catch(IOException ioex) { Oak.log(Oak.Level.ERR, "Error during game setup.", ioex); return; }
       loading.add(session);
-      sendPacket(new PacketG01(gameFile), session);
+      sendPacket(new PacketG01(gameFile, gameFile.equals("custom") ? levelData : "", gameMode), session);
     }
     
     game = new RoyaleGame();
+  }
+
+  /* Uploads determined level data to be loaded */
+  public void uploadLevel(String data) {
+    gameFile = "custom";
+    levelData = data;
+    sendPacket(new PacketGCL("custom"));
+  }
+
+  public void changeLevel(String world) {
+    gameFile = world;
+    levelData = "";
+    sendPacket(new PacketGCL(world));
   }
   
   protected void close() throws IOException {
@@ -254,6 +272,7 @@ public abstract class GameLobby {
   
   public boolean isPrivate() { return privat; }
   public String getMode() { return gameMode; }
+  public String getCode() { return code; }
   public String getLid() { return lid; }
   public boolean isFull() { return loading.size() + players.size() >= MAX_PLAYERS; }
   public boolean isLocked() { return locked; }

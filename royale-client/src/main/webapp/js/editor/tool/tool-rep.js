@@ -16,12 +16,7 @@ function ToolRep(editor) {
 }
 
 ToolRep.prototype.apply = function() {
-  var t = parseInt(this.valTarget.value);
-  var r = parseInt(this.valReplace.value);
-  
-  /* if(isNaN(t) || isNaN(r)) { app.menu.warn.show("Replace failed. Invalid values."); return; } */
-  
-  var data = this.editor.getZone().data;
+  var data = this.editor.currentLayer.data;
   this.editor.dirty = true;
 
   for(var i=0;i<data.length;i++) {

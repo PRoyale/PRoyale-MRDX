@@ -180,7 +180,7 @@ util.intersection.pointPoly = function(p, poly) {
   var c = false;
   var nvert = poly.length;
   for (i = 0, j = nvert-1; i < nvert; j = i++) {
-    if ( ((poly[i].y>p.y) !== (poly[j].y>p.y)) &&
+    if( ((poly[i].y>p.y) !== (poly[j].y>p.y)) &&
      (p.x < (poly[j].x-poly[i].x) * (p.y-poly[i].y) / (poly[j].y-poly[i].y) + poly[i].x) )
        c = !c;
   }
@@ -198,7 +198,7 @@ util.intersection.lineLine = function(A, B) {
   s = (-s1_y * (A.a.x - B.a.x) + s1_x * (A.a.y - B.a.y)) / (-s2_x * s1_y + s1_x * s2_y);
   t = ( s2_x * (A.a.y - B.a.y) - s2_y * (A.a.x - B.a.x)) / (-s2_x * s1_y + s1_x * s2_y);
 
-  if (s >= 0 && s <= 1 && t >= 0 && t <= 1)
+  if(s >= 0 && s <= 1 && t >= 0 && t <= 1)
   {
       // Collision detected
       i_x = A.a.x + (t * s1_x);
@@ -279,9 +279,9 @@ util.intersection.lineNearestPoint = function(P, L) {
   var v = vec2.subtract(L.b, L.a);
   var w = vec2.subtract(P, L.a);
   var c1 = vec2.dot(w, v);
-  if ( c1 <= 0 ) { return L.a; }
+  if( c1 <= 0 ) { return L.a; }
   var c2 = vec2.dot(v, v);
-  if ( c2 <= c1 ) { return L.b; }
+  if( c2 <= c1 ) { return L.b; }
   var b = c1 / c2;
   return vec2.add(L.a, vec2.scale(v, b));
 };
@@ -343,7 +343,7 @@ util.isEven = function(int) {
 function fadeIn() {
   var elem = document.getElementById("body");
   var opacity = parseFloat(elem.style.opacity);
-  if (opacity < 1.1) {
+  if(opacity < 1.1) {
       opacity += .05;
       setTimeout(() => { elem.style.opacity = opacity; fadeIn(); }, 29);
   }
@@ -353,7 +353,7 @@ function fadeIn() {
 function fadeOut() {
   var elem = document.getElementById("body");
   var opacity = elem.style.opacity;
-  if (opacity > 0.1) {
+  if(opacity > 0.1) {
       opacity -= .1;
       setTimeout(() => { elem.style.opacity = opacity; fadeOut(); }, 29);
   } else { elem.style.opacity = 0 }
@@ -363,7 +363,7 @@ function fadeOut() {
 function fadeOutCallback(callback) {
   var elem = document.getElementById("body");
   var opacity = elem.style.opacity;
-  if (opacity > 0.1) {
+  if(opacity > 0.1) {
       opacity -= .1;
       setTimeout(() => { elem.style.opacity = opacity; fadeOutCallback(callback); }, 29);
   } else { elem.style.opacity = 0; callback(); }

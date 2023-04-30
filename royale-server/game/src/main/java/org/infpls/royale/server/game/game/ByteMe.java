@@ -16,6 +16,7 @@ public class ByteMe {
         case 0x11 : { de.add(new NET011(pid, data)); break; }
         case 0x12 : { de.add(new NET012(pid, data)); break; }
         case 0x13 : { de.add(new NET013(pid, data)); break; }
+        case 0x14 : { de.add(new NET014(pid, data)); break; }
         case 0x15 : { de.add(new NET015(pid, data)); break; }
         case 0x17 : { de.add(new NET017(pid, data)); break; }
         case 0x18 : { de.add(new NET018(pid, data)); break; }
@@ -165,6 +166,28 @@ public class ByteMe {
       bb.put(designation);
       bb.putShort(pid);
       bb.put(type);
+      return bb;
+    }
+  }
+
+  public static class NET014 extends NETX {
+    public final byte emote;
+    public NET014(short pid, ByteBuffer data) {
+      super((byte)0x14, pid);
+      emote = data.get();
+    }
+    
+    public NET014(short pid, byte t) {
+      super((byte)0x14, pid);
+      emote = t;
+    }
+    
+    @Override
+    public ByteBuffer encode() {
+      final ByteBuffer bb = ByteBuffer.allocate(4);
+      bb.put(designation);
+      bb.putShort(pid);
+      bb.put(emote);
       return bb;
     }
   }

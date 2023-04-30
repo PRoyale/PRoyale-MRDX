@@ -17,7 +17,7 @@ public final class RoyaleSession {
   private final WebSocketSession webSocket;
   private final DaoContainer dao;
   
-  public String name, team;
+  public String name, room;
   private boolean priv;
   private final String sid;
   private final SessionThread sessionThread;
@@ -102,9 +102,9 @@ public final class RoyaleSession {
     changeState("g", gl);
   }
   
-  public void login(String name, String team, boolean priv, int gameMode) {
+  public void login(String name, String room, boolean priv, int gameMode) {
     this.name = name;
-    this.team = team;
+    this.room = room;
     this.priv = priv;
 
     String[] GAMEMODES = new String[] { "vanilla", "pvp" };
@@ -129,8 +129,8 @@ public final class RoyaleSession {
     return name;
   }
   
-  public String getTeam() {
-    return team;
+  public String getRoom() {
+    return room;
   }
 
   public boolean getPrivate() {
@@ -160,7 +160,7 @@ public final class RoyaleSession {
 
   public boolean isDev() {
     RoyaleAccount acc = getAccount();
-    if (acc == null) { return false; }
+    if(acc == null) { return false; }
 
     String[] DEVELOPERS = new String[] {
       "TERMINALARCH",

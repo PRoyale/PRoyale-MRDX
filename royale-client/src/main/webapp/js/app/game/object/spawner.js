@@ -28,7 +28,7 @@ function SpawnerObject(game, level, zone, pos, oid, type, delay, direction, para
 SpawnerObject.ASYNC = false;
 SpawnerObject.ID = 37;
 SpawnerObject.NAME = "Object Spawner"; // Used by editor
-SpawnerObject.PARAMS = [{'name': "Object Type", 'type': "int", 'tooltip': "The ID/Type of the object you want to spawn. 17 for goomba, 81 for mushroom, etc.."}, {'name': "Spawn Delay", 'type': "int", 'tooltip': "How long until the object is spawned again"}, {'name': "Direction", 'type': "int", 'tooltip': "The direction of the object spawned. 0 is left and 1 is right. Not all objects may use this"}, {'name': "Object Parameters", 'type': "any", 'tooltip': "The parameters of the object itself. You must insert these in order and separate by comma. (e.g: 2,3,1)"}, {'name': "Maximum Spawns", 'type': "int", 'tooltip': "Maximum number of objects the spawner creates. When this number is passed the spawner deletes itself. Leave at 0 for infinite"}];
+SpawnerObject.PARAMS = [{'name': "Object Type", 'type': "int", 'tooltip': "The ID/Type of the object you want to spawn. 17 for goomba, 81 for mushroom, etc.."}, {'name': "Spawn Delay", 'type': "int", 'tooltip': "How long until the object is spawned again"}, {'name': "Direction", 'type': "int", 'tooltip': "The direction of the object spawned. 0 is right and 1 is left, some objects may have this inverted. Not all objects use a direction parameter"}, {'name': "Object Parameters", 'type': "any", 'tooltip': "The parameters of the object itself. You must insert these in order and separate by comma. (e.g: 2,3,1)"}, {'name': "Maximum Spawns", 'type': "int", 'tooltip': "Maximum number of objects the spawner creates. When this number is passed the spawner deletes itself. Leave at 0 for infinite"}];
 
 SpawnerObject.ANIMATION_RATE = 3;
 
@@ -60,34 +60,37 @@ for(var i=0;i<SpawnerObject.STATE_LIST.length;i++) {
 
 /* === INSTANCE ============================================================= */
 
-SpawnerObject.prototype.update = function (event) {
+SpawnerObject.prototype.update = function(event) {
     switch (event) {
         case 0xA0:
             this.enable();
             break;
     }
 };
-SpawnerObject.prototype.disable = function () {
+
+SpawnerObject.prototype.disable = function() {
     this.disabled = true;
 };
-SpawnerObject.prototype.enable = function () {
+
+SpawnerObject.prototype.enable = function() {
     this.disabled = false;
 };
-SpawnerObject.prototype.proximity = function () {
+
+SpawnerObject.prototype.proximity = function() {
     var player = this.game.getPlayer();
     player && !player.dead && player.level === this.level && player.zone === this.zone && !this.proxHit && vec2.distance(player.pos, this.pos) < GoombaObject.ENABLE_DIST && (this.game.out.push(NET020.encode(this.level, this.zone, this.oid, 0xa0)), this.proxHit = true);
 };
 
-SpawnerObject.prototype.step = function () {
-    if (this.disabled) return this.proximity();
-    if (++this.fireTimer > this.delay) this.fire();
+SpawnerObject.prototype.step = function() {
+    if(this.disabled) return this.proximity();
+    if(++this.fireTimer > this.delay) this.fire();
 
     this.sound();
 };
 
 SpawnerObject.prototype.sound = GameObject.prototype.sound;
 
-SpawnerObject.prototype.fire = function () {
+SpawnerObject.prototype.fire = function() {
     this.fireTimer = 0;
 
     if(this.maxSpawns /* If max spawns is 0 then infinitely spawn */) {
@@ -100,9 +103,9 @@ SpawnerObject.prototype.fire = function () {
     var obj = this.game.createObject(this.objectType, this.level, this.zone, vec2.copy(this.pos), pgen);
     obj.enable && obj.enable();
     
-    if (this.direction) {
-        if (obj.dir) obj.dir = this.direction;
-        if (obj.direction) obj.direction = this.direction;
+    if(this.direction) {
+        if(obj.dir) obj.dir = this.direction;
+        if(obj.direction) obj.direction = this.direction;
     };
 
     this.proxHit = false;

@@ -75,7 +75,7 @@ MenuList.prototype.generate = function() {
     }
   }
 
-  if (app.editor.currentZone) { this.updateLayerList(); this.updateBgLayerList(); }
+  if(app.editor.currentZone) { this.updateLayerList(); this.updateBgLayerList(); }
 };
 
 MenuList.prototype.updateLayerList = function() {

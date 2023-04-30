@@ -1,7 +1,7 @@
 "use strict";
 /* global app */
 /* global util, shor2, vec2, td32, squar, MERGE_BYTE, Cookies */
-/* global NETX, NET001, NET010, NET011, NET012, NET015 */
+/* global NETX, NET001, NET010, NET011, NET012, NET014, NET015, NET021 */
 /* global Function, requestAnimFrameFunc, cancelAnimFrameFunc */
 /* global Display, GameObject, PlayerObject, GoombaObject, PlatformObject, BusObject, FlagObject, TextObject */
 
@@ -12,11 +12,15 @@ function Game(data) {
   this.container = document.getElementById("game");
   this.canvas = document.getElementById("game-canvas");
 
-  data.resource.push({ "id": "mario", "src": "img/game/smb_mario.png" });  // Add the Mario spritesheet
-  data.resource.push({ "id": "luigi", "src": "img/game/smb_luigi.png" });  // Add the Luigi spritesheet
-  data.resource.push({ "id": "infringio", "src": "img/game/smb_infringio.png" });  // Add the Infringio spritesheet
-  data.resource.push({ "id": "wario", "src": "img/game/smb_wario.png" });  // Add the Wario spritesheet
-  data.resource.push({ "id": "ui", "src": "img/game/smb_ui.png" });        // Add UI that we see at the top of the screen
+  data.resource.push({ "id": "mario", "src": "img/game/smb_mario.png" });           // Add the Mario spritesheet
+  data.resource.push({ "id": "luigi", "src": "img/game/smb_luigi.png" });           // Add the Luigi spritesheet
+  data.resource.push({ "id": "infringio", "src": "img/game/smb_infringio.png" });   // Add the Infringio spritesheet
+  data.resource.push({ "id": "wario", "src": "img/game/smb_wario.png" });           // Add the Wario spritesheet
+  
+  data.resource.push({ "id": "ui", "src": "img/game/smb_ui.png" });                 // Add UI that we see at the top of the screen
+  data.resource.push({ "id": "emotes", "src": "img/game/smb_emotes.png" });         // Add the emote spritesheet
+  data.resource.push({ "id": "emote-panel", "src": "img/game/smb_emotebox.png" });  // Add the emote background
+  data.resource.push({ "id": "emote-numbers", "src": "img/game/smb_num.png" });     // Add the emote keyboard numbers
   
   this.input = new Input(this, this.canvas);
   this.display = new Display(this, this.container, this.canvas, data.resource);
@@ -26,7 +30,7 @@ function Game(data) {
   this.pid = undefined; /* Unique player id for this client. Assigned during init packet. */
   this.players = []; /* List of player names and associated pids */
   this.sounds = []; /* Array of currently playing global sounds */
-  this.panel = new Panel(this); /* Game panels. Basically windows. */
+  this.panel = new Panel(this); /* Game panels */
   
   this.load(data);
   
@@ -56,8 +60,6 @@ function Game(data) {
   
   this.lives = this.gameMode ? 0 : 1; // Game over if you die in PVP
   this.coins = 0;
-
-  this.coinsCollected = 0;
   this.kills = 0;
 
   this.announceMessage = "";
@@ -88,8 +90,8 @@ function Game(data) {
   this.frameReq = requestAnimFrameFunc.call(window, function() { that.draw(); }); // Javascript 🙄
   this.loopReq = setTimeout(function( ){ that.loop(); }, 2);
 
-  document.getElementById("wrldbtn").addEventListener("click", (function () { return function (event) { that.changePrivMenu("world"); }; })());
-  document.getElementById("debgbtn").addEventListener("click", (function () { return function (event) { that.changePrivMenu("debug"); }; })());
+  document.getElementById("wrldbtn").addEventListener("click", (function() { return function(event) { that.changePrivMenu("world"); }; })());
+  document.getElementById("debgbtn").addEventListener("click", (function() { return function(event) { that.changePrivMenu("debug"); }; })());
 };
 
 Game.TICK_RATE = 1000/60;
@@ -130,36 +132,36 @@ Game.prototype.changePrivMenu = function(tab) {
 };
 
 Game.prototype.getDebug = function(type) {
-  if (!(app.net.prefLobby) || !(this.debugSettings)) return null;
+  if(!(app.net.prefLobby) || !(this.debugSettings)) return null;
   
   var out;
   switch(type) {
     case "level" : {
-      if (!(this.debugSettings.initialLevel)) { break; }
+      if(!(this.debugSettings.initialLevel)) { break; }
       out = parseInt(this.debugSettings.initialLevel);
       break;
     }
 
     case "zone" : {
-      if (!(this.debugSettings.initialZone)) { break; }
+      if(!(this.debugSettings.initialZone)) { break; }
       out = parseInt(this.debugSettings.initialZone);
       break;
     }
 
     case "lives" : {
-      if (!(this.debugSettings.infiniteLives)) { break; }
+      if(!(this.debugSettings.infiniteLives)) { break; }
       out = this.debugSettings.infiniteLives;
       break;
     }
 
     case "god" : {
-      if (!(this.debugSettings.godMode)) { break; }
+      if(!(this.debugSettings.godMode)) { break; }
       out = this.debugSettings.godMode;
       break;
     }
 
     case "powerup" : {
-      if (!(this.debugSettings.powerup)) { break; }
+      if(!(this.debugSettings.powerup)) { break; }
       out = this.debugSettings.powerup;
       break;
     }
@@ -176,8 +178,8 @@ Game.prototype.load = function(data) {
     document.getElementById("settings-returnLobby").style.display = "";
   }
 
-  if (this instanceof Lobby && app.net.prefLobby) { document.getElementById("worlds").style.display = ""; }
-  else if (app.net.prefLobby) {
+  if(this instanceof Lobby && (app.net.prefLobby || this.isDev)) { document.getElementById("worlds").style.display = ""; }
+  else if(app.net.prefLobby) {
     document.getElementById("worlds").style.display = "none";
 
     var infLives = document.getElementById("infLives");
@@ -194,7 +196,7 @@ Game.prototype.load = function(data) {
       'powerup': parseInt(powerup.value) || 0
     }
   }
-  if (!(this instanceof Lobby) && app) {
+  if(!(this instanceof Lobby) && app) {
     app.menu.main.menuMusic.pause();
   }
   
@@ -205,13 +207,13 @@ Game.prototype.load = function(data) {
 
   /* Collect music used in this world */
   this.world.levels.forEach(lvl => lvl.zones.forEach(zn => {
-    if (zn.music) {
+    if(zn.music) {
       musicList.push(zn.music);
     }
 
     /* @TODO: There is definitely a better way of doing this, but the function is run only once so it should be OK */
     zn.mainLayer.data.forEach(row => row.forEach(tile => {
-      if (tile[3] === 239 /* Music Block */) { if (tile[4] /* Extra Data */) {
+      if(tile[3] === 239 /* Music Block */) { if(tile[4] /* Extra Data */) {
         musicList.push(tile[4]);
       }
     }
@@ -235,20 +237,22 @@ Game.prototype.load = function(data) {
         .reduce((res, key) => (res[key] = dict[key], res), {});
   };
 
-  var reloadAudio;
+  if(data.audioOverrideURL && data.audioOverrideURL !== "undefined") {
+    this.audio.setAudioOverride(data.audioOverrideURL);
+  };
   
-  if (data.musicOverridePath && data.musicOverridePath !== "undefined") {
+  if(data.musicOverridePath && data.musicOverridePath !== "undefined") {
     this.audio.setMusicPrefix(data.musicOverridePath);
-  }
+  };
 
-  if (data.soundOverridePath && data.soundOverridePath !== "undefined") {
+  if(data.soundOverridePath && data.soundOverridePath !== "undefined") {
     this.audio.setSoundPrefix(data.soundOverridePath);
-  }
+  };
 
-  if (data.assets) {
+  if(data.assets) {
     var link = isLink(data.assets);
     $.getJSON(link ? data.assets : /royale/ + 'assets/' + data.assets, function(dat) {
-        if (dat.tileAnim) {
+        if(dat.tileAnim) {
           TILE_ANIMATION = []
           TILE_ANIMATION_FILTERED = [];
 
@@ -280,7 +284,7 @@ Game.prototype.load = function(data) {
         var oid = obj.pos;
         var pgen = [obj.pos]; // obj.pos here is a shor2, we use it as the oid for this object
         for(var l=0;l<obj.param.length;l++) { pgen.push(obj.param[l]); }
-        if (zn.maxOid === undefined || oid > zn.maxOid) zn.maxOid = oid;
+        if(zn.maxOid === undefined || oid > zn.maxOid) zn.maxOid = oid;
         this.createObject(obj.type, lvl.id, zn.id, shor2.decode(obj.pos), pgen);
       }
     }
@@ -291,7 +295,7 @@ Game.prototype.load = function(data) {
     var lvl = this.world.levels[i];
     for(var j=0;j<lvl.zones.length;j++) {
       var zn = lvl.zones[j];
-      if (zn.background) {
+      if(zn.background) {
         for (var k=0;k<zn.background.length;k++) {
           var layer = zn.background[k];
           var ext = layer.url.split(".").pop().toLowerCase();
@@ -307,29 +311,29 @@ Game.prototype.load = function(data) {
   }
 };
 
-Game.prototype.getGameTimer = function (compact) {
-  if (this.gameTimerStopped !== null) return this.gameTimerStopped;
-  if (this.startDelta === undefined) return compact ? "00:00" : "00:00:000";
+Game.prototype.getGameTimer = function(compact) {
+  if(this.gameTimerStopped !== null) return this.gameTimerStopped;
+  if(this.startDelta === undefined) return compact ? "00:00" : "00:00:000";
   var now = util.time.now() - this.poleTimes; // get the time now minus the poleTimes
   var diff = now - this.startDelta; // diff in seconds between now and start
   var m = Math.floor(diff / 60000); // get minutes value
   var s = Math.floor(diff / 1000) % 60; // get seconds value
   var ms = diff % 1000; // get milliseconds value
-  if (m < 10) m = "0" + m; // add a leading zero if it's single digit
-  if (s < 10) s = "0" + s; // add a leading zero if it's single digit
-  if (ms < 10) ms = "00" + ms; // add two leadings zeros if it's single digit
-  else if (ms < 100) ms = "0" + ms; // add a leading zero if it's double digit
-  return m + ":" + s + (compact ? '' : (":" + ms));
+  if(m < 10) m = "0" + m; // add a leading zero if it's single digit
+  if(s < 10) s = "0" + s; // add a leading zero if it's single digit
+  if(ms < 10) ms = "00" + ms; // add two leadings zeros if it's single digit
+  else if(ms < 100) ms = "0" + ms; // add a leading zero if it's double digit
+  return m + ":" + s + (compact ? '' : ("." + ms));
 };
 
-Game.prototype.resumeGameTimer = function () {
-  if (this.gameTimerStopped === null) return;
+Game.prototype.resumeGameTimer = function() {
+  if(this.gameTimerStopped === null) return;
   this.gameTimerStopped = null;
   this.poleTimes += util.time.now() - this.gameTimerStopTime;
 };
 
-Game.prototype.stopGameTimer = function (touchMode = false) {
-  if (this.gameTimerStopped !== null) return;
+Game.prototype.stopGameTimer = function(touchMode = false) {
+  if(this.gameTimerStopped !== null) return;
   this.gameTimerStopped = this.getGameTimer(app.compactMode ? app.compactMode : touchMode);
   this.gameTimerStopTime = util.time.now();
 };
@@ -357,15 +361,15 @@ Game.prototype.updatePlayerList = function(packet) {
   this.players = packet.players;
   if(this.pid === undefined) { return; }
   
-  this.updateTeam();
-  if (this.isDev) { app.menu.game.updatePlayerList(this.players); }
+  this.updateLobby();
+  if(this.isDev) { app.menu.game.updatePlayerList(this.players); }
 };
 
 /* G13 */
 Game.prototype.gameStartTimer = function(packet) {
   if(this.startTimer < 0 && !app.settings.soundMuted) {
     var snd = document.createElement("audio");
-    snd.src = "audio/" + this.audio.soundPrefix + "/alert.mp3";
+    snd.src = this.audio.audioOverrideURL ? (this.audio.audioOverrideURL + "/") : "audio/" + this.audio.soundPrefix + "/alert.mp3";
     snd.volume = Audio.EFFECT_VOLUME;
     snd.play();
   }
@@ -373,8 +377,8 @@ Game.prototype.gameStartTimer = function(packet) {
   else { this.doStart(); }
 };
 
-/* Checks all players for team */
-Game.prototype.updateTeam = function() {
+/* Updates the lobby info */
+Game.prototype.updateLobby = function() {
   for(var i=0;i<this.players.length;i++) {
     var ply = this.players[i];
     if(ply.id !== this.pid) {
@@ -384,6 +388,11 @@ Game.prototype.updateTeam = function() {
       this.isDev = ply.isDev;
       if(this.isDev) {
         document.getElementById("devConsole").style.display = "";
+        if(this instanceof Lobby) {
+          document.getElementById("worlds").style.display = "";
+        } else {
+          document.getElementById("worlds").style.display = "none";
+        }
       }
     }
   }
@@ -413,6 +422,7 @@ Game.prototype.doUpdate = function(data) {
       case 0x11 : { this.doNET011(n); break; }
       case 0x12 : { this.doNET012(n); break; }
       case 0x13 : { this.doNET013(n); break; }
+      case 0x14 : { this.doNET014(n); break; }
       case 0x17 : { this.doNET017(n); break; }
       case 0x18 : { this.doNET018(n); break; }
       case 0x20 : { this.doNET020(n); break; }
@@ -434,7 +444,7 @@ Game.prototype.doNET010 = function(n) {
   var obj = this.createObject(PlayerObject.ID, n.level, n.zone, shor2.decode(n.pos), [n.pid, n.character]);
   obj.setState(PlayerObject.SNAME.GHOST);
   
-  /* Check if we need to apply a team name to this new infringio */
+  /* Check if we need to apply a name to this new infringio */
   var ply = this.getPlayerInfo(n.pid);
   if(ply && ply.id !== this.pid) {
     var obj = this.getGhost(ply.id);
@@ -466,6 +476,12 @@ Game.prototype.doNET013 = function(n) {
   obj.trigger(n.type);
 };
 
+/* PLAYER_TAUNT_EVENT [0x14] */
+Game.prototype.doNET014 = function(n) {
+  var obj = this.getGhost(n.pid);
+  obj.emote(n.emote);
+};
+
 /* PLAYER_KILL_EVENT [0x17] */
 Game.prototype.doNET017 = function(n) {
   this.kills += 1;
@@ -491,7 +507,7 @@ Game.prototype.doNET018 = function(n) {
   if(ply) { ply.axe(n.result); }
   this.victory = n.result;
   this.stopGameTimer();
-  setTimeout(function () {
+  setTimeout(function() {
     document.getElementById('return').style.display = "block";    // Show 'return to main' and 'return to lobby'
   }, 3000);
 };
@@ -538,13 +554,13 @@ Game.prototype.doTouch = function(imp) {
   /* Attempt to go full screen */
   if(!this.touchFull) {
     var body = document.documentElement;
-    if (body.requestFullscreen) {
+    if(body.requestFullscreen) {
       this.container.requestFullscreen();
-    } else if (body.mozRequestFullScreen) { /* Firefox */
+    } else if(body.mozRequestFullScreen) { /* Firefox */
       body.mozRequestFullScreen();
-    } else if (body.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+    } else if(body.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
       body.webkitRequestFullscreen();
-    } else if (body.msRequestFullscreen) { /* IE/Edge */
+    } else if(body.msRequestFullscreen) { /* IE/Edge */
       body.msRequestFullscreen();
     }
     this.touchFull = true;
@@ -631,7 +647,7 @@ Game.prototype.doInput = function(imp) {
   var pad = this.input.pad;
   
   if(!this.inx27 && keys[27]) { app.menu.main.settingsMenu.style.display = (app.menu.main.settingsMenu.style.display === "" ? "none" : ""); } this.inx27 = keys[27]; // ESC
-  
+
   /* @TODO: Hacky last second additions */
   /* Check if client has clicked on the button to mute sound */
   var tmp = this;
@@ -662,6 +678,27 @@ Game.prototype.doInput = function(imp) {
   var a = keys[inp.assignK.a] || pad.button(inp.assignG.a);
   var b = keys[inp.assignK.b] || pad.button(inp.assignG.b);
   var u = keys[inp.assignK.up] || pad.button(inp.assignG.up);
+
+  var emoteK = keys[inp.assignK.emote];
+  var emoteG = pad.button(inp.assignG.emote);
+
+  for(var panel of this.panel.panels) {
+    if(panel instanceof EmotePanel) {
+      if(document.getElementById("settings").style.display !== "none" || document.getElementById("controls").style.display !== "none") { return; }
+
+      if(!this["ink" + inp.assignK.emote] && emoteK) {
+        panel.active = (!panel.active && panel.cooldown === -1)
+        this["ink" + inp.assignK.emote] = true;
+      };
+      this["ink" + inp.assignK.emote] = emoteK;
+
+      if(!this["ing" + inp.assignG.emote] && emoteG) {
+        panel.active = (!panel.active && panel.cooldown === -1)
+        this["ing" + inp.assignG.emote] = true;
+      };
+      this["ing" + inp.assignG.emote] = emoteG;
+    }
+  }
   
   if(mous.spin && this.getZone().camera === 2 /* Free-Roam only */) { this.display.camera.zoom(mous.spin); } // Mouse wheel -> Camera zoom
   
@@ -706,8 +743,8 @@ Game.prototype.doStep = function() {
   /* Step & delete garbage */
   for(var i=0;i<this.objects.length;i++) {
     var obj = this.objects[i];
-    if (obj instanceof HammerObject || obj instanceof HammerProj || obj instanceof FirebroObject) {
-      if (this.frame % 2 === 0) { obj.step(); }
+    if(obj instanceof HammerObject || obj instanceof HammerProj || obj instanceof FirebroObject) {
+      if(this.frame % 2 === 0) { obj.step(); }
     } else { obj.step(); }
     if(obj.garbage) { this.objects.splice(i--, 1); }
   }
@@ -735,6 +772,9 @@ Game.prototype.doStep = function() {
   
   /* Step world to update bumps & effects & etc */
   this.world.step();
+
+  /* Step panels to draw & etc */
+  this.panel.step();
   
   /* Step audio class and objects */
   for(var i=0;i<this.sounds.length;i++) {
@@ -744,7 +784,7 @@ Game.prototype.doStep = function() {
   this.doMusic();
   this.audio.update();
   
-  if (ply && this.getRemain() === 1 && this.gameMode && !ply.dead && this.victory === 0 && this.frame > 60 && this instanceof Game) {
+  if(ply && this.getRemain() === 1 && this.gameMode && !ply.dead && this.victory === 0 && this.frame > 60 && this instanceof Game) {
     this.out.push(NET018.encode());
   }
 
@@ -754,15 +794,15 @@ Game.prototype.doStep = function() {
       var rsp = this.getZone().level;
       this.doSpawn(); 
       this.levelWarp(rsp);
-      if (this.getDebug("lives")) {
+      if(this.getDebug("lives")) {
         this.lives -= 0;
       } else { this.lives--; }
 
-      if (zone.musicBlock) { zone.musicBlock = null; } }
+      if(zone.musicBlock) { zone.musicBlock = null; } }
     else if(++this.gameOverTimer > 45) { this.gameOver = true; this.gameOverTimer = 0; }
   }
   /* Triggers page refresh after 5 seconds of a game over. */
-  else if(this.gameOver) { if(++this.gameOverTimer > Game.GAME_OVER_TIME) { Cookies.set("go_to_lobby", "1"); app.close(); } }
+  else if(this.gameOver) { if(++this.gameOverTimer === Game.GAME_OVER_TIME) { app.close(true); } }
   else { this.gameOverTimer = 0; }
   
   this.lastDraw = this.frame;
@@ -777,7 +817,7 @@ Game.prototype.doSpawn = function() {
     var zon = this.world.getZone(this.getDebug("level"), this.getDebug("zone")) || this.getZone();
     var pos;
     
-    if (zon.spawnpoint.length > 0 && this.gameMode === 1 /* PVP exclusive */) {
+    if(zon.spawnpoint.length > 0 && this.gameMode === 1 /* PVP exclusive */) {
       var spn = zon.spawnpoint;
       pos = spn[parseInt(Math.random() * spn.length)].pos;
     } else { pos = zon.initial; /* shor2 */ }
@@ -791,13 +831,13 @@ Game.prototype.doSpawn = function() {
       obj.power = this.getDebug("powerup");
     }
 
-    if (this.gameMode && this instanceof Game) {
+    if(this.gameMode && this instanceof Game) {
       obj.transform(2);
       obj.rate = 0x71;
     }
   }
   
-  this.updateTeam();
+  this.updateLobby();
 };
 
 /* Looks at game state and decides what music we should be playing */
@@ -956,18 +996,22 @@ Game.prototype.levelWarp = function(lid) {
 
 /* When this client player collects a coin */
 Game.prototype.coinage = function() {
-  this.coins = Math.min(99, this.coins+1);
-  this.coinsCollected += 1;
-  if(this.coins >= Game.COINS_TO_LIFE) { this.lifeage(); this.coins = 0; }
+  this.coins += 1;
+  if(this.coins % Game.COINS_TO_LIFE === 0) { this.lifeage(); }
   this.play("coin.mp3",.4,0.);
   this.out.push(NET021.encode());
 };
 
 /* When the client player collects a life */
 Game.prototype.lifeage = function() {
-  if (this.gameMode === 1) { return; }
+  if(this.gameMode === 1) { return; }
   this.lives = Math.min(99, this.lives+1);
   this.play("life.mp3",1.,0.);
+};
+
+/* When the client sends an emote */
+Game.prototype.emote = function(emote) {
+  this.out.push(NET014.encode(emote));
 };
 
 Game.prototype.loop = function() {

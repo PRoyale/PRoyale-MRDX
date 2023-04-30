@@ -15,8 +15,8 @@ function MenuGame() {
   this.selectedPlayerTr = null;
   
   var that = this;
-  this.devConsoleToggle.onclick = function (e) {
-    if (that.devConsoleOn) {
+  this.devConsoleToggle.onclick = function(e) {
+    if(that.devConsoleOn) {
       that.devConsoleOn = false;
       that.devConsoleMain.style.display = "none";
       e.target.innerText = "DEV>";
@@ -27,11 +27,11 @@ function MenuGame() {
     }
   }
 
-  document.getElementById("devConsole-kick").onclick = function () { that.kickPlayer() };
-  document.getElementById("devConsole-ban").onclick = function () { that.banPlayer() };
-  document.getElementById("devConsole-rename").onclick = function () { that.startRenamePlayer() };
-  document.getElementById("devConsole-renameDone").onclick = function () { that.finishRenamePlayer() };
-  document.getElementById("devConsole-forceStart").onclick = function () { app.net.send({ 'type': 'gfs' }) }
+  document.getElementById("devConsole-kick").onclick = function() { that.kickPlayer() };
+  document.getElementById("devConsole-ban").onclick = function() { that.banPlayer() };
+  document.getElementById("devConsole-rename").onclick = function() { that.startRenamePlayer() };
+  document.getElementById("devConsole-renameDone").onclick = function() { that.finishRenamePlayer() };
+  document.getElementById("devConsole-forceStart").onclick = function() { app.net.send({ 'type': 'gfs' }) };
 };
 
 MenuGame.prototype.show = function() {
@@ -41,7 +41,7 @@ MenuGame.prototype.show = function() {
   this.element.style.display = "block";
 };
 
-MenuGame.prototype.updatePlayerList = function (playerList) {
+MenuGame.prototype.updatePlayerList = function(playerList) {
   var stillSelected = false;
   this.selectedPlayerTr = null;
   this.devConsolePlayerList.innerHTML = "";
@@ -57,14 +57,14 @@ MenuGame.prototype.updatePlayerList = function (playerList) {
       tbl.append(tr);
       [player.id, player.username, player.name].map(x => { var td = document.createElement("td"); td.innerText = "" + x; tr.appendChild(td); });
       tr.playerId = player.id;
-      if (this.selectedPlayerId == player.id) {
+      if(this.selectedPlayerId == player.id) {
           stillSelected = true;
           tr.style.color = "yellow";
           this.selectedPlayerTr = tr;
       }
-      tr.onclick = (function (tr) {
-          return function (e) {
-              if (that.selectedPlayerTr) {
+      tr.onclick = (function(tr) {
+          return function(e) {
+              if(that.selectedPlayerTr) {
                   that.selectedPlayerTr.style.color = "";
               }
               tr.style.color = "yellow";
@@ -73,11 +73,11 @@ MenuGame.prototype.updatePlayerList = function (playerList) {
           }
       })(tr);
   }
-  if (!stillSelected) this.selectedPlayerId = null;
+  if(!stillSelected) this.selectedPlayerId = null;
 };
 
-MenuGame.prototype.kickPlayer = function () {
-  if (this.selectedPlayerId === null) return;
+MenuGame.prototype.kickPlayer = function() {
+  if(this.selectedPlayerId === null) return;
   app.game.send({
       'type': "gbn",
       'pid': this.selectedPlayerId,
@@ -85,8 +85,8 @@ MenuGame.prototype.kickPlayer = function () {
   });
 };
 
-MenuGame.prototype.banPlayer = function () {
-  if (this.selectedPlayerId === null) return;
+MenuGame.prototype.banPlayer = function() {
+  if(this.selectedPlayerId === null) return;
   app.game.send({
       'type': "gbn",
       'pid': this.selectedPlayerId,
@@ -94,18 +94,18 @@ MenuGame.prototype.banPlayer = function () {
   });
 };
 
-MenuGame.prototype.startRenamePlayer = function () {
-  if (this.selectedPlayerId === null) return;
+MenuGame.prototype.startRenamePlayer = function() {
+  if(this.selectedPlayerId === null) return;
   this.renamingPlayerId = this.selectedPlayerId;
   var playerInfo = app.game.getPlayerInfo(this.selectedPlayerId);
   this.devConsoleRenameField.value = playerInfo.name;
   this.devConsoleRenameForm.style.display = "";
 };
 
-MenuGame.prototype.finishRenamePlayer = function () {
-  if (this.selectedPlayerId === null) return;
+MenuGame.prototype.finishRenamePlayer = function() {
+  if(this.selectedPlayerId === null) return;
   var newName = this.devConsoleRenameField.value;
-  if (newName === "") return;
+  if(newName === "") return;
   app.game.send({
       'type': "gnm",
       'pid': this.renamingPlayerId,

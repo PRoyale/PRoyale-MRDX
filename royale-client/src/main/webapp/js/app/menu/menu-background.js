@@ -23,7 +23,7 @@ function MenuDisplay() {
 
         this.zone = data.world[this.worldName === "world-tricorn" ? 0 : level].zone[0];
         this.objects = this.zone.obj;
-        if (this.zone.background.length) { this.downloadBackgrounds(this.zone.background) }
+        if(this.zone.background.length) { this.downloadBackgrounds(this.zone.background) }
         this.loadAnimations(data.assets || "assets.json", data.resource);
         
         this.position();
@@ -49,11 +49,11 @@ MenuDisplay.prototype.dimensions = function() {
 
 MenuDisplay.prototype.position = function() {
     this.camera.positionX(16);
-    this.camera.positionY(7);
+    this.camera.positionY(this.dimensions().y*.5);
 };
 
 MenuDisplay.prototype.loadAnimations = function(url, resource) {
-    if (!url) { return; }
+    if(!url) { return; }
 
     var isLink = function(string) {
         let url;
@@ -71,7 +71,7 @@ MenuDisplay.prototype.loadAnimations = function(url, resource) {
 
     var link = isLink(url);
     $.getJSON(link ? url : /royale/ + 'assets/' + url, function(dat) {
-      if (dat.tileAnim) {
+      if(dat.tileAnim) {
         TILE_ANIM_BG = []
         TILE_ANIM_BG_FILTERED = [];
   
@@ -206,7 +206,7 @@ MenuDisplay.prototype.draw = function() {
     var zone = this.zone;
 
     this.camera.pos.x += MenuDisplay.CAMERA_SPEED;
-    if (this.camera.pos.x >= this.dimensions().x-15) {
+    if(this.camera.pos.x >= this.dimensions().x-15) {
         /* Reset position */
         this.position();
     }
@@ -218,14 +218,14 @@ MenuDisplay.prototype.draw = function() {
     context.translate(parseInt(-this.camera.pos.x*MenuDisplay.TEXRES), parseInt(-this.camera.pos.y*MenuDisplay.TEXRES));
     
     /* Draw Game */
-    if (zone.background.length && !app.settings.disableBg) {
+    if(zone.background.length && !app.settings.disableBg) {
         for (var i=0; i<zone.background.length; i++) {
           var layer = zone.background[i];
           
           this.drawBackground(layer, false);
           for (var j = 0; j < zone.layers.length; j++) {
             this.drawMap(zone.layers[j].data, false); // Render depth 0
-            if (zone.layers[j].z == 0) {
+            if(zone.layers[j].z == 0) {
               this.drawObject();
               this.drawMap(zone.layers[j].data, true); // Render depth 1
             }
@@ -235,7 +235,7 @@ MenuDisplay.prototype.draw = function() {
     } else {
         for (var j = 0; j < zone.layers.length; j++) {
           this.drawMap(zone.layers[j].data, false); // Render depth 0
-          if (zone.layers[j].z == 0) {
+          if(zone.layers[j].z == 0) {
             this.drawObject();
             this.drawMap(zone.layers[j].data, true); // Render depth 1
           }
@@ -253,7 +253,7 @@ MenuDisplay.prototype.drawBackground = function(layer, depth) {
   var texture = this.resource.getTexture("bg" + layer.z + 0 + zone.id);
   var tex;
 
-  if (texture.animated !== undefined) {
+  if(texture.animated !== undefined) {
     var frames = texture.frames;
     var delay = texture.delay;
     
@@ -262,12 +262,12 @@ MenuDisplay.prototype.drawBackground = function(layer, depth) {
     tex = texture;
   }
 
-  if (layer.z < 1 && depth) { return; }
+  if(layer.z < 1 && depth) { return; }
 
-  if (tex) {
+  if(tex) {
     var loopCount = layer.loop || parseInt(dim.x*16/tex.width)+1; //Maybe should be Math.round instead of parseInt
 
-    if (loopCount <= 1) {
+    if(loopCount <= 1) {
       /* Draw once */
       context.drawImage(tex, this.camera.pos.x * layer.speed + layer.offset.x, layer.offset.y, tex.width, tex.height);
     } else {
@@ -300,9 +300,9 @@ MenuDisplay.prototype.drawMap = function(data, depth) {
       var st;
       var ind = td.index;
 
-      if (ind === 30) { continue; } // Do not render tile 30
+      if(ind === 30) { continue; } // Do not render tile 30
 
-      if (ind in TILE_ANIM_BG_FILTERED) {
+      if(ind in TILE_ANIM_BG_FILTERED) {
         var anim = TILE_ANIM_BG_FILTERED[ind];
         var delay = anim.delay;
         var frame = Math.floor(this.frame % (anim.tiles.length * delay) / delay);
@@ -350,16 +350,16 @@ MenuDisplay.prototype.drawObject = function() {
     var axes = [];
     for(var i=0;i<this.objects.length;i++) {
         var obj = this.objects[i];
-        if (obj.type === 253) {
+        if(obj.type === 253) {
           texts.push({'offset': obj.param[0], 'size': obj.param[1], 'color': obj.param[2], 'text': obj.param[3], 'pos': shor2.decode(obj.pos)});
         }
-        if (obj.type === 97) {
+        if(obj.type === 97) {
           coins.push({'pos': shor2.decode(obj.pos)});
         }
-        if (obj.type === 177) {
+        if(obj.type === 177) {
           flags.push({'pos': shor2.decode(obj.pos)});
         }
-        if (obj.type === 85) {
+        if(obj.type === 85) {
           axes.push({'pos': shor2.decode(obj.pos)});
         }
     }
@@ -414,7 +414,7 @@ MenuDisplay.prototype.drawLoad = function() {
   context.font = "32px SmbWeb";
   context.fillStyle = "white";
   context.textAlign = "center";
-  context.fillText(TEXTS["#LOADING_RESOURCES"][app.lang], W*.5, H*.5);
+  context.fillText(TEXTS["#LOADING_RESOURCES"][app.lang].toUpperCase(), W*.5, H*.5);
 };
   
 MenuDisplay.prototype.destroy = function() {

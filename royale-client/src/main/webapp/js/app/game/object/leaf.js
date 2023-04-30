@@ -53,7 +53,7 @@ LeafObject.prototype.update = ItemObject.prototype.update;
 LeafObject.prototype.step = ItemObject.prototype.step;
 
 LeafObject.prototype.control = function() {
-  if (!this.stage) {
+  if(!this.stage) {
     this.blast();
     this.stage = 1;
   }
@@ -64,7 +64,7 @@ LeafObject.prototype.physics = function() {
     this.fallSpeed = (this.fallSpeed-LeafObject.FALL_SPEED_ACCEL)*LeafObject.DRAG;
     this.pos.y += this.fallSpeed;
   } else {
-    if (++this.directionTimer > 75) {
+    if(++this.directionTimer > 75) {
       this.dir = !this.dir;
       this.directionTimer = 0;
     } else {

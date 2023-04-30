@@ -37,29 +37,29 @@ EditorDisplay.prototype.draw = function() {
   
   /* Draw Game */
   
-  if (zone.background.length) {
+  if(zone.background.length) {
     for (var i=0; i<zone.background.length; i++) {
       var layer = zone.background[i];
       
       this.drawBackground(layer, false);
-      if (!this.game.refDepth) { this.drawReference(); }
+      if(!this.game.refDepth) { this.drawReference(); }
       for (var j = 0; j < zone.layers.length; j++) {
         this.drawMapTool(zone.layers[j].data, false); // Render depth 0
-        if (zone.layers[j].z == 0) {
+        if(zone.layers[j].z == 0) {
           this.drawMapTool(zone.layers[j].data, true); // Render depth 1
         }
       }
       this.drawBackground(layer, true);
-      if (this.game.refDepth) { this.drawReference(); }
+      if(this.game.refDepth) { this.drawReference(); }
     }
   } else {
     for (var j = 0; j < zone.layers.length; j++) {
-      if (!this.game.refDepth) { this.drawReference(); }
+      if(!this.game.refDepth) { this.drawReference(); }
       this.drawMapTool(zone.layers[j].data, false); // Render depth 0
-      if (zone.layers[j].z == 0) {
+      if(zone.layers[j].z == 0) {
         this.drawMapTool(zone.layers[j].data, true); // Render depth 1
       }
-      if (this.game.refDepth) { this.drawReference(); }
+      if(this.game.refDepth) { this.drawReference(); }
     }
   }
 
@@ -97,12 +97,12 @@ EditorDisplay.prototype.drawBackground = function(layer, depth) {
   var dim = zone.dimensions();
   var tex = this.resource.getTexture("bg" + layer.z + zone.level + zone.id);
 
-  if (layer.z < 1 && depth) { return; }
+  if(layer.z < 1 && depth) { return; }
 
-  if (tex) {
+  if(tex) {
     var loopCount = layer.loop || parseInt(dim.x*16/tex.width)+1 //Maybe should be Math.round instead of parseInt
 
-    if (loopCount <= 1) {
+    if(loopCount <= 1) {
       /* Draw once */
       context.drawImage(tex, this.camera.pos.x * layer.speed + layer.offset.x, layer.offset.y, tex.width, tex.height);
     } else {
@@ -245,7 +245,7 @@ EditorDisplay.prototype.drawMapTool = function(data, depth) {
       var st;
       var ind = td.index;
 
-      if (ind in TILE_ANIMATION_FILTERED) {
+      if(ind in TILE_ANIMATION_FILTERED) {
         var anim = TILE_ANIMATION_FILTERED[ind];
         var delay = anim.delay;
         var frame = Math.floor(this.game.frame % (anim.tiles.length * delay) / delay);
@@ -261,7 +261,7 @@ EditorDisplay.prototype.drawMapTool = function(data, depth) {
       }
       if(ind !== 30) { context.drawImage(tex, st[0], st[1], Display.TEXRES, Display.TEXRES, Display.TEXRES*j, Display.TEXRES*(i-bmp), Display.TEXRES, Display.TEXRES); }
 
-      if (td.definition.NAME.includes("ITEM") || td.definition.NAME.includes("OBJECT")) {
+      if(td.definition.NAME.includes("ITEM") || td.definition.NAME.includes("OBJECT")) {
         var obj = GameObject.OBJECT(parseInt(td.data) || 81);
         if(obj && obj.SPRITE && obj.SPRITE[0x0]) {
           var sprite = util.sprite.getSprite(objTex, obj.SPRITE[0x0].INDEX);
@@ -269,7 +269,7 @@ EditorDisplay.prototype.drawMapTool = function(data, depth) {
         }
       }
 
-      if (td.definition.NAME.includes("COIN")) {
+      if(td.definition.NAME.includes("COIN")) {
         var obj = GameObject.OBJECT(97);
         if(obj && obj.SPRITE && obj.SPRITE[0x0]) {
           var sprite = util.sprite.getSprite(objTex, obj.SPRITE[0x0].INDEX);
@@ -277,7 +277,7 @@ EditorDisplay.prototype.drawMapTool = function(data, depth) {
         }
       }
 
-      if (td.definition.NAME.includes("WARP")) {
+      if(td.definition.NAME.includes("WARP")) {
         context.fillStyle = "rgba(255,255,0,0.5)";
         context.fillRect(Display.TEXRES*j, Display.TEXRES * (i-bmp), Display.TEXRES, Display.TEXRES);
 

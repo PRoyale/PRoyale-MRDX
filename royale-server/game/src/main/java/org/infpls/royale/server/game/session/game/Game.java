@@ -35,6 +35,7 @@ public class Game extends SessionState {
     < g13 game start countdown timer update
     = g21 ping
     > g50 vote ready
+    > gsl level select/upload level (private room)
     > gbn kick/ban player (dev only)
     > gnm rename player (dev only)
     > gfs force start (dev only)
@@ -53,6 +54,7 @@ public class Game extends SessionState {
         case "g03" : { clientReady(gson.fromJson(data, PacketG03.class)); break; }
         case "g21" : { ping(gson.fromJson(data, PacketG21.class)); break; }
         case "g50" : { voteReady(gson.fromJson(data, PacketG50.class)); break; }
+        case "gsl" : { uploadLevel(gson.fromJson(data, PacketGSL.class)); break; }
         case "gbn" : { banPlayer(gson.fromJson(data, PacketGBN.class)); break; }
         case "gnm" : { renamePlayer(gson.fromJson(data, PacketGNM.class)); break; }
         case "gfs" : { forceStart(gson.fromJson(data, PacketGFS.class)); break; }
@@ -85,6 +87,17 @@ public class Game extends SessionState {
   private void voteReady(PacketG50 p) throws IOException {
     lobby.pushEvent(new SessionEvent(session, SessionEvent.Type.VOTE));
   };
+
+  public void uploadLevel(PacketGSL p) throws IOException {
+    if(!lobby.isPrivate() && !session.isDev()) { return; }
+    if(p.name.length() == 0) { return; }
+
+    if(p.name.equals("custom")) {
+      lobby.uploadLevel(p.data);
+    } else {
+      lobby.changeLevel(p.name);
+    }
+  }
 
   private void banPlayer(PacketGBN p) throws IOException {
     if(session.getAccount() != null) {

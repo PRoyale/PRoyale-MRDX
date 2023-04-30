@@ -85,7 +85,7 @@ ToolObject.prototype.updParamTools = function() {
   for (var i=0;i<this.editor.objParamLimit;++i) {
     var box = document.getElementById("editor-tool-object-param-box-"+i);
     box.style.display = (i<currParamLimit) ? "" : "none";
-    if (i<currParamLimit) {
+    if(i<currParamLimit) {
       if(pdef[i].tooltip) {
         var paramNameLabel = document.getElementById("editor-tool-object-param-name-"+i);
         paramNameLabel.innerHTML = pdef[i].name + '<span class="tooltip-text">' + pdef[i].tooltip + '</span>';
@@ -107,11 +107,11 @@ ToolObject.prototype.update = function() {
     var params = [];
     for (var i=0;i<this.editor.objParamLimit;++i) {
       var param = document.getElementById("editor-tool-object-param-"+i).value;
-      if (param === "") param = undefined;
+      if(param === "") param = undefined;
       params.push(param);
     }
     while (0<params.length && params[params.length-1] === undefined) params.pop();
-    if (isNaN(type) || params === undefined) { throw "oof"; }
+    if(isNaN(type) || params === undefined) { throw "oof"; }
     
     if(this.selected) { this.selected.type = type; this.selected.param = params; }
     this.objct.type = type; this.objct.param = params;
@@ -136,7 +136,7 @@ ToolObject.prototype.select = function(object) {
   
   for (var i=0;i<this.editor.objParamLimit;++i) {
     var param = object.param[i];
-    if (param === undefined) param = "";
+    if(param === undefined) param = "";
     document.getElementById("editor-tool-object-param-"+i).value = param;
   }
 
@@ -154,7 +154,7 @@ ToolObject.prototype.deselect = function() {
 }
 
 ToolObject.prototype.move = function(x,y) {
-  if (document.activeElement.tagName === 'INPUT') { return; }
+  if(document.activeElement.tagName === 'INPUT') { return; }
 
   var pos = shor2.decode(this.selected.pos);
   pos = vec2.add(pos, vec2.make(x,y));

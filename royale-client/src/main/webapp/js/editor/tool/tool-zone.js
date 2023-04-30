@@ -44,13 +44,13 @@ function ToolZone(editor) {
 
 ToolZone.prototype.addLayer = function() {
   var z = parseInt(window.prompt("Choose Z [less than 0 is background, greater is 1]"));
-  if (z === 0) return alert("Can't be the primary layer.");
-  if (!z) return alert("Invalid value.");
-  if (!this.zone.layers) this.zone.layers = [];
+  if(z === 0) return alert("Can't be the primary layer.");
+  if(!z) return alert("Invalid value.");
+  if(!this.zone.layers) this.zone.layers = [];
   var i=0;
   for (; i<this.zone.layers.length; ++i) {
-      if (this.zone.layers[i].z == z) return alert("There is already a layer with this Z value ("+z+")");
-      if (this.zone.layers[i].z > z) break;
+      if(this.zone.layers[i].z == z) return alert("There is already a layer with this Z value ("+z+")");
+      if(this.zone.layers[i].z > z) break;
   }
   var layer = {"z":z};
   var dims = this.zone.dimensions();
@@ -64,14 +64,14 @@ ToolZone.prototype.addLayer = function() {
 
 ToolZone.prototype.deleteLayer = function() {
   var z = app.editor.currentLayer.z;
-  if (z == 0) return alert("You can't delete the primary layer.");
-  if (!z) return alert("No layer wtf");
+  if(z == 0) return alert("You can't delete the primary layer.");
+  if(!z) return alert("No layer wtf");
   var i=0;
   for(; i<this.zone.layers.length; ++i) {
-      if (this.zone.layers[i].z == z) break;
+      if(this.zone.layers[i].z == z) break;
   }
 
-  if (i == this.zone.layers.length) return alert("Fake layer wtf");
+  if(i == this.zone.layers.length) return alert("Fake layer wtf");
   if(!window.confirm("Are you sure you want to delete layer "+z+"?")) return;
   this.zone.layers.splice(i,1)
   app.editor.setLayer(app.editor.currentZone.getLayer(0));
@@ -80,9 +80,9 @@ ToolZone.prototype.deleteLayer = function() {
 
 ToolZone.prototype.resize = function() {
   var newWidth = parseInt(this.valWidth.value);
-  if (!newWidth || newWidth <= 0) return alert("Width must be greater than 0");
+  if(!newWidth || newWidth <= 0) return alert("Width must be greater than 0");
   var newHeight = parseInt(this.valHeight.value);
-  if (!newHeight || newHeight <= 0) return alert("Height must be greater than 0");
+  if(!newHeight || newHeight <= 0) return alert("Height must be greater than 0");
   var oldHeight = this.zone.layers[0].data.length;
   
   for (var layer of this.zone.layers) {
@@ -183,7 +183,7 @@ ToolZone.prototype.unshiftX = function() {
 };
 
 ToolZone.prototype.shiftY = function() {
-  if (1 == this.zone.dimensions().y) return alert("Can't remove the last row because it would make the level empty.");
+  if(1 == this.zone.dimensions().y) return alert("Can't remove the last row because it would make the level empty.");
   for (var layer of this.zone.layers) {
       layer.data.shift();
   }
