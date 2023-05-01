@@ -44,7 +44,7 @@ const TEXTS = {
     "#GAME_LOBBY_PLAYERS": {
         "en": "Players",
         "es": "Jugadores",
-        "pt-br": "Jogadoras",
+        "pt-br": "Jogadores",
         "fr": "Joueurs"
     },
 
@@ -86,14 +86,14 @@ const TEXTS = {
     "#MENU_RETURN_MENU": {
         "en": "Return to Menu",
         "es": "Volver al menú",
-        "pt-br": "Volver al menú",
+        "pt-br": "Retornar para o menu",
         "fr": "Retour au menu"
     },
 
     "#MENU_RETURN_LOBBY": {
         "en": "Return to Lobby",
-        "es": "Volver al lobby",
-        "pt-br": "Volver al lobby",
+        "es": "Volver al Lobby",
+        "pt-br": "Retornar para o Lobby",
         "fr": "Retour au Lobby"
     },
 
@@ -113,18 +113,21 @@ const TEXTS = {
 
     "#PRIVATE_MENU_TITLE": {
         "en": "Private Game",
+        "es": "Partida privada",
         "pt-br": "Partida Privada",
         "fr": "Partie Privée"
     },
 
     "#PRIVATE_ROOM_CODE": {
         "en": "Room Code",
+        "es": "Código de sala",
         "pt-br": "Código de Sala",
         "fr": "Code De Salle"
     },
 
     "#PRIVATE_SINGLEPLAYER_GAME": {
         "en": "You're joining a singleplayer game!",
+        "es": "¡Estás uniéndote a una partida para un jugador!",
         "pt-br": "Está entrando em uma partida de um jogador!",
         "fr": "Vous rejoignez une partie solo!"
     },
@@ -216,7 +219,7 @@ const TEXTS = {
     "#STATS_WINS": {
         "en": "Wins",
         "es": "Wins",
-        "pt-br": "Vencidas",
+        "pt-br": "Vitórias",
         "fr": "Victoires"
     },
 
