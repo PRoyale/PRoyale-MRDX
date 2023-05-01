@@ -1,12 +1,12 @@
 # Mario Royale Deluxe Patch Notes
 ## Version 4.1.1
-### May 1, 2023 - Technical Updates
+### 2023-05-01 - Technical Updates
 * Fixed security issues on the server-side
 * Added some missing Spanish translations
 * Fixed a couple of Portuguese mistakes
 
 ## Version 4.1.0
-### April 30, 2023 - Major Update
+### 2023-04-30 - Major Update
 * Added Emotes
 >   Press Left-Shift to toggle the emote menu and numbers 1-8 to pick an emote
 * Added Private Lobbies
@@ -20,7 +20,7 @@
 * Fixed guest names not being uppercased like registered names
 
 ## Version 4.0.0
-### April 16, 2023 - Major Update
+### 2023-04-16 - Major Update
 * Added translations
 >   Click the globe button in the top right to change the game language!
 >   Major thanks to dimension for the Spanish translation, RayTheMaymay for the Brazilian Portuguese translation, and Pyriel for the French translation!
