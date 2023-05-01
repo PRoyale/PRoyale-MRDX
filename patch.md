@@ -1,4 +1,10 @@
 # Mario Royale Deluxe Patch Notes
+## Version 4.1.1
+### May 1, 2023 - Technical Updates
+* Fixed security issues on the server-side
+* Added some missing Spanish translations
+* Fixed a couple of Portuguese mistakes
+
 ## Version 4.1.0
 ### April 30, 2023 - Major Update
 * Added Emotes
