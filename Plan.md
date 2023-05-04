@@ -21,7 +21,7 @@ Root of the Mario Royale Deluxe repository.
 
 		- **game:** All maps (of format .game).
 
-		- **noxio.properties:**	Server hosting properties file.
+		- **noxio.properties:**	~~Server hosting properties file.~~ Has no use.
 
 	- **webapp:** FX (audio, textures, ...), HTML page files and misc.
 
