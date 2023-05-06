@@ -9,34 +9,47 @@ function Lobby(data, gameMode) {
   this.selectedWorld = "";
 
   var pref = "audio/lobby/";
-
   if(app.menu.main) {
     var music = ["lobby-smb3w1.mp3", "lobby-smb3w4.mp3", "lobby-yi.mp3", "lobby-special.mp3"];
     app.menu.main.menuMusic.src = pref + music[parseInt(Math.random() * music.length)];
     app.menu.main.menuMusic.play();
   }
 
-  var levels = document.getElementById("levels");
   var customLevel = document.getElementById("levelSelectInput");
-
+  
   customLevel.addEventListener("change", (function() { return function(event) {
     uploadFile(false, event, function(data) { app.net.send({ 'type': "gsl", 'name': "custom", 'data': data }); });
   }; })());
-
-  var levelSelector = this.gameMode ? levelSelectorsPVP : levelSelectorsVanilla;
-  levelSelector.forEach(page => {
-    for(var level of page.levels) {
-        var elem = document.createElement("div");
-        elem.className = "level-select-button";
-        elem.id = level.worldId;
-        elem.innerText = level.name;
-        elem.addEventListener("click", (function (id) { return function () { app.net.send({ 'type': "gsl", 'name': id, 'data': "" }); }; })(level.worldId));
-
-        levels.appendChild(elem);
-    }
-  })
-
+  
   this.lobbyTimer = 90;
+};
+
+/* PRIVATE LOBBY / DEV */
+Lobby.prototype.getLevels = function(p) {
+  var worlds = document.getElementById("worlds");
+  var wselect = document.getElementById("world-select-show");
+  var settings = document.getElementById("settings");
+
+  document.getElementById("worlds-close").onclick = function() {
+    worlds.style.display = "none";
+  };
+  worlds.style.display = "";
+  wselect.style.display = "";
+  wselect.onclick = function() {
+    settings.style.display = "none";
+    worlds.style.display = "";
+  };
+
+  var levels = document.getElementById("levels");
+  for(var level of p.levels) {
+    var elem = document.createElement("div");
+    elem.className = "level-select-button";
+    elem.id = level.worldId;
+    elem.innerText = level.name;
+    elem.addEventListener("click", (function (id) { return function () { app.net.send({ 'type': "gsl", 'name': id, 'data': "" }); }; })(level.worldId));
+
+    levels.appendChild(elem);
+  }
 };
 
 /* PRIVATE LOBBY / DEV */
@@ -51,6 +64,9 @@ Lobby.prototype.changeLevel = function(p) {
   this.selectedWorld = p.world;
   document.getElementById(this.selectedWorld).style.border = "2px solid";
 };
+
+Lobby.prototype.handleKeyPress = Game.prototype.handleKeyPress;
+Lobby.prototype.sendMessage = Game.prototype.sendMessage;
 
 Lobby.prototype.changePrivMenu = Game.prototype.changePrivMenu;
 Lobby.prototype.getDebug = Game.prototype.getDebug;

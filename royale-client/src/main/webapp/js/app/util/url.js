@@ -22,45 +22,6 @@ let TILE_ANIM_BG_FILTERED = [];
     });
 })();
 
-/* Details on private lobby world selection */
-
-const levelSelectorsVanilla = [
-    {
-        "title": "Super Mario Bros",
-        "levels": [
-            {name: "W1", worldId: "world-1" },
-            {name: "W2", worldId: "world-2" },
-            {name: "W3", worldId: "world-3" },
-            {name: "W4", worldId: "world-4" },
-            {name: "W5", worldId: "world-5" },
-            {name: "W6", worldId: "world-6" },
-            {name: "W7", worldId: "world-7" },
-            {name: "W8", worldId: "world-8" },
-        ]
-    }, {
-        "title": "Misc",
-        "levels": [
-            {name: "Lost 1", worldId: "world-lost"},
-            {name: "Tricorn", worldId: "world-tricorn"}
-        ]
-    }
-];
-
-const levelSelectorsPVP = [
-    {
-        "title": "World Select",
-        "levels": [
-            {name: "MK", worldId: "pvp-mariokart"},
-            {name: "SMB2", worldId: "pvp-smb2"},
-            {name: "Maker", worldId: "pvp-maker"},
-            {name: "SPM", worldId: "pvp-spm"},
-            {name: "NSMB", worldId: "pvp-nsmb"},
-            {name: "Blackout", worldId: "pvp-blackout"},
-            {name: "Hockey", worldId: "pvp-hockey"}
-        ]
-    }
-];
-
 /* Editor */
 
 const mapsheets = [

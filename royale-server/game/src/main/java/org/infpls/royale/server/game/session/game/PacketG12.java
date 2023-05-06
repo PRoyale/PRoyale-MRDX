@@ -13,9 +13,9 @@ public class PacketG12 extends Packet {
   public static class NamePair {
     public final short id;
     public final String username, name;
-    public final boolean isDev;
-    public NamePair(short id, String username, String name, boolean isDev) {
-      this.id = id; this.username = username; this.name = name; this.isDev = isDev;
+    public final boolean isDev, isAdmin, isMod;
+    public NamePair(short id, String username, String name, boolean isDev, boolean isAdmin, boolean isMod) {
+      this.id = id; this.username = username; this.name = name; this.isDev = isDev; this.isAdmin = isAdmin; this.isMod = isMod;
     }
   }
 }

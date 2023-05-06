@@ -59,9 +59,9 @@ public abstract class RoyaleCore {
     for(int i=0;i<controllers.size();i++) {
       final Controller c = controllers.get(i);
       if(c.session.getAccount() != null) {
-        players.add(new PacketG12.NamePair(c.pid, c.session.getAccount().getUsername(), c.getName(), c.isDev()));
+        players.add(new PacketG12.NamePair(c.pid, c.session.getAccount().getUsername(), c.getName(), c.isDev(), c.isAdmin(), c.isMod()));
       } else {
-        players.add(new PacketG12.NamePair(c.pid, "[ Guest ]", c.getName(), c.isDev()));
+        players.add(new PacketG12.NamePair(c.pid, "[ Guest ]", c.getName(), c.isDev(), c.isAdmin(), c.isMod()));
       }
     }
     send(new PacketG12(players));
@@ -91,9 +91,9 @@ public abstract class RoyaleCore {
     for(int i=0;i<controllers.size();i++) {
       final Controller c = controllers.get(i);
       if(c.session.getAccount() != null) {
-        players.add(new PacketG12.NamePair(c.pid, c.session.getAccount().getUsername(), c.getName(), c.isDev()));
+        players.add(new PacketG12.NamePair(c.pid, c.session.getAccount().getUsername(), c.getName(), c.isDev(), c.isAdmin(), c.isMod()));
       } else {
-        players.add(new PacketG12.NamePair(c.pid, "[ Guest ]", c.getName(), c.isDev()));
+        players.add(new PacketG12.NamePair(c.pid, "[ Guest ]", c.getName(), c.isDev(), c.isAdmin(), c.isMod()));
       }
     }
     send(new PacketG12(players));
@@ -106,9 +106,9 @@ public abstract class RoyaleCore {
     for(int i=0;i<controllers.size();i++) {
       final Controller c = controllers.get(i);
       if(c.session.getAccount() != null) {
-        players.add(new PacketG12.NamePair(c.pid, c.session.getAccount().getUsername(), c.getName(), c.isDev()));
+        players.add(new PacketG12.NamePair(c.pid, c.session.getAccount().getUsername(), c.getName(), c.isDev(), c.isAdmin(), c.isMod()));
       } else {
-        players.add(new PacketG12.NamePair(c.pid, "[ Guest ]", c.getName(), c.isDev()));
+        players.add(new PacketG12.NamePair(c.pid, "[ Guest ]", c.getName(), c.isDev(), c.isAdmin(), c.isMod()));
       }
     }
     send(new PacketG12(players));
@@ -162,6 +162,10 @@ public abstract class RoyaleCore {
   private short nxtPid;
   private short createPid() {
     return nxtPid++;
+  }
+
+  public int getFrame() {
+    return frame;
   }
   
   /* Called when game is over and lobby is closing */

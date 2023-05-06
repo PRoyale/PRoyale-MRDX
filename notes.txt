@@ -5,5 +5,4 @@ Bugs:
 - If you crouch jump in water, the swimming form appears. This is fine normally but under blocks means you can clip into blocks.
 
 Features to add, backport and whatever the hell else:
-- Chat (things needed: swear filter)
 - Spectator (urgh this was a pain to add in legacy and will be here.)

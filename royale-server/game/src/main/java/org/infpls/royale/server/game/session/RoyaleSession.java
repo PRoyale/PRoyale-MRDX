@@ -8,6 +8,7 @@ import org.springframework.web.socket.*;
 import org.infpls.royale.server.game.dao.DaoContainer;
 import org.infpls.royale.server.game.dao.lobby.*;
 import org.infpls.royale.server.game.session.error.*;
+import org.infpls.royale.server.game.session.game.*;
 import org.infpls.royale.server.game.session.login.Login;
 import org.infpls.royale.server.game.session.game.Game;
 import org.infpls.royale.server.game.util.VirginSlayer;
@@ -24,6 +25,11 @@ public final class RoyaleSession {
   private SessionState sessionState;
   public final boolean banned;
   public String gameMode; // We ask for this in getOnlineUserCount
+
+  public int strikes;
+  public String disconnectMessage;
+  public boolean muted;
+  public int lastMessageFrame; // Frame last message was sent on. Used to minmize chat spam.
   
   public boolean readyVote;   // Kinda messy. Should really be a linked list in GameLobby instead.
   public RoyaleAccount account;
@@ -38,6 +44,11 @@ public final class RoyaleSession {
     readyVote = false;
     
     banned = VirginSlayer.isBanned(getIP());
+
+    strikes = 0x00;
+    disconnectMessage = "(Disconnected)";
+    muted = false;
+    lastMessageFrame = 0x00;
     
     changeState("l");
   }
@@ -45,7 +56,15 @@ public final class RoyaleSession {
   public void start() {
     sessionThread.start();
   }
+
+  public void killMessage(String killer) {
+    sendPacket(new PacketGGM("", killer + " has killed " + getUser() + "!", "green", "green"));
+  }
   
+  public String getReason() {
+    return disconnectMessage;
+  }
+
   public void handlePacket(final String data) throws IOException {
     sessionState.handlePacket(data);
   }
@@ -173,6 +192,38 @@ public final class RoyaleSession {
     };
     for(int i=0;i<DEVELOPERS.length;i++) {
       if(DEVELOPERS[i].equals(acc.getUsername())) { return true; }
+    }
+
+    return false;
+  }
+
+  public boolean isMod() {
+    RoyaleAccount acc = getAccount();
+    if(acc == null) { return false; }
+
+    String[] DEVELOPERS = new String[] {
+      "PYRIEL",
+      "FUNGICAPTAIN3",
+      "SYEMBOL",
+      "SIR SINS",
+      "DAORANGEBOI"
+    };
+    for(int i=0;i<DEVELOPERS.length;i++) {
+      if(DEVELOPERS[i].equals(acc.getUsername())) { return true; }
+    }
+
+    return false;
+  }
+
+  public boolean isAdmin() {
+    RoyaleAccount acc = getAccount();
+    if(acc == null) { return false; }
+
+    String[] ADMINS = new String[] {
+      "LINKYTAY"
+    };
+    for(int i=0;i<ADMINS.length;i++) {
+      if(ADMINS[i].equals(acc.getUsername())) { return true; }
     }
 
     return false;

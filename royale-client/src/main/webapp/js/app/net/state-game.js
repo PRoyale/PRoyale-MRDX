@@ -13,7 +13,9 @@ StateGame.prototype.handlePacket = function(packet) {
     case "g01" : { this.load(packet); return true; }
     case "g06" : { this.globalWarn(packet); return true; }
     case "g21" : { this.recievePing(packet); return true; }
+    case "gll" : { this.getLevels(packet); return true; }
     case "gcl" : { this.changeLevel(packet); return true; }
+    case "ggm" : { this.getMessage(packet); return true; }
     default : { return app.ingame() ? app.game.handlePacket(packet) : false; }
   }
 };
@@ -81,11 +83,44 @@ StateGame.prototype.recievePing = function(p) {
   this.pingOut = false;
 };
 
+// GLL
+StateGame.prototype.getLevels = function(p) {
+  var game = app.game;
+  if(!(game instanceof Lobby)) { return; }
+  game.getLevels(p);
+};
+
 // GCL
 StateGame.prototype.changeLevel = function(p) {
   var game = app.game;
   if(!(game instanceof Lobby)) { return; }
   game.changeLevel(p);
+};
+
+// GGM
+StateGame.prototype.getMessage = function(p) {
+  function sanitize(string) {
+    const map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#x27;',
+        "/": '&#x2F;',
+    };
+    const reg = /[&<>"'/]/ig;
+    return string.replace(reg, (match)=>(map[match]));
+  }
+
+    let message = sanitize(p.data);
+    let messages = document.getElementById("chat-messages");
+
+    messages.innerHTML += `<span style=color:${p.textColor}><span style="color:${p.color}">${p.name}</span>${message}</span>\n\n`;
+
+    jQuery( function(){
+        var pre = jQuery("#chat-messages");
+         pre.scrollTop( pre.prop("scrollHeight") );
+    });
 };
 
 StateGame.prototype.send = function(data) {

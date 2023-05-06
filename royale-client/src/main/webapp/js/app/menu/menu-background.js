@@ -37,7 +37,7 @@ function MenuDisplay() {
           document.getElementById("next").style.display = ""; // Done loading
         }
     }).catch(err => {
-        app.menu.error.show("Failed to load background. Please check the console for details.");
+        app.menu.error.show("Failed to load background.");
         console.error("##STATUS##", err.statusCode, "\n##INFO##", err);
     });
 };

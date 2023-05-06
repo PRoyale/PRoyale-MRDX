@@ -18,6 +18,15 @@ MenuError.prototype.show = function(disp, msg, ex) {
   app.menu.mainMember.hideLeaderboards();
   app.menu.main.hideRegisterMenu();
   app.menu.main.hideLoginMenu();
+
+  document.getElementById("hiddenChat").style.display = "none";
+  document.getElementById("devConsole").style.display = "none";
+  document.getElementById("gameChat").style.display = "none";
+  document.getElementById("worlds").style.display = "none";
+  document.getElementById("settings").style.display = "none";
+  document.getElementById("controls").style.display = "none";
+  document.getElementById("changelog").style.display = "none";
+  document.getElementById("language").style.display = "none";
   
   app.menu.navigation("error", "error");
   app.menu.background("b");
