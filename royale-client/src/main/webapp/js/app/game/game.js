@@ -741,7 +741,7 @@ Game.prototype.doInput = function(imp) {
 
   for(var panel of this.panel.panels) {
     if(panel instanceof EmotePanel) {
-      if(document.getElementById("settings").style.display !== "none" || document.getElementById("controls").style.display !== "none") { return; }
+      if(document.getElementById("settings").style.display !== "none" || document.getElementById("controls").style.display !== "none" || document.getElementById("gameChat").style.display !== "none") { return; }
 
       if(!this["ink" + inp.assignK.emote] && emoteK) {
         panel.active = (!panel.active && panel.cooldown === -1)
