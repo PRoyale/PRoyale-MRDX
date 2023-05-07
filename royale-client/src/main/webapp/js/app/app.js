@@ -236,6 +236,7 @@ App.prototype.close = function(goToLobby) {
     document.getElementById("return").style.display = "none";
     document.getElementById("settings-returnMain").style.display = "none";
     document.getElementById("settings-returnLobby").style.display = "none";
+    document.getElementById("world-select-show").style.display = "none";
     document.getElementById("settings").style.display = "none";
     document.getElementById("controls").style.display = "none";
     document.getElementById("levels").innerHTML = "";

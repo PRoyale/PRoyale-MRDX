@@ -106,6 +106,7 @@ Network.prototype.handlePacket = function(packet) {
     }
   }
   switch(packet.type) {
+    case "a00" : { app.menu.warn.show(packet.data); break; } /* Announcement */
     case "s00" : { this.setState(packet.state); break; }
     case "s01" : { this.handleBlob(packet.packets); break; }
     case "s02" : { break; } /* Keep alive packet */

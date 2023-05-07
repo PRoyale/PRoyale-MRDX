@@ -408,7 +408,6 @@ Game.prototype.handlePacket = function(packet) {
     /* Ingame Type Packets gxx */
     case "g12" : { this.updatePlayerList(packet); return true; }
     case "g13" : { this.gameStartTimer(packet); return true; }
-    case "gwn" : { this.out.push(NET018.encode()); return true; }
     /* Input Type Packets ixx */
     default : { return false; }
   }
@@ -743,17 +742,19 @@ Game.prototype.doInput = function(imp) {
     if(panel instanceof EmotePanel) {
       if(document.getElementById("settings").style.display !== "none" || document.getElementById("controls").style.display !== "none") { return; }
 
-      if(!this["ink" + inp.assignK.emote] && emoteK) {
-        panel.active = (!panel.active && panel.cooldown === -1)
-        this["ink" + inp.assignK.emote] = true;
-      };
-      this["ink" + inp.assignK.emote] = emoteK;
-
-      if(!this["ing" + inp.assignG.emote] && emoteG) {
-        panel.active = (!panel.active && panel.cooldown === -1)
-        this["ing" + inp.assignG.emote] = true;
-      };
-      this["ing" + inp.assignG.emote] = emoteG;
+      if(document.activeElement.tagName !== "INPUT") {
+        if(!this["ink" + inp.assignK.emote] && emoteK) {
+          panel.active = (!panel.active && panel.cooldown === -1)
+          this["ink" + inp.assignK.emote] = true;
+        };
+        this["ink" + inp.assignK.emote] = emoteK;
+  
+        if(!this["ing" + inp.assignG.emote] && emoteG) {
+          panel.active = (!panel.active && panel.cooldown === -1)
+          this["ing" + inp.assignG.emote] = true;
+        };
+        this["ing" + inp.assignG.emote] = emoteG;
+      }
     }
   }
   

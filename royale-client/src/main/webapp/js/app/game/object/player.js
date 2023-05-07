@@ -383,7 +383,8 @@ PlayerObject.prototype.trigger = function(type) {
 };
 
 PlayerObject.prototype.emote = function(emote) {
-  this.game.world.getZone(this.level, this.zone).effects.push(new EmoteEffect(this.pos, this.pid, emote));
+  var zone = this.game.world.getZone(this.level, this.zone);
+  if(zone) { zone.effects.push(new EmoteEffect(this.pos, this.pid, emote)); };
 };
 
 PlayerObject.prototype.step = function() {
