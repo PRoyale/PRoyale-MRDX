@@ -539,6 +539,21 @@ Display.prototype.drawUI = function() {
       context.font = "24px SmbOutline";
       context.fillStyle = "#000073";
       context.fillText(txt, W-w-8, 32);
+
+      if(app.private && app.roomCode) {
+        var txt = "ROOM CODE";
+        context.font = "24px SmbWeb";
+        context.fillStyle = "white";
+        context.textAlign = "center";
+        context.fillText(txt, W*.5, H-120);
+        context.fillText(app.roomCode.toUpperCase(), W*.5, H-90);
+      
+        context.font = "24px SmbOutline";
+        context.fillStyle = "#000073";
+        context.fillText(txt, W*.5, H-120);
+        context.fillStyle = "#000020"
+        context.fillText(app.roomCode.toUpperCase(), W*.5, H-90);
+      }
     }
 
     var st = util.sprite.getSprite(uitex, MUSIC[app.settings.musicVolume===0?1:this.game.audio.muteMusic?1:0]);

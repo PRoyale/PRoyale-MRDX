@@ -9,6 +9,7 @@
         <link rel='stylesheet' type='text/css' href='css/queries.css'>
         <link rel='stylesheet' type='text/css' href='css/index.css'>
         <link rel='stylesheet' type='text/css' href='css/control.css'>
+        <link rel='stylesheet' type='text/css' href='css/chat.css'>
 
         <meta name="keywords" content="MRoyale, Mario, Mario Royale, Mario Royale Deluxe, Deluxe, Royale, Super Mario, Super Mario Bros., Super Mario Bros. Royale, Super Mario Royale" />
         <meta name="description" content="Mario Royale Deluxe is a competitive online battle where up to 75 players compete for glory!" />
@@ -231,6 +232,7 @@
       <!-- World Selection -->
       <div id="worlds" class='container-private' style="display: none">
         <span id="wrldbtn" style="border: 2px solid #FFF">Worlds</span> <span id="debgbtn">Debug</span>
+        <span style="position: absolute;right: 10px" id="worlds-close">x</span>
         <div id='wrld' style="margin-top: 15px">
           <div id="levels"></div>
           <p><span id="custom">Custom</span> <input type="file" id="levelSelectInput" name="levelSelectInput[]" accept=".json,.game,.txt"></p>
@@ -239,7 +241,7 @@
           <p style="display: inline">Infinite Lives</p><input type="checkbox" id="infLives"><br>
           <p style="display: inline">No Damage Mode</p><input type="checkbox" id="godMode"><br>
           <p style="display: inline">Level ID</p><input id="levelID" type="number" value=0><br>
-          <p style="display: inline">Zone ID</p><input id="zoneID" type="number" value=0>
+          <p style="display: inline">Zone ID</p><input id="zoneID" type="number" value=0><br>
           <p style="display: inline">Powerup</p><select id="powerupID">
             <option value=0>No Powerup</option>
             <option value=1>Super Mushroom</option>
@@ -367,25 +369,19 @@
         <span style="position: absolute;right: 10px;top: 4px;" id="changelog-close">x</span>
         <p style="margin-bottom: 0" id="changelogTitle">Changelog</p>
         <div id="changelog-container">
-          <h1>Version 4.1.0</h1>
-          <h2>April 30, 2023 - Major Update</h2>
-          <p>Added Emotes</p>
-          <p class="note">Press Left-Shift to toggle the emote menu and numbers 1-8 to pick an emote</p>
-          <p>Added Private Lobbies</p>
-          <p class="note">Click the "Private" button on the play menu and enter a room code to make a private lobby</p>
-          <p class="note">If there's no room code, then you'll be put into a singleplayer private game</p>
-          <p class="note">Please note that you need an account to play in private lobbies</p>
-          <p>Pressing the return to menu/lobby buttons doesn't refresh the page anymore</p>
-          <p>Collecting a life by getting 30 coins no longer resets the coin counter to 0</p>
-          <p>Added the option to use a custom URL to load audio from in custom worlds</p>
-          <p>Fixed a bug with the editor replace tool</p>
-          <p>Fixed guest names not being uppercased like registered names</p>
+          <h1>Version 4.2.0</h1>
+          <h2>May 6, 2023 - Major Update</h2>
+          <p>Added Chat</p>
+          <p class="note">Like private lobbies, you need an account to use the in-game chat</p>
+          <p>Private lobby world select looks better</p>
+          <p class="note">Also added the ability to close the private lobby menu</p>
+          <p class="note">And the room code of the lobby will be shown when you join it</p>
 
-          <h1>Version 4.1.1</h1>
-          <h2>May 1, 2023 - Technical Updates</h2>
-          <p>Fixed security issues on the server-side</p>
-          <p>Added some missing Spanish translations</p>
-          <p>Fixed a couple of Portuguese mistakes</p>
+          <h1>Version 4.2.1</h1>
+          <h2>May 7, 2023 - Hotfixes</h2>
+          <p>Fixed the emote menu being toggled while typing in chat</p>
+          <p>Fixed rare instances where using an emote would cause the game to behave weirdly</p>
+          <p>Fixed the "private lobby world select" button in the settings appearing where it shouldn't</p>
         </div>
         <div class="past-patches" onclick="window.open('https://github.com/mroyale/MarioRoyaleDeluxe/blob/main/patch.md')">Past Patches</div>
         </div>
@@ -403,7 +399,8 @@
         <div id="hideTimer">[ ] Hide In-Game Timer</div>
         <div id="disableBackground" style="margin-block-end:0.5em;">[ ] Disable Backgrounds</div>
         <div id="settings-returnMain" style="display:none;" onclick='app.close();'>Return to Main Menu</div>
-        <div id="settings-returnLobby" style="display:none;" onclick='app.close(true);'>Return to Lobby</div>
+        <div id="settings-returnLobby" style="display:none;margin-block-end:0.5em;" onclick='app.close(true);'>Return to Lobby</div>
+        <div id="world-select-show" style="display:none;">Private Lobby World Select</div>
       </div>
 
       <!-- Message Block -->
@@ -416,6 +413,25 @@
       <div id='return' class='container-return' style='display: none'>
         <span id='return-main' class='launch' onclick='app.close();'>Return to Main</span><br>
         <span id='return-lobby' class='launch' onclick='app.close(true);'>Return to Lobby</span>
+      </div>
+
+      <!-- Hidden Chat -->
+      <div id="hiddenChat" style='display:none;'>
+        <div class="container-gameChat" style="width:10em;height:40px;">
+          <h2 style="margin-left: 1vw; margin-right: 1vw; margin-top: 8px; text-align:center;">Show Chat</h2>
+        </div>
+      </div>
+
+      <!-- Game Chat -->
+      <div id="gameChat" style="display:none;width: 25vw;">
+        <div class="container-gameChat">
+          <h2 style="text-align: center;font-size: 20px;margin-top: 10px;">Chat</h2>
+          <span class="container-hideChat" id="chat-hide">X</span>
+          
+          <pre id="chat-messages" class="container-chatMessages"></pre>
+          
+          <input class="container-chatInput" id="chat-input" maxlength="100">
+        </div>
       </div>
 
       <!-- Dev Console -->

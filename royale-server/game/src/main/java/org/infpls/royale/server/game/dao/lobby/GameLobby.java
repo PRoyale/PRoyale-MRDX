@@ -124,6 +124,7 @@ public abstract class GameLobby {
     catch(IOException ioex) { Oak.log(Oak.Level.ERR, "Error during player disconnect.", ioex); return; }
     loading.add(session);
     sendPacket(new PacketG01(LOBBY_FILE, "", gameMode), session);
+    sendPacket(new PacketGGM("", session.getUser() + " joined the game.", "orange", "orange"));
   }
   
   private void readyEvent(RoyaleSession session) throws IOException {
@@ -133,6 +134,35 @@ public abstract class GameLobby {
     players.add(session);
     game.join(session);
     
+    if(session.isDev() || session.isAdmin() || isPrivate()) {
+      if(gameMode == "vanilla") {
+        List<Level> levels = new ArrayList<>();
+        levels.add(new Level("W1", "world-1"));
+        levels.add(new Level("W2", "world-2"));
+        levels.add(new Level("W3", "world-3"));
+        levels.add(new Level("W4", "world-4"));
+        levels.add(new Level("W5", "world-5"));
+        levels.add(new Level("W6", "world-6"));
+        levels.add(new Level("W7", "world-7"));
+        levels.add(new Level("W8", "world-8"));
+        levels.add(new Level("LOST", "world-lost"));
+        levels.add(new Level("TRICORN", "world-tricorn"));
+
+        sendPacket(new PacketGLL(levels), session);
+      } else {
+        List<Level> levels = new ArrayList<>();
+        levels.add(new Level("MK", "pvp-mariokart"));
+        levels.add(new Level("SMB2", "pvp-smb2"));
+        levels.add(new Level("Maker", "pvp-maker"));
+        levels.add(new Level("SPM", "pvp-spm"));
+        levels.add(new Level("NSMB", "pvp-nsmb"));
+        levels.add(new Level("Blackout", "pvp-blackout"));
+        levels.add(new Level("Hockey", "pvp-hockey"));
+
+        sendPacket(new PacketGLL(levels), session);
+      }
+    }
+    
     startAutoTimer();
     if(players.size() >= MAX_PLAYERS) { startTimer(); }
   }
@@ -141,6 +171,7 @@ public abstract class GameLobby {
     loading.remove(session);
     players.remove(session);
     game.leave(session);
+    sendPacket(new PacketGGM("", session.getUser() + " left the game. " + session.getReason(), "orange", "orange"));
   }
   
   private void ejectEvent(RoyaleSession session) {
@@ -148,6 +179,7 @@ public abstract class GameLobby {
     loading.remove(session);
     players.remove(session);
     game.leave(session);
+    sendPacket(new PacketGGM("", session.getUser() + " has been ejected.", "orange", "orange"));
   }
   
   private void voteEvent(RoyaleSession session) {
@@ -221,6 +253,97 @@ public abstract class GameLobby {
     gameFile = world;
     levelData = "";
     sendPacket(new PacketGCL(world));
+  }
+
+  /* Chat */
+  public void sendMessage(RoyaleSession session, String data) throws IOException {
+    if(session.getAccount() == null) {
+      return;
+    }
+
+    if(data.trim().length() == 0) {
+      return;
+    }
+
+    if(session.muted) {
+      sendPacket(new PacketGGM("[AUTOMOD]", "You are muted and can no longer speak in this lobby.", "orange", "red"), session);
+      return;
+    }
+
+    ArrayList<String> swearWords = Filter.badWordsFound(data);
+    if(swearWords.size() > 0) {
+      if(!(session.isDev() || session.isAdmin() || session.isMod())) {
+        sendPacket(new PacketGGM("[AUTOMOD]", "Your message contains a blocked word, so it has not been sent", "orange", "red"), session);
+        return;
+      }
+    }
+
+    if(data.length() == 0 || data.length() > 100) {
+      return;
+    } 
+
+    sendPacket(new PacketGGM(session.getUser() + ":", data, session.isDev() ? "rgb(255,255,0)" : session.isAdmin() ? "red" : session.isMod() ? "rgb(0,255,0)" : "rgb(255,255,255)", "white"));
+    
+    if(session.isDev() || session.isAdmin() || session.isMod()) {
+      String pattern = "^/.*";
+      boolean isCommand = data.matches(pattern);
+
+      if(isCommand) {
+        String[] parts = data.split(" ");
+        String command = parts[0];
+        String[] args = Arrays.copyOfRange(parts, 1, parts.length);
+
+        if(command.equals("/kick")) {
+          String username = args[0];
+          for(int i=0;i<players.size();i++) {
+            if(players.get(i).getUser().toLowerCase().equals(username.toLowerCase())) {
+              RoyaleSession player = players.get(i);
+              player.disconnectMessage = "(Kicked)";
+              player.close();
+              break;
+            }
+
+            sendPacket(new PacketGGM("[MOD TOOL]", "Could not find player with username " + username, "orange", "red"));
+          }
+        } else if(command.equals("/mute")) {
+          String username = args[0];
+
+          for(int i=0;i<players.size();i++) {
+            if(players.get(i).getUser().toLowerCase().equals(username.toLowerCase())) {
+              RoyaleSession player = players.get(i);
+              if(!player.isDev() && !player.isAdmin() && !player.isMod()) {
+                player.muted = true;
+                sendPacket(new PacketGGM("[MOD TOOL]", "Successfully muted " + username, "orange", "green"));
+                break;
+              } else {
+                sendPacket(new PacketGGM("[MOD TOOL]", "You cannot mute this player.", "orange", "red"), session);
+                break;
+              }
+            }
+          }
+        } else if(command.equals("/unmute")) {
+          String username = args[0];
+
+          for(int i=0;i<players.size();i++) {
+            if(players.get(i).getUser().toLowerCase().equals(username.toLowerCase())) {
+              RoyaleSession player = players.get(i);
+              if(!player.isDev() || !player.isAdmin() || !player.isMod()) {
+                if(!player.muted) {
+                  sendPacket(new PacketGGM("[MOD TOOL]", username + " is not muted.", "orange", "gray"));
+                }
+                player.muted = false;
+                sendPacket(new PacketGGM("[MOD TOOL]", "Successfully unmuted " + username, "orange", "green"));
+                break;
+              }
+            }
+          }
+        } else if(command.equals("/start")) {
+          if(!locked) { whereWeDroppin(); sendPacket(new PacketGGM("[MODTOOL]", "Game started by " + session.getUser(), "orange", "green")); }
+        } else if(command.equals("/help")) {
+          sendPacket(new PacketGGM("[MOD COMMANDS]", "\n/kick [player]: Kicks a player from the lobby\n/mute [player]: Mute a player in this lobby\n/unmute [player]: Unmute a muted player\n/start: Force start the game\n/help: Shows this command", "orange", "#FFFFFFAA"));
+        }
+      }
+    }
   }
   
   protected void close() throws IOException {

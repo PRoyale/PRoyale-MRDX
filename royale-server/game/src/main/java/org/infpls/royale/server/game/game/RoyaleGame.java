@@ -6,7 +6,6 @@ import org.infpls.royale.server.game.dao.lobby.GameLobby;
 import org.infpls.royale.server.game.session.game.PacketG06;
 import org.infpls.royale.server.game.session.game.PacketG13;
 import org.infpls.royale.server.game.session.game.PacketG14;
-import org.infpls.royale.server.game.session.game.PacketGWN;
 
 public class RoyaleGame extends RoyaleCore {
   

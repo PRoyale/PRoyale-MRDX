@@ -586,15 +586,17 @@ img {
   top: 25%;
   left: 50%;
   transform: translateX(-50%) translateY(-50%);
-  color: #FFF;
+  color: gold;
   margin: 0;
-  background: #000000C0;
   font-family: 'SmbWeb';
   padding: 5px;
   font-size: 18px;
   line-height: 1.6;
-  border: 2px solid #FFF;
-  border-radius: 3px
+  background-image: url("../img/game/smb_emotebox.png");
+  background-size: 100% 100%;
+  background-position: center center;
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
 }
 
 .container-return {

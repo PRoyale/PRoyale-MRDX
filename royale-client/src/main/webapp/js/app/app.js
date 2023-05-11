@@ -14,7 +14,8 @@ function App() {
     'hideNames': Cookies.get("text") === '1',
     'hideTimer': Cookies.get("timer") === '1',
     'disableBg': Cookies.get("background") === '1',
-    'language': Cookies.get("lang") || "en"
+    'language': Cookies.get("lang") || "en",
+    'chatHidden': Cookies.get("hideChat") === '1'
   }
 
   this.lang = this.settings.language;   // Localization
@@ -228,11 +229,14 @@ App.prototype.close = function(goToLobby) {
     app.menu.bg.destroy();
     controlApp.load();
 
+    document.getElementById("gameChat").style.display = "none";
+    document.getElementById("chat-messages").innerHTML = "";
     document.getElementById("devConsole").style.display = "none";
     document.getElementById("worlds").style.display = "none";
     document.getElementById("return").style.display = "none";
     document.getElementById("settings-returnMain").style.display = "none";
     document.getElementById("settings-returnLobby").style.display = "none";
+    document.getElementById("world-select-show").style.display = "none";
     document.getElementById("settings").style.display = "none";
     document.getElementById("controls").style.display = "none";
     document.getElementById("levels").innerHTML = "";

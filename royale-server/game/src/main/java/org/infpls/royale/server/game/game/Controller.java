@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.*;
 import org.infpls.royale.server.game.session.*;
+import org.infpls.royale.server.game.session.game.PacketGGM;
 import org.infpls.royale.server.game.util.VirginSlayer;
 import org.infpls.royale.server.util.Oak;
 
@@ -168,43 +169,6 @@ public class Controller {
     acSequence = n.level;
     return false;
   }
-
-private static final byte[] VALID_SPRITES = new byte[] {
-  0x00,
-  0x01,
-  0x02,
-  0x03,
-  0x04,
-  0x05,
-  0x06,
-  0x07,
-  0x08,
-  0x20,
-  0x21,
-  0x22,
-  0x23,
-  0x24,
-  0x25,
-  0x26,
-  0x27,
-  0x28,
-  0x29,
-  0x2A,
-  0x40,
-  0x41,
-  0x42,
-  0x43,
-  0x44,
-  0x45,
-  0x46,
-  0x47,
-  0x48,
-  0x49,
-  0x50,
-  0x51,
-  0x60,
-  0x70
-};
   
   /* PLAYER_OBJECT_EVENT */
   public void process013(ByteMe.NET013 n) {
@@ -230,6 +194,7 @@ private static final byte[] VALID_SPRITES = new byte[] {
     final Controller kler = game.getController(n.killer);
     if(kler != null) {
       kler.send(n.encode().array());
+      session.killMessage(kler.session.getUser());
       RoyaleAccount klerAcc = kler.session.getAccount();
       if(klerAcc != null && kler.session.getPrivate() != true) {
         klerAcc.updateKills(1);
@@ -304,6 +269,14 @@ private static final byte[] VALID_SPRITES = new byte[] {
       return "[DEV]" + session.getUser();
     }
 
+    if(isAdmin()) {
+      return "[ADMIN]" + session.getUser();
+    }
+
+    if(isMod()) {
+      return "[MOD]" + session.getUser();
+    }
+
     return session.getUser();
   }
   public String getRoom() { return session.getRoom(); }
@@ -323,6 +296,38 @@ private static final byte[] VALID_SPRITES = new byte[] {
     };
     for(int i=0;i<DEVELOPERS.length;i++) {
       if(DEVELOPERS[i].equals(acc.getUsername())) { return true; }
+    }
+
+    return false;
+  }
+
+  public boolean isMod() {
+    RoyaleAccount acc = session.getAccount();
+    if(acc == null) { return false; }
+
+    String[] MODERATORS = new String[] {
+      "PYRIEL",
+      "FUNGICAPTAIN3",
+      "SYEMBOL",
+      "SIR SINS",
+      "DAORANGEBOI"
+    };
+    for(int i=0;i<MODERATORS.length;i++) {
+      if(MODERATORS[i].equals(acc.getUsername())) { return true; }
+    }
+
+    return false;
+  }
+
+  public boolean isAdmin() {
+    RoyaleAccount acc = session.getAccount();
+    if(acc == null) { return false; }
+
+    String[] ADMINS = new String[] {
+      "LINKYTAY"
+    };
+    for(int i=0;i<ADMINS.length;i++) {
+      if(ADMINS[i].equals(acc.getUsername())) { return true; }
     }
 
     return false;

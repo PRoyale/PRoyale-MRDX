@@ -35,10 +35,14 @@ public class Game extends SessionState {
     < g13 game start countdown timer update
     = g21 ping
     > g50 vote ready
+    < gll send level select
     > gsl level select/upload level (private room)
+    < gcl change level (private room)
     > gbn kick/ban player (dev only)
     > gnm rename player (dev only)
     > gfs force start (dev only)
+    > gsm send chat message
+    < ggm get chat message
   */
   
   @Override
@@ -58,6 +62,7 @@ public class Game extends SessionState {
         case "gbn" : { banPlayer(gson.fromJson(data, PacketGBN.class)); break; }
         case "gnm" : { renamePlayer(gson.fromJson(data, PacketGNM.class)); break; }
         case "gfs" : { forceStart(gson.fromJson(data, PacketGFS.class)); break; }
+        case "gsm" : { sendMessage(gson.fromJson(data, PacketGSM.class)); break; }
         
         /* Input Type Packets nxx */
         
@@ -89,7 +94,7 @@ public class Game extends SessionState {
   };
 
   public void uploadLevel(PacketGSL p) throws IOException {
-    if(!lobby.isPrivate() && !session.isDev()) { return; }
+    if(!session.isDev() && !session.isAdmin()) { if(!lobby.isPrivate()) { return; } }
     if(p.name.length() == 0) { return; }
 
     if(p.name.equals("custom")) {
@@ -115,14 +120,20 @@ public class Game extends SessionState {
     if(session.getAccount() != null) {
       if(!session.isDev()) { return; }
 
+      String name = p.name.toUpperCase();
+
       Controller controller = lobby.getController(p.pid);
       if(controller.session.getAccount() != null) {
-        controller.session.getAccount().updateName(p.name);
+        controller.session.getAccount().updateName(name);
       }
-      controller.session.name = p.name;
+      controller.session.name = name;
 
       lobby.game.regenList();
     }
+  }
+
+  private void sendMessage(PacketGSM p) throws IOException {
+    lobby.sendMessage(session, p.data);
   }
 
   private void forceStart(PacketGFS p) throws IOException {

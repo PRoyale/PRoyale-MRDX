@@ -1,4 +1,18 @@
 # Mario Royale Deluxe Patch Notes
+## Version 4.2.1
+### 2023-05-07 - Hotfixes
+* Fixed the emote menu being toggled while typing in chat
+* Fixed rare instances where using an emote would cause the game to behave weirdly
+* Fixed the "private lobby world select" button in the settings appearing where it shouldn't
+
+## Version 4.2.0
+### 2023-05-06 - Major Update
+* Added Chat
+>   Like private lobbies, you need an account to use the in-game chat.
+* Private lobby world select looks better
+>   Also added the ability to close the private lobby menu.
+>   And the room code of the lobby will be shown when you join it
+
 ## Version 4.1.1
 ### 2023-05-01 - Technical Updates
 * Fixed security issues on the server-side

@@ -103,6 +103,33 @@ Game.GAME_OVER_TIME = 360;
 
 Game.COINS_TO_LIFE = 30;
 
+Game.prototype.handleKeyPress = function(evt) {
+  var chat = document.getElementById("chat-input");
+  evt.preventDefault();
+
+  if(document.activeElement === chat) {
+    switch(evt.keyCode) {
+      case 0x0D : {
+        this.sendMessage(chat.value);
+        chat.blur();
+        break;
+      }
+    }
+  } else {
+    switch(evt.keyCode) {
+      case 0x0D : {
+        chat.focus();
+        break;
+      }
+    }
+  }
+};
+
+Game.prototype.sendMessage = function(data) {
+  app.net.send({ "type": "gsm", "data": data });
+  document.getElementById("chat-input").value = "";
+};
+
 Game.prototype.changePrivMenu = function(tab) {
   var wrldbtn = document.getElementById("wrldbtn");
   var debgbtn = document.getElementById("debgbtn");
@@ -178,9 +205,10 @@ Game.prototype.load = function(data) {
     document.getElementById("settings-returnLobby").style.display = "";
   }
 
-  if(this instanceof Lobby && (app.net.prefLobby || this.isDev)) { document.getElementById("worlds").style.display = ""; }
+  if(this instanceof Lobby && (app.net.prefLobby || this.isDev)) { }
   else if(app.net.prefLobby) {
     document.getElementById("worlds").style.display = "none";
+    document.getElementById("world-select-show").style.display = "none";
 
     var infLives = document.getElementById("infLives");
     var godMode = document.getElementById("godMode");
@@ -198,6 +226,36 @@ Game.prototype.load = function(data) {
   }
   if(!(this instanceof Lobby) && app) {
     app.menu.main.menuMusic.pause();
+  }
+
+  app.settings.chatHidden ? document.getElementById("hiddenChat").style.display = "" : document.getElementById("gameChat").style.display = "";
+
+  let chat = document.getElementById("gameChat");
+  let hidechat = document.getElementById("hiddenChat");
+
+  document.getElementById("chat-hide").onclick = () => {
+    chat.style.display = "none";
+    hidechat.style.display = "";
+    app.settings.chatHidden = true;
+    Cookies.set("hideChat", "1", { "expires": 30 });
+  };
+
+  hidechat.onclick = () => {
+    hidechat.style.display = "none";
+    chat.style.display = "";
+    app.settings.chatHidden = false;
+    Cookies.set("hideChat", "0", { "expires": 30 });
+  };
+
+  var input = document.getElementById("chat-input");
+  if(!app.loggedIn()) {
+    input.disabled = true;
+    input.value = "Register to chat";
+    input.style.color = "#FFFFFFAA";
+  } else {
+    input.disabled = false;
+    input.value = "";
+    input.style.color = "#FFF";
   }
   
   /* Load world data */
@@ -350,7 +408,6 @@ Game.prototype.handlePacket = function(packet) {
     /* Ingame Type Packets gxx */
     case "g12" : { this.updatePlayerList(packet); return true; }
     case "g13" : { this.gameStartTimer(packet); return true; }
-    case "gwn" : { this.out.push(NET018.encode()); return true; }
     /* Input Type Packets ixx */
     default : { return false; }
   }
@@ -388,10 +445,9 @@ Game.prototype.updateLobby = function() {
       this.isDev = ply.isDev;
       if(this.isDev) {
         document.getElementById("devConsole").style.display = "";
-        if(this instanceof Lobby) {
-          document.getElementById("worlds").style.display = "";
-        } else {
+        if(!(this instanceof Lobby)) {
           document.getElementById("worlds").style.display = "none";
+          document.getElementById("world-select-show").style.display = "none";
         }
       }
     }
@@ -686,17 +742,19 @@ Game.prototype.doInput = function(imp) {
     if(panel instanceof EmotePanel) {
       if(document.getElementById("settings").style.display !== "none" || document.getElementById("controls").style.display !== "none") { return; }
 
-      if(!this["ink" + inp.assignK.emote] && emoteK) {
-        panel.active = (!panel.active && panel.cooldown === -1)
-        this["ink" + inp.assignK.emote] = true;
-      };
-      this["ink" + inp.assignK.emote] = emoteK;
-
-      if(!this["ing" + inp.assignG.emote] && emoteG) {
-        panel.active = (!panel.active && panel.cooldown === -1)
-        this["ing" + inp.assignG.emote] = true;
-      };
-      this["ing" + inp.assignG.emote] = emoteG;
+      if(document.activeElement.tagName !== "INPUT") {
+        if(!this["ink" + inp.assignK.emote] && emoteK) {
+          panel.active = (!panel.active && panel.cooldown === -1)
+          this["ink" + inp.assignK.emote] = true;
+        };
+        this["ink" + inp.assignK.emote] = emoteK;
+  
+        if(!this["ing" + inp.assignG.emote] && emoteG) {
+          panel.active = (!panel.active && panel.cooldown === -1)
+          this["ing" + inp.assignG.emote] = true;
+        };
+        this["ing" + inp.assignG.emote] = emoteG;
+      }
     }
   }
   
