@@ -11,7 +11,7 @@ import org.infpls.royale.server.util.*;
 
 public abstract class GameLobby {
   private final static String LOBBY_FILE = "lobby";
-  private final static String[] GAME_FILES = new String[]{ "world-1","world-2","world-3","world-4","world-5","world-6","world-7","world-8","world-lost","world-tricorn" };
+  private final static String[] GAME_FILES = new String[]{ "world-1","world-2","world-3","world-4","world-5","world-6","world-7","world-8","world-lost","world-tricorn","world-plus" };
   
   private final static String[] GAME_FILES_PVP = new String[]{ "pvp-maker", "pvp-smb2", "pvp-mariokart", "pvp-spm", "pvp-nsmb", "pvp-blackout","pvp-hockey" };
   
@@ -147,6 +147,7 @@ public abstract class GameLobby {
         levels.add(new Level("W8", "world-8"));
         levels.add(new Level("LOST", "world-lost"));
         levels.add(new Level("TRICORN", "world-tricorn"));
+        levels.add(new Level("W+", "world-plus"));
 
         sendPacket(new PacketGLL(levels), session);
       } else {
