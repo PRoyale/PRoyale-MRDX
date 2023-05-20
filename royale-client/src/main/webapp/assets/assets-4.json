@@ -3,12 +3,12 @@
 		{"name": "water", "startTile": 396,
 		"tiles":[396, 398, 400, 402, 404, 406, 408, 410], "delay": 5},
 		{"name": "water", "startTile": 397,
-		"tiles":[397, 399, 401, 403, 405, 407, 409, 411], "delay": 5},
+		"tiles":[397, 399, 401, 403, 405, 407, 409, 413], "delay": 5},
 
 		{"name": "retaw", "startTile": 429,
 		"tiles":[429, 431, 433, 435, 437, 439, 441, 443], "delay": 5},
 		{"name": "retaw", "startTile": 430,
-		"tiles":[430, 432, 434, 436, 438, 440, 442, 444], "delay": 5},
+		"tiles":[430, 432, 434, 436, 438, 440, 442, 446], "delay": 5},
 		
 		{"name": "mysteryBox", "startTile": 24,
 		"tiles":[24, 24, 24, 25, 26, 25], "delay": 8},
