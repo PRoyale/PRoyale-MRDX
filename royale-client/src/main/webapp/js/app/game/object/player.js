@@ -1179,13 +1179,8 @@ PlayerObject.prototype.warp = function(wid) {
 
 /* Warps the player to a relative location */
 PlayerObject.prototype.warpRelative = function(data) {
-  var coords = data.split(',').map((item) => Number(item));
-  var x = coords[0];
-  var y = coords[1];
-  this.pos.x += 1 * x;
-  this.pos.y += 1 * y;
-  window.alert(x);
-  window.alert(y);
+  this.pos.x += data;
+  this.pos.y += data;
 };
 
 /* ent/ext = null, up, down, left, right [0,1,2,3,4] */
