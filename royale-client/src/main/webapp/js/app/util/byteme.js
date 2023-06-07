@@ -64,11 +64,6 @@ td32.data = function(/* td32 */ a, /*1 byte uint*/ b) {
   //return (a & 0x00FFFFFF) | ((b << 24) & 0xFF000000);
 };
 
-td32.dataSiamese = function(/* td32 */ a, /*1 byte uint*/ b) {
-  return [a[0], a[1], a[2], a[3], b[0], b[1]];
-  //return (a & 0x00FFFFFF) | ((b << 24) & 0xFF000000);
-};
-
 td32.asArray = function(/* td32 */ a) {
   return [a[0], a[1], a[2], a[3], a[4], a[5]] //[a & 0x7FF, (a >> 11) & 0xF, ((a >> 15) & 0x1) === 1, (a >> 16) & 0xFF, (a >> 24) & 0xFF];
 };
@@ -732,7 +727,7 @@ td32.TILE_PROPERTIES = {
   /* Relative Warp Tile */
   0x34: {
     NAME: "WARP TILE RELATIVE",
-    DATA: "Vector (Format: \'X, Y\')",
+    DATA: "Vector (X, Y)",
     COLLIDE: false,
     HIDDEN: false,
     ASYNC: true,
@@ -740,7 +735,7 @@ td32.TILE_PROPERTIES = {
       switch(type) {
         /* Touch */
         case 0x00 : {
-          game.getPlayer().warpRelative(td.dataSiamese.b);
+          game.getPlayer().warpRelative(td.data);
         }
       }
     }
