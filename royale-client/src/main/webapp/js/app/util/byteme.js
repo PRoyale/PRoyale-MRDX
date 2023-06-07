@@ -724,6 +724,22 @@ td32.TILE_PROPERTIES = {
       }
     }
   },
+  /* Relative Warp Tile */
+  0x34: {
+    NAME: "WARP TILE RELATIVE",
+    DATA: "Target Warp ID",
+    COLLIDE: false,
+    HIDDEN: false,
+    ASYNC: true,
+    TRIGGER: function(game, pid, td, level, zone, x, y, type) {
+      switch(type) {
+        /* Touch */
+        case 0x00 : {
+          game.getPlayer().warpRelative(td.data);
+        }
+      }
+    }
+  },
   /* Warp Tile */
   0x51: {
     NAME: "WARP TILE",
