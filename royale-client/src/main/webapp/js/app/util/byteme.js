@@ -727,7 +727,7 @@ td32.TILE_PROPERTIES = {
   /* Relative Warp Tile */
   0x34: {
     NAME: "WARP TILE RELATIVE",
-    DATA: "Target Warp ID",
+    DATA: "Vector (Format: \'X, Y\')",
     COLLIDE: false,
     HIDDEN: false,
     ASYNC: true,
@@ -735,7 +735,7 @@ td32.TILE_PROPERTIES = {
       switch(type) {
         /* Touch */
         case 0x00 : {
-          game.getPlayer().warpRelative(td.data);
+          game.getPlayer().warpRelative(td.data.b);
         }
       }
     }
