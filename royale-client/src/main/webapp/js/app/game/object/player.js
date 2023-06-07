@@ -1184,6 +1184,8 @@ PlayerObject.prototype.warpRelative = function(data) {
   var y = coords[1];
   this.pos.x += 1 * x;
   this.pos.y += 1 * y;
+  console.log(x);
+  console.log(y);
 };
 
 /* ent/ext = null, up, down, left, right [0,1,2,3,4] */
