@@ -1180,10 +1180,6 @@ PlayerObject.prototype.warp = function(wid) {
 /* Warps the player to a relative location */
 PlayerObject.prototype.warpRelative = function(paramData) {
   var coords = paramData.split(",");
-  console.log("X: ");
-  console.log(coords[1]);
-  console.log("Y: ");
-  console.log(coords[2]);
   this.pos.x += parseInt(coords[1]);
   this.pos.y += parseInt(coords[2]);
 };
