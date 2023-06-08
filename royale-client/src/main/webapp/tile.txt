@@ -85,6 +85,10 @@ UNLOCK CAMERA SCROLL:31
 VINE BLOCK::24
  - Creates a vine when hit, extra data value correponds to the id of the warp point you want it to go to.
 
+WARP TILE RELATIVE::52
+ - When touched it will warp you to a relative position. Extra data value is of format "0,X,Y" (quotes not included).
+ - The 0 is unused, but it is required in the editor. X and Y can be float, positive like negative.
+
 WARP TILE::81
  - When touched it will warp you. Extra data value correponds to the id of the warp point you want it to go to.
 
