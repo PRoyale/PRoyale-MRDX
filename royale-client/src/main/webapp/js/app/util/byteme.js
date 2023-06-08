@@ -727,7 +727,7 @@ td32.TILE_PROPERTIES = {
   /* Relative Warp Tile */
   0x34: {
     NAME: "WARP TILE RELATIVE",
-    DATA: "Vector (X, Y)",
+    DATA: "Vector (0, x, y)",
     COLLIDE: false,
     HIDDEN: false,
     ASYNC: true,
